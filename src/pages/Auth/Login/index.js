@@ -98,7 +98,7 @@ const Login = () => {
           alignItems="center"
         >
           <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
-          <Heading className="text-primary">Welcome</Heading>
+          <Heading className="text-primary">Login</Heading>
         </Stack>
 
         <form className={styles.formDiv} onSubmit={handleSubmit(onLogin)}>
@@ -112,6 +112,7 @@ const Login = () => {
                 <Input
                   type="email"
                   placeholder="Email address"
+                  autoFocus
                   {...register("email")}
                 />
               </InputGroup>
@@ -144,7 +145,12 @@ const Login = () => {
                 </InputRightElement>
               </InputGroup>
               <FormHelperText textAlign="right">
-                <Link className="text-primary-light">forgot password?</Link>
+                <RouterLink
+                  to={APP_PATH.forgotPassword}
+                  className="text-primary-light"
+                >
+                  forgot password?
+                </RouterLink>
               </FormHelperText>
             </FormControl>
             <Button
@@ -163,7 +169,10 @@ const Login = () => {
       </Box>
       <Box>
         New to us?{" "}
-        <RouterLink to="/register" className="text-primary font-semibold">
+        <RouterLink
+          to={APP_PATH.register}
+          className="text-primary font-semibold"
+        >
           Sign Up
         </RouterLink>
       </Box>

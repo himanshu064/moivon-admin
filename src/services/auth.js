@@ -17,3 +17,11 @@ export const register = (data) => {
     HEADERS.jsonData
   );
 };
+
+export const forgotPassword = (data) => {
+  return axiosInstance.post(
+    ALL_ENDPOINTS.BUILD_FORGOT_PASSWORD(),
+    data,
+    HEADERS.jsonData
+  );
+};

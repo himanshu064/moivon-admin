@@ -106,7 +106,7 @@ const Register = () => {
           alignItems="center"
         >
           <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
-          <Heading className="text-primary">Welcome</Heading>
+          <Heading className="text-primary">Register</Heading>
         </Stack>
 
         <form className={styles.formDiv} onSubmit={handleSubmit(onRegister)}>
@@ -120,6 +120,7 @@ const Register = () => {
                 <Input
                   type="text"
                   placeholder="Enter your name"
+                  autoFocus
                   {...register("name")}
                 />
                 <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
@@ -197,7 +198,7 @@ const Register = () => {
       </Box>
       <Box>
         Already have an account?{" "}
-        <RouterLink to="/login" className="text-primary font-semibold">
+        <RouterLink to={APP_PATH.login} className="text-primary font-semibold">
           Log In
         </RouterLink>
       </Box>
