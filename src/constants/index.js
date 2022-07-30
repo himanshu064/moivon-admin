@@ -4,3 +4,5 @@ export const HEADERS = {
     "Content-Type": "multipart/form-data",
   },
 };
+
+export const CONTENT_MARGIN_LEFT = 60;
