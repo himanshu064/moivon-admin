@@ -5,13 +5,13 @@
 
 
 :root {
-  --theme-white: #f8f8f8;
-  --theme-black: #252525;
-  --theme-white-light: #a6a6a6;
-  --theme-black-light: #343434;
-  --border-color: #575757;
-  --color-black: #000000;
-  --color-white: #ffffff;
+  --theme-white: #f8f8f8 !important;
+  --theme-black: #252525 !important;
+  --theme-white-light: #a6a6a6 !important;
+  --theme-black-light: #343434 !important;
+  --border-color: #575757 !important;
+  --color-black: #000000 !important;
+  --color-white: #ffffff !important;
 }
 body {
   margin: 0;

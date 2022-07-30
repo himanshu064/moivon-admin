@@ -10,14 +10,14 @@ import Home from "../pages/Home";
 function NavigationRoutes() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Home />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
