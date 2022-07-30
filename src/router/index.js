@@ -1,22 +1,65 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
 import AdminLayout from "../layout/AdminLayout";
+import AuthLayout from "../layout/AuthLayout";
 
 import Register from "../pages/Auth/Register";
 import Login from "../pages/Auth/Login";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
+import ResetPassword from "../pages/Auth/ResetPassword";
 
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 
 import CreateEvent from "../pages/Events/CreateEvent";
 import ListEvent from "../pages/Events/ListEvent";
+import { APP_PATH } from "../api/endpoints";
 
 function NavigationRoutes() {
   return (
     <>
       <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path={APP_PATH.register}
+          element={
+            <AuthLayout>
+              <Register />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path={APP_PATH.login}
+          element={
+            <AuthLayout>
+              <Login />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path={APP_PATH.forgotPassword}
+          element={
+            <AuthLayout>
+              <ForgotPassword />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path={APP_PATH.resetPassword}
+          element={
+            <AuthLayout>
+              <ResetPassword />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path={APP_PATH.login}
+          element={
+            <AuthLayout>
+              <Login />
+            </AuthLayout>
+          }
+        />
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/events">
@@ -39,7 +82,7 @@ function NavigationRoutes() {
           />
         </Route>
         <Route
-          path="/"
+          path={APP_PATH.home}
           element={
             <AdminLayout>
               <Home />
