@@ -18,6 +18,7 @@ import { HiCollection } from "react-icons/hi";
 
 import NavItem from "../NavItem";
 import Header from "../Header";
+import { Link } from "react-router-dom";
 
 const ConditionalRenderNavbar = ({ navItem }) => {
   const integrations = useDisclosure();
@@ -25,8 +26,8 @@ const ConditionalRenderNavbar = ({ navItem }) => {
   if (navItem.subItems && navItem.subItems.length > 0) {
     return (
       <Box key={navItem.id}>
-        <NavItem icon={navItem.icon} onClick={integrations.onToggle}>
-          {navItem.title}
+        <NavItem icon={navItem?.icon} onClick={integrations.onToggle}>
+          {navItem?.title}
           <Icon
             as={MdKeyboardArrowRight}
             ml="auto"
@@ -35,8 +36,8 @@ const ConditionalRenderNavbar = ({ navItem }) => {
         </NavItem>
         <Collapse in={integrations.isOpen}>
           {navItem.subItems.map((item) => (
-            <NavItem key={item.id} pl="12" py="2" icon={item.icon}>
-              {item.title}
+            <NavItem pl="12" py="2" icon={item?.icon}>
+              {item?.title}
             </NavItem>
           ))}
         </Collapse>
@@ -154,6 +155,25 @@ const NAV_ITEMS = [
     id: uuid(),
     title: "Checklists",
     icon: FaClipboardCheck,
+  },
+  {
+    id: uuid(),
+    title: "Events Manager",
+    subItems: [
+      {
+        id: uuid(),
+        title: "Create New",
+        link: "/events/new",
+      },
+      {
+        id: uuid(),
+        title: "Slack",
+      },
+      {
+        id: uuid(),
+        title: "Zapier",
+      },
+    ],
   },
   {
     id: uuid(),

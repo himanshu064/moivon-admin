@@ -9,15 +9,14 @@ const AdminLayout = ({ children }) => {
       <Sidebar />
       <Box
         as="main"
+        backgroundColor="#ebedef"
         p="4"
         ml={{
           base: 0,
           md: CONTENT_MARGIN_LEFT,
         }}
       >
-        <Box borderWidth="4px" borderStyle="dashed" rounded="md">
-          {children}
-        </Box>
+        <Box>{children}</Box>
       </Box>
     </>
   );
