@@ -1,23 +1,20 @@
-.loginButton{
-    background-color: var(--theme-black) !important;
-    color: var(--theme-white) !important;
+.loginButton {
+  background-color: var(--theme-black) !important;
+  color: var(--theme-white) !important;
 }
 
-.loginButton:hover{
-    background-color: var(--theme-black) !important;
-    color: var(--theme-white) !important;
+.loginButton:hover {
+  background-color: var(--theme-black) !important;
+  color: var(--theme-white) !important;
 }
-.formDiv input:focus{
-    border-color: var(--theme-black-light);
+.formDiv input:focus {
+  border-color: var(--theme-black-light);
 }
-.buttonEye{
-    font-size: 20px !important;
-    padding: 0 !important;
+.buttonEye {
+  font-size: 20px !important;
+  padding: 0 !important;
 }
-.mainBox{
-    background: linear-gradient(80deg,#eff4fe 5%,ivory 60%,#eff4fe);
-}
-.loginBox{
-    background: #fff;
-    box-shadow: 0 20px 25px -5px rgb(0 0 0/10%),0 10px 10px -5px rgb(0 0 0/4%)!important;
+.loginBox {
+  background: #fff;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0/10%), 0 10px 10px -5px rgb(0 0 0/4%) !important;
 }
