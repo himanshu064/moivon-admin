@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Heading,
   Input,
@@ -9,18 +9,22 @@ import {
   InputLeftElement,
   chakra,
   Box,
+  Link,
   FormControl,
+  FormHelperText,
   InputRightElement,
 } from "@chakra-ui/react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "./index.module.css";
 import { NOTIFICATION_DURATION } from "../../../constants";
+import { login } from "../../../services/auth";
 import { APP_PATH } from "../../../api/endpoints";
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -47,23 +51,33 @@ const Login = () => {
     mode: "onChange",
   });
 
+  const { mutate: loginMutation, isLoading } = useMutation(login, {
+    onSuccess: () => {
+      toast.remove(toastId.current);
+      const successId = toast.success("Login success!", NOTIFICATION_DURATION);
+      reset();
+      setTimeout(() => {
+        toast.remove(successId);
+        navigate(APP_PATH.home);
+      }, 500);
+    },
+    onError: (error) => {
+      toast.remove(toastId.current);
+      const err = error?.response?.data?.error;
+      if (Array.isArray(err)) {
+        const [originalError] = Object.values(err?.[0]);
+        toast.error(originalError, NOTIFICATION_DURATION);
+      } else if (typeof err === "string") {
+        toast.error(err, NOTIFICATION_DURATION);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    },
+  });
+
   const onLogin = (data) => {
     toastId.current = toast.loading("Loging in...");
-    setTimeout(() => {
-      if (
-        data.email?.toLowerCase() !== "admin@moivon.com" ||
-        data.password?.toLowerCase() !== "admin@123"
-      ) {
-        toast.remove(toastId.current);
-        toastId.current = null;
-        toast.error("Invalid credentials!", NOTIFICATION_DURATION);
-        return;
-      }
-      toast.remove(toastId.current);
-      reset();
-      toast.success("Login success!", NOTIFICATION_DURATION);
-      navigate(APP_PATH.home);
-    }, 2000);
+    loginMutation(data);
   };
 
   return (
@@ -138,11 +152,21 @@ const Login = () => {
               className={styles.loginButton}
               width="full"
               disabled={(!isDirty || !isValid) && isSubmitting}
+              isLoading={isLoading}
             >
               Login
             </Button>
           </Stack>
         </form>
+      </Box>
+      <Box>
+        New to us?{" "}
+        <RouterLink
+          to={APP_PATH.register}
+          className="text-primary font-semibold"
+        >
+          Sign Up
+        </RouterLink>
       </Box>
     </Stack>
   );

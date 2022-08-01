@@ -1,84 +1,98 @@
+import React, { useRef } from "react";
 import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Checkbox,
-  Stack,
-  Tab,
-  Table,
-  TableContainer,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tbody,
-  Td,
-  Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import React from "react";
+  useSearchParams,
+  useNavigate,
+  createSearchParams,
+} from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Box, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import PageHeader from "../../../components/PageHeader";
-import { FaRegEye, FaRegEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
+import EventTable from "./EventTable";
+import { ALL_ENDPOINTS, ALL_QUERIES } from "../../../api/endpoints";
+import { deleteSingleEvent, fetchAllEvents } from "../../../services/events";
+import { NOTIFICATION_DURATION } from "../../../constants";
 
-const TableData = [
-  {
-    id: 1,
-    title: "Classic",
-    date: "12/01/2022",
-    genre: "Feature Venue",
-    price: "500",
-    location: "40 Bourbon",
-    desc: "Lorem ipsum lorem ipsum lorem ipsum",
-    venue: " Birthday event",
-    orgn: "Lorem ipsum lorem ipsum lorem ipsum",
-  },
-  {
-    id: 2,
-    title: "Classic",
-    date: "12/01/2022",
-    genre: "Feature Venue",
-    price: "500",
-    location: "40 Bourbon",
-    desc: "Lorem ipsum lorem ipsum lorem ipsum",
-    venue: " Birthday event",
-    orgn: "Lorem ipsum lorem ipsum lorem ipsum",
-  },
-  {
-    id: 3,
-    title: "Classic",
-    date: "12/01/2022",
-    genre: "Feature Venue",
-    price: "500",
-    location: "40 Bourbon",
-    desc: "Lorem ipsum lorem ipsum lorem ipsum",
-    venue: " Birthday event",
-    orgn: "Lorem ipsum lorem ipsum lorem ipsum",
-  },
-  {
-    id: 4,
-    title: "Classic",
-    date: "12/01/2022",
-    genre: "Feature Venue",
-    price: "500",
-    location: "40 Bourbon",
-    desc: "Lorem ipsum lorem ipsum lorem ipsum",
-    venue: " Birthday event",
-    orgn: "Lorem ipsum lorem ipsum lorem ipsum",
-  },
-];
+const TAB_TYPES = {
+  all: "all",
+  pending: "pending",
+  approved: "approved",
+};
+
+const getTabTypesFromIndex = (index) => Object.keys(TAB_TYPES)[index];
+const getTabIndexFromTabType = (type) =>
+  Object.keys(TAB_TYPES).findIndex((tabType) => tabType === type) || 0;
 
 const ListEvent = () => {
+  const toastId = useRef("");
+  const [searchParams] = useSearchParams();
+  const queryParams = Object.fromEntries([...searchParams]) || {};
+  const { type = TAB_TYPES.all } = queryParams;
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const {
+    data: eventsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(ALL_QUERIES.QUERY_ALL_EVENTS(), () =>
+    fetchAllEvents({
+      published: type === TAB_TYPES,
+    })
+  );
+
+  const { mutate: onDeleteMutation } = useMutation(
+    (eventId) => deleteSingleEvent(eventId),
+    {
+      onSuccess: () => {
+        toast.remove(toastId.current);
+        toast.success("Deleted successfully!", NOTIFICATION_DURATION);
+        queryClient.refetchQueries(ALL_QUERIES.QUERY_ALL_EVENTS(type));
+      },
+      onError: (error) => {
+        toast.remove(toastId.current);
+        const err = error?.response?.data?.error;
+        if (Array.isArray(err)) {
+          const [originalError] = Object.values(err?.[0]);
+          toast.error(originalError, NOTIFICATION_DURATION);
+        } else if (typeof err === "string") {
+          toast.error(err, NOTIFICATION_DURATION);
+        } else {
+          toast.error("Something went wrong!");
+        }
+      },
+    }
+  );
+
+  if (isLoading) return <h1>Loading...</h1>;
+  if (isError) return <h1>Error = {error.toString()}</h1>;
+  console.log({ eventsData, isLoading, isError, error });
+
+  const onDeleteEvent = (eventId) => {
+    toastId.current = toast.loading("Deleting...");
+    onDeleteMutation(eventId);
+  };
+
   return (
     <>
       <Box px={{ md: "20px" }}>
         <Stack flexDir="column">
           <PageHeader title="List Event" />
           <div className="py-10">
-            <Tabs>
+            <Tabs
+              index={getTabIndexFromTabType(type)}
+              onChange={(index) =>
+                navigate({
+                  pathname: window.location.pathname,
+                  search: `?${createSearchParams({
+                    ...queryParams,
+                    type: getTabTypesFromIndex(index),
+                  })}`,
+                })
+              }
+            >
               <TabList
                 className="customTabs"
                 style={{
@@ -87,105 +101,26 @@ const ListEvent = () => {
                   borderRadius: "10px",
                 }}
               >
-                <Tab>All Events</Tab>
-                <Tab>Pending</Tab>
-                <Tab>Approved</Tab>
+                {Object.keys(TAB_TYPES).map((tab, index) => (
+                  <Tab key={`tab_${index}`} className="capitalize">
+                    {tab}
+                  </Tab>
+                ))}
               </TabList>
-
-              <TabPanels className="tab-panels">
-                <TabPanel>
-                  <Box
-                    w={{ base: "100%" }}
-                    bg={"white"}
-                    borderRadius="10px"
-                    padding="30px 0"
-                  >
-                    <TableContainer>
-                      <Table size="md" variant="striped" className="list-event">
-                        <Thead>
-                          <Tr>
-                            <Th>
-                              <Checkbox className="custom-checkbox"></Checkbox>
-                            </Th>
-                            <Th>Event</Th>
-                            <Th>Title</Th>
-                            <Th>Date</Th>
-                            <Th>Genre</Th>
-                            <Th>Price</Th>
-                            <Th>Location</Th>
-                            <Th>Description</Th>
-                            <Th>Venue</Th>
-                            <Th>Oranganisation</Th>
-                            <Th>Actions</Th>
-                          </Tr>
-                        </Thead>
-                        <Tbody>
-                          {TableData.map((data) => (
-                            <Tr key={data.id}>
-                              <Td>
-                                <Checkbox className="custom-checkbox"></Checkbox>
-                              </Td>
-                              <Td>
-                                <AvatarGroup size="md" max={2}>
-                                  <Avatar
-                                    name="Ryan Florence"
-                                    src="https://bit.ly/ryan-florence"
-                                  />
-                                  <Avatar
-                                    name="Segun Adebayo"
-                                    src="https://bit.ly/sage-adebayo"
-                                  />
-                                  <Avatar
-                                    name="Kent Dodds"
-                                    src="https://bit.ly/kent-c-dodds"
-                                  />
-                                  <Avatar
-                                    name="Prosper Otemuyiwa"
-                                    src="https://bit.ly/prosper-baba"
-                                  />
-                                  <Avatar
-                                    name="Christian Nwamba"
-                                    src="https://bit.ly/code-beast"
-                                  />
-                                </AvatarGroup>
-                              </Td>
-                              <Td>{data?.title}</Td>
-                              <Td>{data?.date}</Td>
-                              <Td>{data?.genre}</Td>
-                              <Td>{data?.price}</Td>
-                              <Td>
-                                <Text> {data?.location}</Text>
-                              </Td>
-                              <Td>
-                                <Text>{data?.desc}</Text>
-                              </Td>
-                              <Td>
-                                <Text> {data?.venue}</Text>
-                              </Td>
-                              <Td>
-                                <Text> {data?.orgn}</Text>
-                              </Td>
-                              <Td>
-                                <div className="flex gap-1 items-center actions-btn">
-                                  <FaRegEye />
-                                  <FaRegEdit />
-                                  <RiDeleteBinLine />
-                                </div>
-                              </Td>
-                            </Tr>
-                          ))}
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-                </TabPanel>
-                <TabPanel>
-                  <p>two!</p>
-                </TabPanel>
-                <TabPanel>
-                  <p>three!</p>
-                </TabPanel>
-              </TabPanels>
+              <div className="tab-panels">
+                {eventsData?.data?.data?.length > 0 ? (
+                  <EventTable
+                    events={eventsData?.data?.data}
+                    onView={() => {}}
+                    onEdit={() => {}}
+                    onDelete={onDeleteEvent}
+                  />
+                ) : (
+                  <div className="bg-white text-center">
+                    <h3 className="font-bold">No data found!</h3>
+                  </div>
+                )}
+              </div>
             </Tabs>
           </div>
         </Stack>

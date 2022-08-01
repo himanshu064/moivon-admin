@@ -4,31 +4,24 @@ import { Routes, Route } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
 import AuthLayout from "../layout/AuthLayout";
 
-import Register from "../pages/Auth/Register";
+// import Register from "../pages/Auth/Register";
 import Login from "../pages/Auth/Login";
-import ForgotPassword from "../pages/Auth/ForgotPassword";
-import ResetPassword from "../pages/Auth/ResetPassword";
+// import ForgotPassword from "../pages/Auth/ForgotPassword";
+// import ResetPassword from "../pages/Auth/ResetPassword";
 
-import Dashboard from "../pages/Dashboard";
+// import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 
 import CreateEvent from "../pages/Events/CreateEvent";
 import ListEvent from "../pages/Events/ListEvent";
 import { APP_PATH } from "../api/endpoints";
+import Error404 from "../pages/404";
 
 function NavigationRoutes() {
   return (
     <>
       <Routes>
         <Route
-          path={APP_PATH.register}
-          element={
-            <AuthLayout>
-              <Register />
-            </AuthLayout>
-          }
-        />
-        <Route
           path={APP_PATH.login}
           element={
             <AuthLayout>
@@ -36,35 +29,10 @@ function NavigationRoutes() {
             </AuthLayout>
           }
         />
-        <Route
-          path={APP_PATH.forgotPassword}
-          element={
-            <AuthLayout>
-              <ForgotPassword />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={APP_PATH.resetPassword}
-          element={
-            <AuthLayout>
-              <ResetPassword />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path={APP_PATH.login}
-          element={
-            <AuthLayout>
-              <Login />
-            </AuthLayout>
-          }
-        />
-        <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/events">
+        <Route path={APP_PATH.eventsHome}>
           <Route
-            path="/events"
+            path={APP_PATH.eventsHome}
             index
             element={
               <AdminLayout>
@@ -73,7 +41,7 @@ function NavigationRoutes() {
             }
           />
           <Route
-            path="/events/new"
+            path={APP_PATH.createEvent}
             element={
               <AdminLayout>
                 <CreateEvent />
@@ -81,7 +49,7 @@ function NavigationRoutes() {
             }
           />
           <Route
-            path="/events/list"
+            path={APP_PATH.allEvents}
             element={
               <AdminLayout>
                 <ListEvent />
@@ -97,6 +65,7 @@ function NavigationRoutes() {
             </AdminLayout>
           }
         />
+        <Route path={APP_PATH.catchAll} element={<Error404 />} />
       </Routes>
     </>
   );

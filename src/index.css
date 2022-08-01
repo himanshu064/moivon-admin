@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
   --theme-white: #f8f8f8 !important;
   --theme-black: #252525 !important;
@@ -27,16 +25,15 @@ code {
     monospace;
 }
 
-
-input:focus{
+input:focus {
   border-color: var(--theme-black-light) !important;
   box-shadow: 0 0 0 1px var(--theme-black-light) !important;
 }
 
-.bg-primary{
+.bg-primary {
   background-color: var(--theme-black) !important;
 }
-.list-event p{
+.list-event p {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -50,30 +47,40 @@ input:focus{
   padding: 7px;
   border-radius: 4px;
 }
-.custom-checkbox span{
+.custom-checkbox span {
   border-color: var(--theme-black);
 }
-.custom-checkbox span[data-checked]{
+.custom-checkbox span[data-checked] {
   background: var(--theme-black);
   border-color: var(--theme-black);
 }
-.custom-checkbox span[data-checked]:hover{
+.custom-checkbox span[data-checked]:hover {
   background: var(--theme-black);
   border-color: var(--theme-black);
 }
-th{
+th {
   color: var(--theme-black) !important;
 }
-td{
+td {
   color: var(--theme-black) !important;
 }
-.customTabs button[aria-selected="true"]{
+.customTabs button[aria-selected="true"] {
   font-weight: 500;
 }
-.customTabs button[aria-selected="false"]{
+.customTabs button[aria-selected="false"] {
   font-weight: 500;
   color: var(--theme-black);
 }
 .tab-panels > div {
   padding: 20px 0 !important;
+}
+
+.primary-btn {
+  background-color: var(--theme-black) !important;
+  color: var(--theme-white) !important;
+}
+
+.primary-btn:hover {
+  background-color: var(--theme-black) !important;
+  color: var(--theme-white) !important;
 }

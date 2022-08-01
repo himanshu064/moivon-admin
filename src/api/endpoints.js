@@ -2,17 +2,18 @@
 // QUERY_ prefix is for react-query state management
 
 export const ALL_QUERIES = {
-  QUERY_ALL_EVENTS: () => ["events"],
+  QUERY_ALL_EVENTS: (params = []) => ["events", ...params],
   QUERY_SINGLE_EVENT: ({ eventId }) => ["event", eventId],
   QUERY_ALL_GENRES: () => ["genres"],
 };
 
 export const ALL_ENDPOINTS = {
-  BUILD_ALL_EVENTS: () => "/events?populate=*",
-  BUILD_SINGLE_EVENT: ({ eventId }) => `/events/${eventId}?populate=*`,
-  BUILD_POST_QUERY: () => `/queries`,
+  BUILD_GET_ALL_EVENTS: () => "/events",
+  BUILD_GET_SINGLE_EVENT: ({ eventId }) => `/events/${eventId}`,
   BUILD_POST_NEW_EVENT: () => `/events`,
-  BUILD_ALL_GENRES: () => `/genres`,
+  BUILD_DELETE_EVENT: (id) => `/events/${id}`,
+  // genres
+  BUILD_GET_ALL_GENRES: () => `/genres`,
 
   // auth
   BUILD_LOGIN: () => `/login`,
@@ -24,9 +25,13 @@ export const ALL_ENDPOINTS = {
 
 export const APP_PATH = {
   login: "/login",
-  register: "/register",
-  forgotPassword: "/forgot-password",
-  resetPassword: "/reset-password",
-  changePassword: "/change-password",
+  // register: "/register",
+  // forgotPassword: "/forgot-password",
+  // resetPassword: "/reset-password",
+  // changePassword: "/change-password",
   home: "/",
+  eventsHome: "/events",
+  allEvents: "/events/list",
+  createEvent: "/events/new",
+  catchAll: "*",
 };
