@@ -21,13 +21,24 @@ const CreateEvent = () => {
         <Stack flexDir="column">
           <PageHeader title="Create Event" />
           <div className="form-div py-10">
-            <Box w={{ base: "100%", md: "85%" }}>
+            <Box
+              w={{ base: "100%" }}
+              bg={"white"}
+              borderRadius="10px"
+              padding="30px"
+            >
               <form className={styles.createForm}>
                 <Stack direction={["column", "row"]} spacing="24px" mb={5}>
                   <Box w={{ md: "50%" }}>
                     <FormControl isRequired>
                       <FormLabel>TITLE:</FormLabel>
                       <Input />
+                    </FormControl>
+                  </Box>
+                  <Box w={{ md: "50%" }}>
+                    <FormControl isRequired>
+                      <FormLabel>UPLOAD EVENT:</FormLabel>
+                      <Input type="file" style={{ paddingTop: "4px" }} />
                     </FormControl>
                   </Box>
                 </Stack>

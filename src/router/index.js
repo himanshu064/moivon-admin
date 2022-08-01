@@ -80,6 +80,14 @@ function NavigationRoutes() {
               </AdminLayout>
             }
           />
+          <Route
+            path="/events/list"
+            element={
+              <AdminLayout>
+                <ListEvent />
+              </AdminLayout>
+            }
+          />
         </Route>
         <Route
           path={APP_PATH.home}

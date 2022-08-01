@@ -36,3 +36,44 @@ input:focus{
 .bg-primary{
   background-color: var(--theme-black) !important;
 }
+.list-event p{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100px;
+}
+.actions-btn svg {
+  background: #3182ce;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  border-radius: 4px;
+}
+.custom-checkbox span{
+  border-color: var(--theme-black);
+}
+.custom-checkbox span[data-checked]{
+  background: var(--theme-black);
+  border-color: var(--theme-black);
+}
+.custom-checkbox span[data-checked]:hover{
+  background: var(--theme-black);
+  border-color: var(--theme-black);
+}
+th{
+  color: var(--theme-black) !important;
+}
+td{
+  color: var(--theme-black) !important;
+}
+.customTabs button[aria-selected="true"]{
+  font-weight: 500;
+}
+.customTabs button[aria-selected="false"]{
+  font-weight: 500;
+  color: var(--theme-black);
+}
+.tab-panels > div {
+  padding: 20px 0 !important;
+}
