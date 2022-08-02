@@ -1,0 +1,24 @@
+.topHeading{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.topHeading h2{
+    font-size: 48px;
+    font-weight: 600;
+}
+.topHeading span{
+    background: var(--theme-black-light);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+.detail svg{
+    font-size: 26px;
+    color: var(--theme-black-light);
+}
+.detail h4{
+    color: var(--theme-black-light);
+    font-size: 16px;
+    font-weight: 700;
+}

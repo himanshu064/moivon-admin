@@ -2,16 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 
 
 :root {
   --theme-white: #f8f8f8 !important;
-  --theme-black: #252525 !important;
+  --theme-black: #303e67 !important;
   --theme-white-light: #a6a6a6 !important;
-  --theme-black-light: #343434 !important;
+  --theme-black-light: #292e40 !important;
   --border-color: #575757 !important;
   --color-black: #000000 !important;
   --color-white: #ffffff !important;
+  --color-active: #7081b9 !important;
 }
 body {
   margin: 0;
@@ -20,6 +23,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, p, a, span, input, textarea, select, table, th, td{
+  font-family: 'Roboto', sans-serif !important;
 }
 
 code {
@@ -61,6 +68,16 @@ input:focus{
   background: var(--theme-black);
   border-color: var(--theme-black);
 }
+tbody tr:hover{
+  background-color: #fafafa;
+}
+thead{
+  background-color: #f1f5fa;
+}
+thead th{
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}
 th{
   color: var(--theme-black) !important;
 }
@@ -76,4 +93,40 @@ td{
 }
 .tab-panels > div {
   padding: 20px 0 !important;
+  padding-top: 0 !important;
+}
+.list-event tr:nth-of-type(even) td {
+  background: #f9f9f9 ;
+}
+
+.sticky-section{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: #fff;
+}
+
+
+/* width */
+.customNavbar::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 6px;
+}
+
+/* Track */
+.customNavbar::-webkit-scrollbar-track {
+  background: hsl(223deg 7% 53%); 
+  border-radius: 6px;
+}
+ 
+/* Handle */
+.customNavbar::-webkit-scrollbar-thumb {
+  background: transparent; 
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+.customNavbar::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+  border-radius: 6px; 
 }

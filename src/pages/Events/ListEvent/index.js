@@ -14,7 +14,6 @@ import {
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -74,19 +73,12 @@ const TableData = [
 const ListEvent = () => {
   return (
     <>
-      <Box px={{ md: "20px" }}>
+      <Box>
         <Stack flexDir="column">
           <PageHeader title="List Event" />
-          <div className="py-10">
+          <div>
             <Tabs>
-              <TabList
-                className="customTabs"
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "#fff",
-                  borderRadius: "10px",
-                }}
-              >
+              <TabList className="customTabs">
                 <Tab>All Events</Tab>
                 <Tab>Pending</Tab>
                 <Tab>Approved</Tab>
@@ -94,14 +86,11 @@ const ListEvent = () => {
 
               <TabPanels className="tab-panels">
                 <TabPanel>
-                  <Box
-                    w={{ base: "100%" }}
-                    bg={"white"}
-                    borderRadius="10px"
-                    padding="30px 0"
-                  >
-                    <TableContainer>
-                      <Table size="md" variant="striped" className="list-event">
+                  <Box w={{ base: "100%" }} bg={"white"}>
+                    <TableContainer
+                      style={{ border: "1px solid #eceff5", marginTop: "10px" }}
+                    >
+                      <Table size="sm" variant="simple" className="list-event">
                         <Thead>
                           <Tr>
                             <Th>
