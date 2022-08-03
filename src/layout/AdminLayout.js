@@ -9,7 +9,7 @@ const AdminLayout = ({ children }) => {
       <Sidebar />
       <Box
         as="main"
-        backgroundColor="#ebedef"
+        backgroundColor="#ffffff"
         p="4"
         ml={{
           base: 0,

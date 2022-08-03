@@ -5,6 +5,10 @@ import { ChakraProvider } from "@chakra-ui/react";
 import App from "./App";
 import "./index.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

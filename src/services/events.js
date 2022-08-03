@@ -5,7 +5,7 @@ import { objectToQueryParams } from "../utils/helpers";
 
 export const fetchAllEvents = (data) => {
   const qs =
-    Object.keys(data).length > 0 ? `?${objectToQueryParams(data)}` : "";
+    data && Object.keys(data).length > 0 ? `?${objectToQueryParams(data)}` : "";
   return axiosInstance.get(
     `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS()}${qs}`,
     HEADERS.jsonData

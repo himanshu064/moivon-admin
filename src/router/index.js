@@ -16,6 +16,7 @@ import CreateEvent from "../pages/Events/CreateEvent";
 import ListEvent from "../pages/Events/ListEvent";
 import { APP_PATH } from "../api/endpoints";
 import Error404 from "../pages/404";
+import ViewEvent from "../pages/Events/ViewEvent";
 
 function NavigationRoutes() {
   return (
@@ -53,6 +54,14 @@ function NavigationRoutes() {
             element={
               <AdminLayout>
                 <ListEvent />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path='/events/view'
+            element={
+              <AdminLayout>
+                <ViewEvent />
               </AdminLayout>
             }
           />

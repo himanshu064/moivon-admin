@@ -23,13 +23,15 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 
 const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
   return (
-    <Box w={{ base: "100%" }} bg={"white"} borderRadius="10px" padding="30px 0">
-      <TableContainer>
-        <Table size="md" variant="striped" className="list-event">
+    <Box w={{ base: "100%" }} bg={"white"}>
+      <TableContainer
+        style={{ border: "1px solid #eceff5", marginTop: "10px" }}
+      >
+        <Table size='sm' variant='simple' className='list-event'>
           <Thead>
             <Tr>
               <Th>
-                <Checkbox className="custom-checkbox"></Checkbox>
+                <Checkbox className='custom-checkbox'></Checkbox>
               </Th>
               <Th>Event</Th>
               <Th>Title</Th>
@@ -47,10 +49,10 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
             {events.map((data) => (
               <Tr key={data._id}>
                 <Td>
-                  <Checkbox className="custom-checkbox"></Checkbox>
+                  <Checkbox className='custom-checkbox'></Checkbox>
                 </Td>
                 <Td>
-                  <AvatarGroup size="md" max={2}>
+                  <AvatarGroup size='md' max={2}>
                     {data.images.map((image) => {
                       const src = prepareImageSrc(image);
                       return <Avatar src={src} />;
@@ -79,20 +81,20 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
                   <Text> {data?.organisation}</Text>
                 </Td> */}
                 <Td>
-                  <div className="flex gap-1 items-center actions-btn">
+                  <div className='flex gap-1 items-center actions-btn'>
                     <FaRegEye
-                      className="cursor-pointer hover:bg-blue-800"
+                      className='cursor-pointer hover:bg-blue-800'
                       onClick={onView}
                     />
                     <FaRegEdit
-                      className="cursor-pointer hover:bg-green-500"
+                      className='cursor-pointer hover:bg-green-500'
                       onClick={onEdit}
                     />
                     <ConfirmDialog
-                      type="Event"
+                      type='Event'
                       onChildrenClick={() => onDelete(data._id)}
                     >
-                      <RiDeleteBinLine className="cursor-pointer hover:bg-red-500" />
+                      <RiDeleteBinLine className='cursor-pointer hover:bg-red-500' />
                     </ConfirmDialog>
                   </div>
                 </Td>

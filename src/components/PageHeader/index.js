@@ -3,8 +3,11 @@ import React from "react";
 const PageHeader = ({ title }) => {
   return (
     <>
-      <div className="header bg-white text-[20px] font-semibold rounded-md p-4">
-        <h2 className="text-primary">{title}</h2>
+      <div className="header bg-white p-4 flex justify-between">
+        <h2 className="text-primary text-[18px] font-semibold ">{title}</h2>
+        <p className="text-primary text-sm">
+          Dashboard / <span className="text-active">{title}</span>
+        </p>
       </div>
     </>
   );

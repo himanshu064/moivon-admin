@@ -63,7 +63,7 @@ const SidebarOther = (props) => {
       pb="10"
       overflowX="hidden"
       overflowY="auto"
-      bg="#252525"
+      bg="#292e40"
       _dark={{
         bg: "gray.800",
       }}
@@ -71,9 +71,11 @@ const SidebarOther = (props) => {
       color="white"
       borderRightWidth="1px"
       w="60"
+      className="customNavbar"
       {...props}
     >
       <Flex px="4" py="5" align="center">
+        <img src="/img/moivon.png" alt="logo" />
         <Text
           fontSize="2xl"
           ml="2"
@@ -90,7 +92,8 @@ const SidebarOther = (props) => {
         direction="column"
         as="nav"
         fontSize="sm"
-        color="white"
+        color="#9da2af"
+        fontWeight="400"
         aria-label="Main Navigation"
       >
         {NAV_ITEMS.map((navItem) => (
@@ -107,6 +110,7 @@ const Sidebar = () => {
   return (
     <Box
       as="section"
+      className="sticky-section"
       bg="gray.50"
       _dark={{
         bg: "gray.700",

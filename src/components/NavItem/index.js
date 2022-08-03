@@ -23,7 +23,7 @@ const NavItem = ({ icon, children, ...rest }) => {
         color: "gray.900",
       }}
       role="group"
-      fontWeight="semibold"
+      fontWeight="500"
       transition=".15s ease"
       {...rest}
     >
@@ -31,6 +31,7 @@ const NavItem = ({ icon, children, ...rest }) => {
         <Icon
           mx="2"
           boxSize="4"
+          color="#545d7b"
           _groupHover={{
             color: color,
           }}

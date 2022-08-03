@@ -10,6 +10,7 @@ module.exports = {
         background: "var(--theme-black)",
         "primary-light": "var(--theme-black-light)",
         "secondary-light": "var(--theme-white-light)",
+        active: "var(--color-active)",
       },
       backgroundColor: {
         primary: "var(--theme-black)",
@@ -18,6 +19,7 @@ module.exports = {
         background: "var(--theme-black)",
         "primary-light": "var(--theme-black-light)",
         "secondary-light": "var(--theme-white-light)",
+        active: "var(--color-active)",
       },
     },
   },
