@@ -12,17 +12,27 @@ import {
   AvatarGroup,
   Avatar,
   Text,
+  Highlight,
 } from "@chakra-ui/react";
+
 import { utcToZonedTime } from "date-fns-tz";
 import { format } from "date-fns";
-import { FaRegEye, FaRegEdit } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { prepareImageSrc } from "../../../api";
 import { formatCurrency } from "../../../utils/helpers";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import EditEventModal from "../EditEventModal";
+import { MdOutlineArrowDropDown } from "react-icons/md";
+import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
 
-const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
+const EventTable = ({
+  events = [],
+  onView,
+  onEdit,
+  onStatusChange,
+  onDelete,
+}) => {
   return (
     <Box w={{ base: "100%" }} bg={"white"}>
       <TableContainer
@@ -43,6 +53,7 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
               <Th>Description</Th>
               <Th>Venue</Th>
               <Th>Oranganisation</Th>
+              <Th>Status</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -64,7 +75,7 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
                 <Td>
                   {format(
                     new Date(utcToZonedTime(data.dates, "utc")),
-                    "dd LLL yyyy hh:MM a"
+                    "dd LLL yyyy, hh:MM a"
                   )}
                 </Td>
                 <Td>{data?.genre}</Td>
@@ -80,6 +91,28 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
                 </Td>
                 <Td>
                   <Text> {data?.eventOrgDetail}</Text>
+                </Td>
+                <Td>
+                  <ChangeEventStatusPopup
+                    onStatusChange={(status) =>
+                      onStatusChange(data?._id, status, data)
+                    }
+                  >
+                    <div className='flex items-center gap-x-1 cursor-pointer'>
+                      <Highlight
+                        query={data.published ? "Approved" : "Pending"}
+                        styles={{
+                          px: "1.5",
+                          py: "1.5",
+                          bg: data.published ? "green.200" : "orange.200",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {data.published ? "Approved" : "Pending"}
+                      </Highlight>
+                      <MdOutlineArrowDropDown size={24} />
+                    </div>
+                  </ChangeEventStatusPopup>
                 </Td>
                 <Td>
                   <div className='flex gap-1 items-center actions-btn'>

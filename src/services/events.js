@@ -1,13 +1,10 @@
 import { axiosInstance } from "../api";
 import { HEADERS } from "../constants";
 import { ALL_ENDPOINTS } from "../api/endpoints";
-import { objectToQueryParams } from "../utils/helpers";
 
-export const fetchAllEvents = (data) => {
-  const qs =
-    data && Object.keys(data).length > 0 ? `?${objectToQueryParams(data)}` : "";
+export const fetchAllEvents = ({ page, type }) => {
   return axiosInstance.get(
-    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS()}${qs}`,
+    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS({ page, type })}`,
     HEADERS.jsonData
   );
 };
@@ -15,5 +12,15 @@ export const fetchAllEvents = (data) => {
 export const deleteSingleEvent = (eventId) =>
   axiosInstance.delete(
     `${ALL_ENDPOINTS.BUILD_DELETE_EVENT(eventId)}`,
+    HEADERS.jsonData
+  );
+
+export const updateEventStatus = ({ eventId, isPublished, oldData }) =>
+  axiosInstance.put(
+    `${ALL_ENDPOINTS.BUILD_UPDATE_EVENT_STATUS(eventId)}`,
+    {
+      ...oldData,
+      published: isPublished,
+    },
     HEADERS.jsonData
   );
