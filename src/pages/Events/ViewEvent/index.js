@@ -16,7 +16,7 @@ const ViewEvent = () => {
         <Stack flexDir="column">
           <PageHeader title="View Event" />
           <div>
-            <Stack direction="row" spacing={10}>
+            <Stack direction="row">
               <Box
                 w={{ base: "100%", md: "60%" }}
                 backgroundColor="#fff"
@@ -25,31 +25,15 @@ const ViewEvent = () => {
                 boxShadow="rgb(100 100 111 / 20%) 0px 7px 29px 0px"
               >
                 <div className={styles.content}>
-                  <Swiper
-                    modules={[Pagination]}
-                    pagination={{ clickable: true }}
-                    spaceBetween={10}
-                    slidesPerView={1}
-                    onSlideChange={() => console.log("slide change")}
-                    onSwiper={(swiper) => console.log(swiper)}
-                  >
-                    <SwiperSlide>
-                      <img src="/img/bg.jpg" alt="" width="100%" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img src="/img/bg.jpg" alt="" width="100%" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img src="/img/bg.jpg" alt="" width="100%" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img src="/img/bg.jpg" alt="" width="100%" />
-                    </SwiperSlide>
-                  </Swiper>
+                  <img src="/img/bg.jpg" alt="" width="100%" />
+
                   <div className={`${styles.topHeading}`}>
                     <h2 className="text-primary">365 FRAMES-DAYS</h2>
                     <span className={styles.type}>Classic</span>
                   </div>
+                  <h3 className="mt-3 mb-4 text-primary font-semibold text-lg">
+                    About Event
+                  </h3>
                   <p>
                     “I try to make work that joins the seductions of wishful
                     thinking with the criticality of knowing better,” Barbara
@@ -72,7 +56,7 @@ const ViewEvent = () => {
                     inclusion and exclusion, dominance and agency.
                   </p>
                 </div>
-                <Stack direction="row" spacing={10} my="8">
+                <Stack direction="row" spacing={10} mt="8">
                   <Box
                     bg="#F8F8F8"
                     w={{ base: "100%", md: "50%" }}
@@ -104,9 +88,34 @@ const ViewEvent = () => {
                     </div>
                   </Box>
                 </Stack>
-                <Stack direction="row" spacing={10}>
+                <div className={styles.aboutOrg}>
+                  <h3 className="mt-4 mb-4 text-primary font-semibold text-lg">
+                    About Oranganisation
+                  </h3>
+                  <p>
+                    Libero et, lorem consectetur ac augue nisl. Nunc accumsan
+                    rhoncus congue quisque at praesentyi vulputate consectetur.
+                    Eu, auctor duis egestas nulla at praesentyi vulputate
+                    consectetur nsectetur ac augu
+                  </p>
+                </div>
+              </Box>
+              <Box w={{ base: "100%", md: "40%" }} padding="0 0 30px 30px">
+                <Stack direction="column" spacing={10}>
                   <Box
-                    bg="#F8F8F8"
+                    padding="20px"
+                    borderRadius="10px"
+                    boxShadow="rgb(100 100 111 / 20%) 0px 7px 29px 0px"
+                  >
+                    <div className={`flex items-start gap-4 ${styles.detail}`}>
+                      <IoLocationOutline />
+                      <div className="div">
+                        <h4>Venue</h4>
+                        <p>Birthday Event</p>
+                      </div>
+                    </div>
+                  </Box>
+                  <Box
                     w={{ base: "100%", md: "100%" }}
                     padding="20px"
                     borderRadius="10px"
@@ -125,23 +134,31 @@ const ViewEvent = () => {
                       <HiOutlineArrowNarrowRight />
                     </div>
                   </Box>
-                </Stack>
-              </Box>
-              <Box w={{ base: "100%", md: "40%" }}>
-                <Stack direction="column" spacing={10}>
-                  <Box
-                    padding="20px"
-                    borderRadius="10px"
-                    bg="#F8F8F8"
-                    boxShadow="rgb(100 100 111 / 20%) 0px 7px 29px 0px"
-                  >
-                    <div className={`flex items-start gap-4 ${styles.detail}`}>
-                      <IoLocationOutline />
-                      <div className="div">
-                        <h4>Venue</h4>
-                        <p>Birthday Event</p>
-                      </div>
-                    </div>
+                  <Box w={{ base: "100%", md: "100%" }}>
+                    <h3 className="mb-4 text-primary font-semibold text-lg">
+                      Event Galleries
+                    </h3>
+                    <Swiper
+                      className={styles.secondSlider}
+                      modules={[Pagination]}
+                      pagination={{ clickable: true }}
+                      slidesPerView={1}
+                      onSlideChange={() => console.log("slide change")}
+                      onSwiper={(swiper) => console.log(swiper)}
+                    >
+                      <SwiperSlide>
+                        <img src="/img/bg.jpg" alt="" width="100%" />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <img src="/img/bg.jpg" alt="" width="100%" />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <img src="/img/bg.jpg" alt="" width="100%" />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <img src="/img/bg.jpg" alt="" width="100%" />
+                      </SwiperSlide>
+                    </Swiper>
                   </Box>
                 </Stack>
               </Box>

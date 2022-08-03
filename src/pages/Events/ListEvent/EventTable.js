@@ -20,6 +20,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { prepareImageSrc } from "../../../api";
 import { formatCurrency } from "../../../utils/helpers";
 import ConfirmDialog from "../../../components/ConfirmDialog";
+import EditEventModal from "../EditEventModal";
 
 const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
   return (
@@ -41,7 +42,7 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
               <Th>Location</Th>
               <Th>Description</Th>
               <Th>Venue</Th>
-              {/* <Th>Oranganisation</Th> */}
+              <Th>Oranganisation</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -77,19 +78,16 @@ const EventTable = ({ events = [], onView, onEdit, onDelete }) => {
                 <Td>
                   <Text> {data.venue}</Text>
                 </Td>
-                {/* <Td>
-                  <Text> {data?.organisation}</Text>
-                </Td> */}
+                <Td>
+                  <Text> {data?.eventOrgDetail}</Text>
+                </Td>
                 <Td>
                   <div className='flex gap-1 items-center actions-btn'>
                     <FaRegEye
                       className='cursor-pointer hover:bg-blue-800'
                       onClick={onView}
                     />
-                    <FaRegEdit
-                      className='cursor-pointer hover:bg-green-500'
-                      onClick={onEdit}
-                    />
+                    <EditEventModal />
                     <ConfirmDialog
                       type='Event'
                       onChildrenClick={() => onDelete(data._id)}
