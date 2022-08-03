@@ -20,8 +20,9 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import PageHeader from "../../../components/PageHeader";
-import { FaRegEye, FaRegEdit } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
+import EditEventModal from "../EditEventModal";
 
 const TableData = [
   {
@@ -157,7 +158,7 @@ const ListEvent = () => {
                               <Td>
                                 <div className="flex gap-1 items-center actions-btn">
                                   <FaRegEye />
-                                  <FaRegEdit />
+                                  <EditEventModal />
                                   <RiDeleteBinLine />
                                 </div>
                               </Td>
