@@ -1,27 +1,8 @@
 import React, { useRef } from "react";
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Checkbox,
-  Stack,
-  Tab,
-  Table,
-  TableContainer,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import PageHeader from "../../../components/PageHeader";
 import EventTable from "./EventTable";
-import { ALL_ENDPOINTS, ALL_QUERIES } from "../../../api/endpoints";
+import { ALL_QUERIES } from "../../../api/endpoints";
 import { deleteSingleEvent, fetchAllEvents } from "../../../services/events";
 import { NOTIFICATION_DURATION } from "../../../constants";
 import {
@@ -100,7 +81,7 @@ const ListEvent = () => {
       <Box>
         <Stack flexDir='column'>
           <PageHeader title='List Event' />
-          <div className='py-10'>
+          <div>
             <Tabs
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>
