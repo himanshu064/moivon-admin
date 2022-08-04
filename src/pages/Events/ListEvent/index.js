@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Select, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import PageHeader from "../../../components/PageHeader";
 import EventTable from "./EventTable";
 import { ALL_QUERIES } from "../../../api/endpoints";
@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Input } from "@chakra-ui/react";
 
 const TAB_TYPES = {
   all: "all",
@@ -79,9 +80,21 @@ const ListEvent = () => {
   return (
     <>
       <Box>
-        <Stack flexDir='column'>
-          <PageHeader title='List Event' />
+        <Stack flexDir="column">
+          <PageHeader title="List Event" />
           <div>
+            <div className="flex gap-3 w-[70%]">
+              <div className="input-box w-full">
+                <Input placeholder="Search" className="w-full" />
+              </div>
+              <Input type="date" className="w-full" />
+              <Select className="w-full">
+                <option>Genre</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+              </Select>
+            </div>
             <Tabs
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>
@@ -94,14 +107,14 @@ const ListEvent = () => {
                 })
               }
             >
-              <TabList className='customTabs'>
+              <TabList className="customTabs">
                 {Object.keys(TAB_TYPES).map((tab, index) => (
-                  <Tab key={`tab_${index}`} className='capitalize'>
+                  <Tab key={`tab_${index}`} className="capitalize">
                     {tab}
                   </Tab>
                 ))}
               </TabList>
-              <div className='tab-panels'>
+              <div className="tab-panels">
                 {eventsData?.data?.data?.length > 0 ? (
                   <EventTable
                     events={eventsData?.data?.data}
@@ -110,8 +123,8 @@ const ListEvent = () => {
                     onDelete={onDeleteEvent}
                   />
                 ) : (
-                  <div className='bg-white text-center'>
-                    <h3 className='font-bold'>No data found!</h3>
+                  <div className="bg-white text-center">
+                    <h3 className="font-bold">No data found!</h3>
                   </div>
                 )}
               </div>
