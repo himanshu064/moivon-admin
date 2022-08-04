@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Select, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import Pagination from "rc-pagination";
 import PageHeader from "../../../components/PageHeader";
@@ -19,6 +19,8 @@ import {
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@chakra-ui/react";
+import DatePicker from "react-datepicker";
+import styles from "../CreateEvent/index.module.css";
 
 const TAB_TYPES = {
   all: "all",
@@ -132,18 +134,37 @@ const ListEvent = () => {
       })}`,
     });
   };
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [startDate, setStartDate] = useState(new Date());
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [endDate, setEndDate] = useState(new Date());
   return (
     <>
       <Box>
         <Stack flexDir="column">
           <PageHeader title="List Event" />
           <div>
-            <div className="flex gap-3 w-[70%]">
+            <div className="flex gap-3 mb-5 w-[80%]">
               <div className="input-box w-full">
                 <Input placeholder="Search" className="w-full" />
               </div>
-              <Input type="date" className="w-full" />
+              <div className="flex gap-2 w-full">
+                <DatePicker
+                  className={styles.datePicker}
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect
+                  dateFormat="Pp"
+                />
+                <DatePicker
+                  className={styles.datePicker}
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  showTimeSelect
+                  dateFormat="Pp"
+                />
+              </div>
+
               <Select className="w-full">
                 <option>Genre</option>
                 <option>2</option>

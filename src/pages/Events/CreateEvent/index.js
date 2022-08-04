@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import styles from "./index.module.css";
 
 const CreateEvent = () => {
-  // const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
   return (
     <>
       <Box px={{ md: "20px" }}>
@@ -48,8 +48,8 @@ const CreateEvent = () => {
                       <FormLabel>DATE:</FormLabel>
                       <DatePicker
                         className={styles.datePicker}
-                        // selected={date}
-                        // onChange={handleDateChange}
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
                         showTimeSelect
                         dateFormat="Pp"
                       />

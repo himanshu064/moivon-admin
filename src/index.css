@@ -46,7 +46,7 @@ code {
     monospace;
 }
 
-input:focus {
+input:focus, select:focus, textarea:focus {
   border-color: var(--theme-black-light) !important;
   box-shadow: 0 0 0 1px var(--theme-black-light) !important;
 }

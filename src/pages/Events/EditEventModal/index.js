@@ -14,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
 import DatePicker from "react-datepicker";
@@ -21,29 +22,30 @@ import styles from "./index.module.css";
 
 const EditEventModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [startDate, setStartDate] = useState(new Date());
 
   return (
     <>
       {/* <FaRegEdit onClick={onOpen} /> */}
       <FaRegEdit
-        className='cursor-pointer hover:bg-green-500'
+        className="cursor-pointer hover:bg-green-500"
         onClick={onOpen}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW='900px'>
+        <ModalContent maxW="900px">
           <ModalHeader>Edit Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {" "}
             <Box px={{ md: "20px" }}>
-              <Stack flexDir='column'>
-                <div className='form-div py-10'>
-                  <Box w={{ base: "100%" }} bg={"white"} borderRadius='10px'>
+              <Stack flexDir="column">
+                <div className="form-div py-10">
+                  <Box w={{ base: "100%" }} bg={"white"} borderRadius="10px">
                     <form className={styles.createForm}>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -55,13 +57,13 @@ const EditEventModal = () => {
                         <Box w={{ md: "50%" }}>
                           <FormControl isRequired>
                             <FormLabel>UPLOAD EVENT:</FormLabel>
-                            <Input type='file' style={{ paddingTop: "4px" }} />
+                            <Input type="file" style={{ paddingTop: "4px" }} />
                           </FormControl>
                         </Box>
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -69,27 +71,27 @@ const EditEventModal = () => {
                             <FormLabel>DATE:</FormLabel>
                             <DatePicker
                               className={styles.datePicker}
-                              // selected={date}
-                              // onChange={handleDateChange}
+                              selected={startDate}
+                              onChange={(date) => setStartDate(date)}
                               showTimeSelect
-                              dateFormat='Pp'
+                              dateFormat="Pp"
                             />
                           </FormControl>
                         </Box>
                         <Box w={{ md: "50%" }}>
                           <FormControl isRequired>
                             <FormLabel>GENRE:</FormLabel>
-                            <Select placeholder='Select option'>
-                              <option value='option1'>Option 1</option>
-                              <option value='option2'>Option 2</option>
-                              <option value='option3'>Option 3</option>
+                            <Select placeholder="Select option">
+                              <option value="option1">Option 1</option>
+                              <option value="option2">Option 2</option>
+                              <option value="option3">Option 3</option>
                             </Select>
                           </FormControl>
                         </Box>
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -107,10 +109,10 @@ const EditEventModal = () => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
-                        <Box w='100%'>
+                        <Box w="100%">
                           <FormControl isRequired>
                             <FormLabel>DESCRIPTION:</FormLabel>
                             <Textarea />
@@ -119,7 +121,7 @@ const EditEventModal = () => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -131,10 +133,10 @@ const EditEventModal = () => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
-                        <Box w='100%'>
+                        <Box w="100%">
                           <FormControl isRequired>
                             <FormLabel>
                               DESCRIBE YOUR EVENT ORGANIZATION:
@@ -143,7 +145,7 @@ const EditEventModal = () => {
                           </FormControl>
                         </Box>
                       </Stack>
-                      <Button size='lg' className='bg-primary text-white'>
+                      <Button size="lg" className="bg-primary text-white">
                         Create Event
                       </Button>
                     </form>
