@@ -115,9 +115,9 @@ const EventTable = ({
                   </ChangeEventStatusPopup>
                 </Td>
                 <Td>
-                  <div className="flex gap-1 items-center actions-btn">
+                  <div className="flex items-center actions-btn">
                     <FaRegEye
-                      className="cursor-pointer hover:bg-blue-800"
+                      className="cursor-pointer hover:bg-blue-800 mr-1"
                       onClick={onView}
                     />
                     <EditEventModal />

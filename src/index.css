@@ -68,6 +68,10 @@ input:focus {
   padding: 7px;
   border-radius: 4px;
 }
+svg:focus{
+  border: 0 !important;
+  box-shadow: none !important;
+}
 .custom-checkbox span {
   border-color: var(--theme-black);
 }
