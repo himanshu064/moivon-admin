@@ -15,11 +15,10 @@ export const deleteSingleEvent = (eventId) =>
     HEADERS.jsonData
   );
 
-export const updateEventStatus = ({ eventId, isPublished, oldData }) =>
+export const updateEventStatus = ({ eventId, isPublished }) =>
   axiosInstance.put(
     `${ALL_ENDPOINTS.BUILD_UPDATE_EVENT_STATUS(eventId)}`,
     {
-      ...oldData,
       published: isPublished,
     },
     HEADERS.jsonData

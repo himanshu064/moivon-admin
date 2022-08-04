@@ -10,7 +10,7 @@ import {
   fetchAllEvents,
   updateEventStatus,
 } from "../../../services/events";
-import { NOTIFICATION_DURATION } from "../../../constants";
+import { EVENT_STATUS, NOTIFICATION_DURATION } from "../../../constants";
 import {
   useSearchParams,
   useNavigate,
@@ -20,7 +20,7 @@ import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@chakra-ui/react";
 
-const TAB_TYPES = {
+export const TAB_TYPES = {
   all: "all",
   pending: "pending",
   approved: "approved",
@@ -79,11 +79,10 @@ const ListEvent = () => {
   );
 
   const { mutate: changeStatusMutation } = useMutation(
-    ({ id, isPublished, oldData }) =>
+    ({ id, isPublished }) =>
       updateEventStatus({
         eventId: id,
         isPublished: isPublished,
-        oldData: oldData,
       }),
     {
       onSuccess: () => {
@@ -101,15 +100,12 @@ const ListEvent = () => {
     }
   );
 
-  const onStatusChange = (id, status, data) => {
-    console.log({ id, status });
-    const isPublished = status === "publish";
-    console.log(isPublished);
+  const onStatusChange = (id, status) => {
+    const isPublished = status === EVENT_STATUS.PUBLISH;
     toastId.current = toast.loading("Updating...");
     changeStatusMutation({
       id,
       isPublished,
-      data,
     });
   };
 
@@ -159,6 +155,7 @@ const ListEvent = () => {
                   search: `?${createSearchParams({
                     ...queryParams,
                     type: getTabTypesFromIndex(index),
+                    page: 1,
                   })}`,
                 })
               }

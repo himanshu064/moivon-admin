@@ -1,6 +1,7 @@
 // BUILD_ prefix is for actual api endpoint
 // QUERY_ prefix is for react-query state management
 
+import { TAB_TYPES } from "../pages/Events/ListEvent";
 import { objectToQueryParams } from "../utils/helpers";
 
 export const ALL_QUERIES = {
@@ -13,15 +14,18 @@ export const ALL_ENDPOINTS = {
   BUILD_GET_ALL_EVENTS: ({ page, type }) => {
     const data = {
       page,
-      published: type === "approved",
     };
+    if (type !== TAB_TYPES.all) {
+      data["published"] = type === "approved";
+    }
+
     const qs = `?${objectToQueryParams(data)}`;
     return "/events" + qs;
   },
   BUILD_GET_SINGLE_EVENT: ({ eventId }) => `/events/${eventId}`,
   BUILD_POST_NEW_EVENT: () => `/events`,
   BUILD_DELETE_EVENT: (id) => `/events/${id}`,
-  BUILD_UPDATE_EVENT_STATUS: (id) => `/events/${id}`,
+  BUILD_UPDATE_EVENT_STATUS: (id) => `/events/status/${id}`,
   // genres
   BUILD_GET_ALL_GENRES: () => `/genres`,
 
