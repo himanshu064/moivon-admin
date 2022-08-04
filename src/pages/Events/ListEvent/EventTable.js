@@ -14,7 +14,7 @@ import {
   Text,
   Highlight,
 } from "@chakra-ui/react";
-
+import { Link } from "react-router-dom";
 import { utcToZonedTime } from "date-fns-tz";
 import { format } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
@@ -116,11 +116,13 @@ const EventTable = ({
                 </Td>
                 <Td>
                   <div className="flex items-center actions-btn">
-                    <FaRegEye
-                      className="cursor-pointer hover:bg-blue-800 mr-1"
-                      onClick={onView}
-                    />
-                    <EditEventModal />
+                    <Link to={`${window.location.pathname}/${data._id}`}>
+                      <FaRegEye
+                        className="cursor-pointer hover:bg-blue-800 mr-1"
+                        onClick={onView}
+                      />
+                    </Link>
+                    <EditEventModal event={data} />
                     <ConfirmDialog
                       type="Event"
                       onChildrenClick={() => onDelete(data._id)}

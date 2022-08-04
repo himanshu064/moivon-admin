@@ -13,12 +13,14 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
-import { FaRss, FaClipboardCheck } from "react-icons/fa";
-import { HiCollection } from "react-icons/hi";
 
 import NavItem from "../NavItem";
 import Header from "../Header";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+const activeStyle = {
+  color: "white",
+};
 
 const ConditionalRenderNavbar = ({ navItem }) => {
   const integrations = useDisclosure();
@@ -36,18 +38,44 @@ const ConditionalRenderNavbar = ({ navItem }) => {
         </NavItem>
         <Collapse in={integrations.isOpen}>
           {navItem.subItems.map((item) => (
-            <NavItem pl="12" py="2" icon={item?.icon}>
-              {item?.title}
-            </NavItem>
+            <>
+              {item.link ? (
+                <NavLink
+                  to={item.link}
+                  // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                >
+                  <NavItem pl="12" py="2" icon={item?.icon}>
+                    {item?.title}
+                  </NavItem>
+                </NavLink>
+              ) : (
+                <NavItem pl="12" py="2" icon={item?.icon}>
+                  {item?.title}
+                </NavItem>
+              )}
+            </>
           ))}
         </Collapse>
       </Box>
     );
   }
   return (
-    <NavItem key={navItem.id} icon={navItem.icon}>
-      {navItem.title}
-    </NavItem>
+    <>
+      {navItem.link ? (
+        <NavLink
+          to={navItem.link}
+          // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+        >
+          <NavItem key={navItem.id} icon={navItem.icon}>
+            {navItem.title}
+          </NavItem>
+        </NavLink>
+      ) : (
+        <NavItem key={navItem.id} icon={navItem.icon}>
+          {navItem.title}
+        </NavItem>
+      )}
+    </>
   );
 };
 
@@ -142,72 +170,43 @@ export default Sidebar;
 const NAV_ITEMS = [
   {
     id: uuid(),
-    title: "Home",
+    title: "Dashboard",
     icon: MdHome,
+    link: "/",
   },
-  {
-    id: uuid(),
-    title: "Articles",
-    icon: FaRss,
-  },
-  {
-    id: uuid(),
-    title: "Collections",
-    icon: HiCollection,
-  },
-  {
-    id: uuid(),
-    title: "Checklists",
-    icon: FaClipboardCheck,
-  },
+  // {
+  //   id: uuid(),
+  //   title: "Articles",
+  //   icon: FaRss,
+  // },
+  // {
+  //   id: uuid(),
+  //   title: "Collections",
+  //   icon: HiCollection,
+  // },
+  // {
+  //   id: uuid(),
+  //   title: "Checklists",
+  //   icon: FaClipboardCheck,
+  // },
   {
     id: uuid(),
     title: "Events Manager",
     subItems: [
       {
         id: uuid(),
-        title: "Create New",
-        link: "/events/new",
+        title: "All Events",
+        link: "/events/list",
       },
       {
         id: uuid(),
-        title: "Slack",
+        title: "Pending Events",
+        link: "/events/list?type=pending&page=1",
       },
       {
         id: uuid(),
-        title: "Zapier",
-      },
-    ],
-  },
-  {
-    id: uuid(),
-    title: "Integrations",
-    subItems: [
-      {
-        id: uuid(),
-        title: "Shopify",
-      },
-      {
-        id: uuid(),
-        title: "Slack",
-      },
-      {
-        id: uuid(),
-        title: "Zapier",
-      },
-    ],
-  },
-  {
-    id: uuid(),
-    title: "Settings",
-    subItems: [
-      {
-        id: uuid(),
-        title: "Profile",
-      },
-      {
-        id: uuid(),
-        title: "Logout",
+        title: "Approved Events",
+        link: "/events/list?type=approved&page=1",
       },
     ],
   },

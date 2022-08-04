@@ -1,5 +1,9 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Highlight, Stack } from "@chakra-ui/react";
 import React from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { utcToZonedTime } from "date-fns-tz";
+import { format } from "date-fns";
 import PageHeader from "../../../components/PageHeader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
@@ -8,8 +12,28 @@ import styles from "./index.module.css";
 import { BsCurrencyDollar, BsCalendarWeek } from "react-icons/bs";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { IoLocationOutline } from "react-icons/io5";
+import { fetchSingleEvent } from "../../../services/events";
+import Loader from "../../../components/Loader";
+import { ALL_QUERIES } from "../../../api/endpoints";
+import { formatCurrency } from "../../../utils/helpers";
+import { prepareImageSrc } from "../../../api";
 
 const ViewEvent = () => {
+  const { id: eventId } = useParams();
+
+  const {
+    data: singleEventData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(ALL_QUERIES.QUERY_SINGLE_EVENT(eventId), () =>
+    fetchSingleEvent(eventId)
+  );
+
+  if (isLoading) return <Loader />;
+
+  if (isError) return <p>{error.toString()}</p>;
+
   return (
     <>
       <Box>
@@ -25,36 +49,51 @@ const ViewEvent = () => {
                 boxShadow="rgb(100 100 111 / 20%) 0px 7px 29px 0px"
               >
                 <div className={styles.content}>
-                  <img src="/img/bg.jpg" alt="" width="100%" />
+                  {singleEventData?.data?.data?.images.length > 0 && (
+                    <img
+                      src={prepareImageSrc(
+                        singleEventData?.data?.data?.images?.[0]
+                      )}
+                      style={{
+                        height: 300,
+                        objectFit: "cover",
+                      }}
+                      alt=""
+                      width="100%"
+                    />
+                  )}
 
                   <div className={`${styles.topHeading}`}>
-                    <h2 className="text-primary">365 FRAMES-DAYS</h2>
-                    <span className={styles.type}>Classic</span>
+                    <h2 className="text-primary">
+                      {singleEventData?.data?.data?.title}
+                    </h2>
+                    {/* <span className={styles.type}>Classic</span> */}
+                    <div className="flex items-center gap-x-1 cursor-pointer">
+                      <Highlight
+                        query={
+                          singleEventData?.data?.data?.published
+                            ? "Approved"
+                            : "Pending"
+                        }
+                        styles={{
+                          px: "1.5",
+                          py: "1.5",
+                          bg: singleEventData?.data?.data?.published
+                            ? "green.200"
+                            : "orange.200",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {singleEventData?.data?.data?.published
+                          ? "Approved"
+                          : "Pending"}
+                      </Highlight>
+                    </div>
                   </div>
                   <h3 className="mt-3 mb-4 text-primary font-semibold text-lg">
                     About Event
                   </h3>
-                  <p>
-                    “I try to make work that joins the seductions of wishful
-                    thinking with the criticality of knowing better,” Barbara
-                    Kruger has said. An incisive critic of popular culture,
-                    Kruger addresses the viewer directly as a way of exposing
-                    the power dynamics underlying identity, desire, and
-                    consumerism. Kruger’s large-scale commission for MoMA will
-                    envelop the Marron Family Atrium with the artist’s bold
-                    textual statements about truth, belief, and power. Combining
-                    images drawn from mass-media photographs with provocatively
-                    concise language, Kruger has been creating explorations of
-                    social relationships imbued with her distinctive sense of
-                    urgency and humor for more than 40 years. MoMA’s
-                    installation will tap into the artist’s long-standing
-                    interest in architecture to immerse viewers in a
-                    thought-provoking environment, offering multiple points of
-                    entry and perspective. With characteristic force, the work
-                    will explore the ways that relationships between spatial and
-                    political power invariably relate to considerations of
-                    inclusion and exclusion, dominance and agency.
-                  </p>
+                  <p>{singleEventData?.data?.data?.description}</p>
                 </div>
                 <Stack direction="row" spacing={10} mt="8">
                   <Box
@@ -68,7 +107,9 @@ const ViewEvent = () => {
                       <BsCurrencyDollar />
                       <div className="div">
                         <h4>Event Price</h4>
-                        <p>$124,00</p>
+                        <p>
+                          {formatCurrency(singleEventData?.data?.data?.price)}
+                        </p>
                       </div>
                     </div>
                   </Box>
@@ -83,7 +124,15 @@ const ViewEvent = () => {
                       <BsCalendarWeek />
                       <div className="div">
                         <h4>Date</h4>
-                        <p>Sunday, 12 June 2020</p>
+                        {format(
+                          new Date(
+                            utcToZonedTime(
+                              singleEventData?.data?.data?.dates,
+                              "utc"
+                            )
+                          ),
+                          "LLLL, dd LLL yyyy, hh:MM a"
+                        )}
                       </div>
                     </div>
                   </Box>
@@ -92,12 +141,7 @@ const ViewEvent = () => {
                   <h3 className="mt-4 mb-4 text-primary font-semibold text-lg">
                     About Oranganisation
                   </h3>
-                  <p>
-                    Libero et, lorem consectetur ac augue nisl. Nunc accumsan
-                    rhoncus congue quisque at praesentyi vulputate consectetur.
-                    Eu, auctor duis egestas nulla at praesentyi vulputate
-                    consectetur nsectetur ac augu
-                  </p>
+                  <p>{singleEventData?.data?.data?.eventOrgDetail}</p>
                 </div>
               </Box>
               <Box w={{ base: "100%", md: "40%" }} padding="0 0 30px 30px">
@@ -111,7 +155,7 @@ const ViewEvent = () => {
                       <IoLocationOutline />
                       <div className="div">
                         <h4>Venue</h4>
-                        <p>Birthday Event</p>
+                        <p>{singleEventData?.data?.data?.venue}</p>
                       </div>
                     </div>
                   </Box>
@@ -121,44 +165,60 @@ const ViewEvent = () => {
                     borderRadius="10px"
                     boxShadow="rgb(100 100 111 / 20%) 0px 7px 29px 0px"
                   >
-                    <div
-                      className={`flex justify-between items-center ${styles.detail}`}
-                    >
+                    <div className={`flex justify-between ${styles.detail}`}>
                       <div className="flex gap-4">
                         <IoLocationOutline />
-                        <div className="div">
+                        <div
+                          className="div"
+                          style={{ width: "300px", maxWidth: "100%" }}
+                        >
                           <h4>Location</h4>
-                          <p>BOURBON ST, 40</p>
+                          <p>
+                            <a
+                              rel="noopener noreferrer"
+                              target="_blank"
+                              href={singleEventData?.data?.data?.location}
+                            >
+                              {singleEventData?.data?.data?.location}
+                            </a>
+                          </p>
                         </div>
                       </div>
-                      <HiOutlineArrowNarrowRight />
+                      <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href={singleEventData?.data?.data?.location}
+                      >
+                        <HiOutlineArrowNarrowRight />
+                      </a>
                     </div>
                   </Box>
                   <Box w={{ base: "100%", md: "100%" }}>
                     <h3 className="mb-4 text-primary font-semibold text-lg">
                       Event Galleries
                     </h3>
-                    <Swiper
-                      className={styles.secondSlider}
-                      modules={[Pagination]}
-                      pagination={{ clickable: true }}
-                      slidesPerView={1}
-                      onSlideChange={() => console.log("slide change")}
-                      onSwiper={(swiper) => console.log(swiper)}
-                    >
-                      <SwiperSlide>
-                        <img src="/img/bg.jpg" alt="" width="100%" />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <img src="/img/bg.jpg" alt="" width="100%" />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <img src="/img/bg.jpg" alt="" width="100%" />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <img src="/img/bg.jpg" alt="" width="100%" />
-                      </SwiperSlide>
-                    </Swiper>
+                    {singleEventData?.data?.data?.images.length > 0 && (
+                      <Swiper
+                        className={styles.secondSlider}
+                        modules={[Pagination]}
+                        pagination={{ clickable: true }}
+                        slidesPerView={1}
+                        onSlideChange={() => console.log("slide change")}
+                        onSwiper={(swiper) => console.log(swiper)}
+                      >
+                        {singleEventData?.data?.data?.images?.map(
+                          (image, idx) => (
+                            <SwiperSlide key={`slide_image_${idx}`}>
+                              <img
+                                src={prepareImageSrc(image)}
+                                alt={`slide_image_${idx}`}
+                                width="100%"
+                              />
+                            </SwiperSlide>
+                          )
+                        )}
+                      </Swiper>
+                    )}
                   </Box>
                 </Stack>
               </Box>

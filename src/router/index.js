@@ -9,8 +9,7 @@ import Login from "../pages/Auth/Login";
 // import ForgotPassword from "../pages/Auth/ForgotPassword";
 // import ResetPassword from "../pages/Auth/ResetPassword";
 
-// import Dashboard from "../pages/Dashboard";
-import Home from "../pages/Home";
+import Dashboard from "../pages/Dashboard";
 
 import CreateEvent from "../pages/Events/CreateEvent";
 import ListEvent from "../pages/Events/ListEvent";
@@ -58,7 +57,7 @@ function NavigationRoutes() {
             }
           />
           <Route
-            path='/events/view'
+            path={APP_PATH.singleEvent}
             element={
               <AdminLayout>
                 <ViewEvent />
@@ -70,7 +69,7 @@ function NavigationRoutes() {
           path={APP_PATH.home}
           element={
             <AdminLayout>
-              <Home />
+              <Dashboard />
             </AdminLayout>
           }
         />

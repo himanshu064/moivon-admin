@@ -23,3 +23,16 @@ export const updateEventStatus = ({ eventId, isPublished }) =>
     },
     HEADERS.jsonData
   );
+
+export const fetchSingleEvent = (eventId) =>
+  axiosInstance.get(
+    `${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`,
+    HEADERS.jsonData
+  );
+
+export const updateSingleEvent = ({ eventId, data }) =>
+  axiosInstance.put(
+    `${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`,
+    data,
+    HEADERS.jsonData
+  );
