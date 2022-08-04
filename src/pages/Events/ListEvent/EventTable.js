@@ -41,9 +41,9 @@ const EventTable = ({
         <Table size="sm" variant="simple" className="list-event">
           <Thead>
             <Tr>
-              <Th>
+              {/* <Th>
                 <Checkbox className="custom-checkbox"></Checkbox>
-              </Th>
+              </Th> */}
               <Th>Event</Th>
               <Th>Title</Th>
               <Th>Date</Th>
@@ -60,9 +60,9 @@ const EventTable = ({
           <Tbody>
             {events.map((data) => (
               <Tr key={data._id}>
-                <Td>
+                {/* <Td>
                   <Checkbox className="custom-checkbox"></Checkbox>
-                </Td>
+                </Td> */}
                 <Td>
                   <AvatarGroup size="md" max={2}>
                     {data.images.map((image, idx) => {
