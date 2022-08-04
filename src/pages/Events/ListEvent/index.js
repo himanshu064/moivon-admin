@@ -139,18 +139,6 @@ const ListEvent = () => {
         <Stack flexDir="column">
           <PageHeader title="List Event" />
           <div>
-            <div className="flex gap-3 w-[70%]">
-              <div className="input-box w-full">
-                <Input placeholder="Search" className="w-full" />
-              </div>
-              <Input type="date" className="w-full" />
-              <Select className="w-full">
-                <option>Genre</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </Select>
-            </div>
             <Tabs
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>
