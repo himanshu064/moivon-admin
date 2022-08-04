@@ -13,3 +13,8 @@ export const CONTENT_MARGIN_LEFT = 60;
 export const NOTIFICATION_DURATION = {
   duration: 3000,
 };
+
+export const EVENT_STATUS = {
+  PUBLISH: "publish",
+  UNPUBLISH: "unpublish",
+};

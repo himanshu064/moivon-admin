@@ -38,11 +38,11 @@ const EventTable = ({
       <TableContainer
         style={{ border: "1px solid #eceff5", marginTop: "10px" }}
       >
-        <Table size='sm' variant='simple' className='list-event'>
+        <Table size="sm" variant="simple" className="list-event">
           <Thead>
             <Tr>
               <Th>
-                <Checkbox className='custom-checkbox'></Checkbox>
+                <Checkbox className="custom-checkbox"></Checkbox>
               </Th>
               <Th>Event</Th>
               <Th>Title</Th>
@@ -61,13 +61,13 @@ const EventTable = ({
             {events.map((data) => (
               <Tr key={data._id}>
                 <Td>
-                  <Checkbox className='custom-checkbox'></Checkbox>
+                  <Checkbox className="custom-checkbox"></Checkbox>
                 </Td>
                 <Td>
-                  <AvatarGroup size='md' max={2}>
-                    {data.images.map((image) => {
+                  <AvatarGroup size="md" max={2}>
+                    {data.images.map((image, idx) => {
                       const src = prepareImageSrc(image);
-                      return <Avatar src={src} />;
+                      return <Avatar key={`image_${idx}`} src={src} />;
                     })}
                   </AvatarGroup>
                 </Td>
@@ -95,10 +95,10 @@ const EventTable = ({
                 <Td>
                   <ChangeEventStatusPopup
                     onStatusChange={(status) =>
-                      onStatusChange(data?._id, status, data)
+                      onStatusChange(data?._id, status)
                     }
                   >
-                    <div className='flex items-center gap-x-1 cursor-pointer'>
+                    <div className="flex items-center gap-x-1 cursor-pointer">
                       <Highlight
                         query={data.published ? "Approved" : "Pending"}
                         styles={{
@@ -115,17 +115,17 @@ const EventTable = ({
                   </ChangeEventStatusPopup>
                 </Td>
                 <Td>
-                  <div className='flex gap-1 items-center actions-btn'>
+                  <div className="flex gap-1 items-center actions-btn">
                     <FaRegEye
-                      className='cursor-pointer hover:bg-blue-800'
+                      className="cursor-pointer hover:bg-blue-800"
                       onClick={onView}
                     />
                     <EditEventModal />
                     <ConfirmDialog
-                      type='Event'
+                      type="Event"
                       onChildrenClick={() => onDelete(data._id)}
                     >
-                      <RiDeleteBinLine className='cursor-pointer hover:bg-red-500' />
+                      <RiDeleteBinLine className="cursor-pointer hover:bg-red-500" />
                     </ConfirmDialog>
                   </div>
                 </Td>
