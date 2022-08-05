@@ -13,6 +13,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -22,6 +23,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "./index.module.css";
 import { NOTIFICATION_DURATION } from "../../../constants";
 import { APP_PATH } from "../../../api/endpoints";
+import { login } from "../../../services/auth";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -47,23 +49,36 @@ const Login = () => {
     mode: "onChange",
   });
 
+  const { mutate: loginMutation } = useMutation(login, {
+    onSuccess: (loginResponse) => {
+      // set token in localstorage
+      localStorage.setItem("auth", JSON.stringify(loginResponse.data));
+
+      toast.remove(toastId.current);
+      const successId = toast.success("Login success!", NOTIFICATION_DURATION);
+      reset();
+      setTimeout(() => {
+        toast.remove(successId);
+        navigate(APP_PATH.home);
+      }, 500);
+    },
+    onError: (error) => {
+      toast.remove(toastId.current);
+      const err = error?.response?.data?.error;
+      if (Array.isArray(err)) {
+        const [originalError] = Object.values(err?.[0]);
+        toast.error(originalError, NOTIFICATION_DURATION);
+      } else if (typeof err === "string") {
+        toast.error(err, NOTIFICATION_DURATION);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    },
+  });
+
   const onLogin = (data) => {
     toastId.current = toast.loading("Loging in...");
-    setTimeout(() => {
-      if (
-        data.email?.toLowerCase() !== "admin@moivon.com" ||
-        data.password?.toLowerCase() !== "admin@123"
-      ) {
-        toast.remove(toastId.current);
-        toastId.current = null;
-        toast.error("Invalid credentials!", NOTIFICATION_DURATION);
-        return;
-      }
-      toast.remove(toastId.current);
-      reset();
-      toast.success("Login success!", NOTIFICATION_DURATION);
-      navigate(APP_PATH.home);
-    }, 2000);
+    loginMutation(data);
   };
 
   return (

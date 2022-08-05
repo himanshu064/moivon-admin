@@ -17,3 +17,6 @@ export const objectToQueryParams = (obj) =>
   Object.keys(obj)
     .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`)
     .join("&");
+
+export const isLocalImage = (url = "") =>
+  !url ? undefined : url.toString().includes("blob");

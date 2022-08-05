@@ -25,7 +25,8 @@ export const TAB_TYPES = {
   pending: "pending",
   approved: "approved",
 };
-const START_PAGE = 1;
+
+export const START_PAGE = 1;
 const PER_PAGE = 10;
 
 const getTabTypesFromIndex = (index) => Object.keys(TAB_TYPES)[index];

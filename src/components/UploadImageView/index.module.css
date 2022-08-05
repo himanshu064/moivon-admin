@@ -1,0 +1,25 @@
+.imageContainer {
+  position: relative;
+  display: inline-block;
+  margin: 0.25rem;
+}
+
+.delIconContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: hwb(225deg 19% 60% / 85%);
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  cursor: pointer;
+  transition: background 1s ease-in;
+}
+
+.imageContainer:hover .delIconContainer {
+  visibility: visible !important;
+}

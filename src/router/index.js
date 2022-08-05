@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import PublicRoute from "./PublicRoute";
+import PrivateRoute from "./PrivateRoute";
 
 import AdminLayout from "../layout/AdminLayout";
 import AuthLayout from "../layout/AuthLayout";
@@ -24,9 +26,11 @@ function NavigationRoutes() {
         <Route
           path={APP_PATH.login}
           element={
-            <AuthLayout>
-              <Login />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <Login />
+              </AuthLayout>
+            </PublicRoute>
           }
         />
 
@@ -35,42 +39,52 @@ function NavigationRoutes() {
             path={APP_PATH.eventsHome}
             index
             element={
-              <AdminLayout>
-                <ListEvent />
-              </AdminLayout>
+              <PrivateRoute>
+                <AdminLayout>
+                  <ListEvent />
+                </AdminLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path={APP_PATH.createEvent}
             element={
-              <AdminLayout>
-                <CreateEvent />
-              </AdminLayout>
+              <PrivateRoute>
+                <AdminLayout>
+                  <CreateEvent />
+                </AdminLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path={APP_PATH.allEvents}
             element={
-              <AdminLayout>
-                <ListEvent />
-              </AdminLayout>
+              <PrivateRoute>
+                <AdminLayout>
+                  <ListEvent />
+                </AdminLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path={APP_PATH.singleEvent}
             element={
-              <AdminLayout>
-                <ViewEvent />
-              </AdminLayout>
+              <PrivateRoute>
+                <AdminLayout>
+                  <ViewEvent />
+                </AdminLayout>
+              </PrivateRoute>
             }
           />
         </Route>
         <Route
           path={APP_PATH.home}
           element={
-            <AdminLayout>
-              <Dashboard />
-            </AdminLayout>
+            <PrivateRoute>
+              <AdminLayout>
+                <Dashboard />
+              </AdminLayout>
+            </PrivateRoute>
           }
         />
         <Route path={APP_PATH.catchAll} element={<Error404 />} />

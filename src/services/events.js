@@ -30,9 +30,24 @@ export const fetchSingleEvent = (eventId) =>
     HEADERS.jsonData
   );
 
-export const updateSingleEvent = ({ eventId, data }) =>
-  axiosInstance.put(
+export const updateSingleEvent = ({ eventId, json_data, images }) => {
+  const formData = new FormData();
+  // append multiple images
+  images.forEach((image) => formData.append("image", image));
+
+  Object.entries(json_data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  return axiosInstance.put(
     `${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`,
-    data,
+    formData,
+    HEADERS.jsonData
+  );
+};
+
+export const deleteEventImage = (imageId) =>
+  axiosInstance.delete(
+    `${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE(imageId)}`,
     HEADERS.jsonData
   );

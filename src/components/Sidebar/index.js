@@ -12,11 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { v4 as uuid } from "uuid";
 
-import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
+import { MdHome, MdKeyboardArrowRight, MdLogout } from "react-icons/md";
 
 import NavItem from "../NavItem";
 import Header from "../Header";
 import { NavLink } from "react-router-dom";
+import { deleteLocalStorage } from "../../utils/localStorage";
 
 const activeStyle = {
   color: "white",
@@ -49,7 +50,12 @@ const ConditionalRenderNavbar = ({ navItem }) => {
                   </NavItem>
                 </NavLink>
               ) : (
-                <NavItem pl="12" py="2" icon={item?.icon}>
+                <NavItem
+                  pl="12"
+                  py="2"
+                  icon={item?.icon}
+                  onClick={navItem.action}
+                >
                   {item?.title}
                 </NavItem>
               )}
@@ -71,7 +77,7 @@ const ConditionalRenderNavbar = ({ navItem }) => {
           </NavItem>
         </NavLink>
       ) : (
-        <NavItem key={navItem.id} icon={navItem.icon}>
+        <NavItem key={navItem.id} icon={navItem.icon} onClick={navItem.action}>
           {navItem.title}
         </NavItem>
       )}
@@ -209,5 +215,14 @@ const NAV_ITEMS = [
         link: "/events/list?type=approved&page=1",
       },
     ],
+  },
+  {
+    id: uuid(),
+    title: "Logout",
+    icon: MdLogout,
+    action: () => {
+      deleteLocalStorage("auth");
+      window.location.href = "/login";
+    },
   },
 ];
