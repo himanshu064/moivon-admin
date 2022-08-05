@@ -15,7 +15,6 @@ import {
   Highlight,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { utcToZonedTime } from "date-fns-tz";
 import { format } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -65,19 +64,14 @@ const EventTable = ({
                 </Td> */}
                 <Td>
                   <AvatarGroup size="md" max={2}>
-                    {data.images.map((image, idx) => {
-                      const src = prepareImageSrc(image);
+                    {data.images.map((img, idx) => {
+                      const src = prepareImageSrc(img.image);
                       return <Avatar key={`image_${idx}`} src={src} />;
                     })}
                   </AvatarGroup>
                 </Td>
                 <Td>{data?.title}</Td>
-                <Td>
-                  {format(
-                    new Date(utcToZonedTime(data.dates, "utc")),
-                    "dd LLL yyyy, hh:MM a"
-                  )}
-                </Td>
+                <Td>{format(new Date(data.dates), "dd LLL yyyy, hh:MM a")}</Td>
                 <Td>{data?.genre}</Td>
                 <Td>{formatCurrency(data?.price)}</Td>
                 <Td>

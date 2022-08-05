@@ -2,7 +2,6 @@ import { Box, Highlight, Stack } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { utcToZonedTime } from "date-fns-tz";
 import { format } from "date-fns";
 import PageHeader from "../../../components/PageHeader";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -52,7 +51,7 @@ const ViewEvent = () => {
                   {singleEventData?.data?.data?.images.length > 0 && (
                     <img
                       src={prepareImageSrc(
-                        singleEventData?.data?.data?.images?.[0]
+                        singleEventData?.data?.data?.images?.[0]?.image
                       )}
                       style={{
                         height: 300,
@@ -125,12 +124,7 @@ const ViewEvent = () => {
                       <div className="div">
                         <h4>Date</h4>
                         {format(
-                          new Date(
-                            utcToZonedTime(
-                              singleEventData?.data?.data?.dates,
-                              "utc"
-                            )
-                          ),
+                          new Date(singleEventData?.data?.data?.dates),
                           "LLLL, dd LLL yyyy, hh:MM a"
                         )}
                       </div>
@@ -207,10 +201,10 @@ const ViewEvent = () => {
                         onSwiper={(swiper) => console.log(swiper)}
                       >
                         {singleEventData?.data?.data?.images?.map(
-                          (image, idx) => (
+                          (img, idx) => (
                             <SwiperSlide key={`slide_image_${idx}`}>
                               <img
-                                src={prepareImageSrc(image)}
+                                src={prepareImageSrc(img.image)}
                                 alt={`slide_image_${idx}`}
                                 width="100%"
                               />
