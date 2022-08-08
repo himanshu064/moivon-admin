@@ -25,6 +25,7 @@ import styles from "../Login/index.module.css";
 import { register as onRegisterFn } from "../../../services/auth";
 import { NOTIFICATION_DURATION } from "../../../constants";
 import { APP_PATH } from "../../../api/endpoints";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -89,120 +90,126 @@ const Register = () => {
   };
 
   return (
-    <Stack
-      flexDir="column"
-      mb="2"
-      justifyContent="center"
-      alignItems="center"
-      py="2rem"
-      borderRadius="10px"
-      className={styles.loginBox}
-    >
-      <Box minW={{ base: "90%", md: "568px" }}>
-        <Stack
-          className="mb-3"
-          flexDir="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
-          <Heading className="text-primary">Register</Heading>
-        </Stack>
-
-        <form className={styles.formDiv} onSubmit={handleSubmit(onRegister)}>
-          <Stack spacing={4} p="2rem">
-            <FormControl>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<CFaUserAlt color="gray.300" />}
-                />
-                <Input
-                  type="text"
-                  placeholder="Enter your name"
-                  autoFocus
-                  {...register("name")}
-                />
-                <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
-              </InputGroup>
-            </FormControl>
-            <FormControl>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<CMdEmail fill="gray.300" size="19" />}
-                />
-                <Input
-                  type="email"
-                  placeholder="Email address"
-                  autoComplete="new-email"
-                  {...register("email")}
-                />
-              </InputGroup>
-            </FormControl>
-            <FormControl>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  children={<CFaLock color="gray.300" />}
-                />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  placeholder="Password"
-                  {...register("password")}
-                />
-                <InputRightElement width="3.5rem">
-                  <Button
-                    height="2rem"
-                    onClick={handleShowClick}
-                    className={styles.buttonEye}
-                  >
-                    {showPassword ? (
-                      <AiOutlineEyeInvisible />
-                    ) : (
-                      <AiOutlineEye />
-                    )}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <FormControl style={{ marginBottom: "20px" }}>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  children={<CFaLock color="gray.300" />}
-                />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  {...register("confirmPassword")}
-                />
-              </InputGroup>
-            </FormControl>
-            <Button
-              borderRadius="0.375rem"
-              type="submit"
-              variant="solid"
-              className={styles.loginButton}
-              width="full"
-              disabled={(!isDirty || !isValid) && isSubmitting}
-              isLoading={isLoading}
-            >
-              Register
-            </Button>
+    <>
+      <RouteTitle title="Register" />
+      <Stack
+        flexDir="column"
+        mb="2"
+        justifyContent="center"
+        alignItems="center"
+        py="2rem"
+        borderRadius="10px"
+        className={styles.loginBox}
+      >
+        <Box minW={{ base: "90%", md: "568px" }}>
+          <Stack
+            className="mb-3"
+            flexDir="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
+            <Heading className="text-primary">Register</Heading>
           </Stack>
-        </form>
-      </Box>
-      <Box>
-        Already have an account?{" "}
-        <RouterLink to={APP_PATH.login} className="text-primary font-semibold">
-          Log In
-        </RouterLink>
-      </Box>
-    </Stack>
+
+          <form className={styles.formDiv} onSubmit={handleSubmit(onRegister)}>
+            <Stack spacing={4} p="2rem">
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<CFaUserAlt color="gray.300" />}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Enter your name"
+                    autoFocus
+                    {...register("name")}
+                  />
+                  <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<CMdEmail fill="gray.300" size="19" />}
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email address"
+                    autoComplete="new-email"
+                    {...register("email")}
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    color="gray.300"
+                    children={<CFaLock color="gray.300" />}
+                  />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Password"
+                    {...register("password")}
+                  />
+                  <InputRightElement width="3.5rem">
+                    <Button
+                      height="2rem"
+                      onClick={handleShowClick}
+                      className={styles.buttonEye}
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible />
+                      ) : (
+                        <AiOutlineEye />
+                      )}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <FormControl style={{ marginBottom: "20px" }}>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    color="gray.300"
+                    children={<CFaLock color="gray.300" />}
+                  />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    {...register("confirmPassword")}
+                  />
+                </InputGroup>
+              </FormControl>
+              <Button
+                borderRadius="0.375rem"
+                type="submit"
+                variant="solid"
+                className={styles.loginButton}
+                width="full"
+                disabled={(!isDirty || !isValid) && isSubmitting}
+                isLoading={isLoading}
+              >
+                Register
+              </Button>
+            </Stack>
+          </form>
+        </Box>
+        <Box>
+          Already have an account?{" "}
+          <RouterLink
+            to={APP_PATH.login}
+            className="text-primary font-semibold"
+          >
+            Log In
+          </RouterLink>
+        </Box>
+      </Stack>
+    </>
   );
 };
 

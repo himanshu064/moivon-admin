@@ -19,6 +19,7 @@ import {
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@chakra-ui/react";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 
 export const TAB_TYPES = {
   all: "all",
@@ -132,6 +133,7 @@ const ListEvent = () => {
 
   return (
     <>
+      <RouteTitle title="List Event" />
       <Box>
         <Stack flexDir="column">
           <PageHeader title="List Event" />

@@ -24,6 +24,7 @@ import styles from "./index.module.css";
 import { NOTIFICATION_DURATION } from "../../../constants";
 import { APP_PATH } from "../../../api/endpoints";
 import { login } from "../../../services/auth";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -82,84 +83,87 @@ const Login = () => {
   };
 
   return (
-    <Stack
-      flexDir="column"
-      mb="2"
-      justifyContent="center"
-      alignItems="center"
-      py="2rem"
-      borderRadius="10px"
-      className={styles.loginBox}
-    >
-      <Box minW={{ base: "90%", md: "568px" }}>
-        <Stack
-          className="mb-3"
-          flexDir="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
-          <Heading className="text-primary">Login</Heading>
-        </Stack>
-
-        <form className={styles.formDiv} onSubmit={handleSubmit(onLogin)}>
-          <Stack spacing={4} p="2rem">
-            <FormControl className="mb-3">
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<CFaUserAlt color="gray.300" />}
-                />
-                <Input
-                  type="email"
-                  placeholder="Email address"
-                  autoFocus
-                  {...register("email")}
-                />
-              </InputGroup>
-            </FormControl>
-            <FormControl className="mb-3">
-              <InputGroup className="mb-3">
-                <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  children={<CFaLock color="gray.300" />}
-                />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  autoComplete="new-password"
-                  {...register("password")}
-                />
-                <InputRightElement width="3.5rem">
-                  <Button
-                    height="2rem"
-                    onClick={handleShowClick}
-                    className={styles.buttonEye}
-                  >
-                    {showPassword ? (
-                      <AiOutlineEyeInvisible />
-                    ) : (
-                      <AiOutlineEye />
-                    )}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Button
-              borderRadius="0.375rem"
-              type="submit"
-              variant="solid"
-              className={styles.loginButton}
-              width="full"
-              disabled={(!isDirty || !isValid) && isSubmitting}
-            >
-              Login
-            </Button>
+    <>
+      <RouteTitle title="Login" />
+      <Stack
+        flexDir="column"
+        mb="2"
+        justifyContent="center"
+        alignItems="center"
+        py="2rem"
+        borderRadius="10px"
+        className={styles.loginBox}
+      >
+        <Box minW={{ base: "90%", md: "568px" }}>
+          <Stack
+            className="mb-3"
+            flexDir="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
+            <Heading className="text-primary">Login</Heading>
           </Stack>
-        </form>
-      </Box>
-    </Stack>
+
+          <form className={styles.formDiv} onSubmit={handleSubmit(onLogin)}>
+            <Stack spacing={4} p="2rem">
+              <FormControl className="mb-3">
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<CFaUserAlt color="gray.300" />}
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email address"
+                    autoFocus
+                    {...register("email")}
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl className="mb-3">
+                <InputGroup className="mb-3">
+                  <InputLeftElement
+                    pointerEvents="none"
+                    color="gray.300"
+                    children={<CFaLock color="gray.300" />}
+                  />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    autoComplete="new-password"
+                    {...register("password")}
+                  />
+                  <InputRightElement width="3.5rem">
+                    <Button
+                      height="2rem"
+                      onClick={handleShowClick}
+                      className={styles.buttonEye}
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible />
+                      ) : (
+                        <AiOutlineEye />
+                      )}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Button
+                borderRadius="0.375rem"
+                type="submit"
+                variant="solid"
+                className={styles.loginButton}
+                width="full"
+                disabled={(!isDirty || !isValid) && isSubmitting}
+              >
+                Login
+              </Button>
+            </Stack>
+          </form>
+        </Box>
+      </Stack>
+    </>
   );
 };
 

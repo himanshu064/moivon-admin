@@ -174,12 +174,12 @@ const Sidebar = () => {
 export default Sidebar;
 
 const NAV_ITEMS = [
-  {
-    id: uuid(),
-    title: "Dashboard",
-    icon: MdHome,
-    link: "/",
-  },
+  // {
+  //   id: uuid(),
+  //   title: "Dashboard",
+  //   icon: MdHome,
+  //   link: "/",
+  // },
   // {
   //   id: uuid(),
   //   title: "Articles",

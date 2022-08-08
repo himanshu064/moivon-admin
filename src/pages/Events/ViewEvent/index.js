@@ -16,6 +16,7 @@ import Loader from "../../../components/Loader";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import { formatCurrency } from "../../../utils/helpers";
 import { prepareImageSrc } from "../../../api";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 
 const ViewEvent = () => {
   const { id: eventId } = useParams();
@@ -35,6 +36,7 @@ const ViewEvent = () => {
 
   return (
     <>
+      <RouteTitle title="View Event" />
       <Box>
         <Stack flexDir="column">
           <PageHeader title="View Event" />

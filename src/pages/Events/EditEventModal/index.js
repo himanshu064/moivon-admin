@@ -41,6 +41,7 @@ import UploadImageView from "../../../components/UploadImageView";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import { useSearchParams } from "react-router-dom";
 import { START_PAGE, TAB_TYPES } from "../ListEvent";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 
 const validationSchema = yup.object({
   title: yup.string().required("Required"),
@@ -207,6 +208,7 @@ const EditEventModal = ({ event }) => {
 
   return (
     <>
+      <RouteTitle title="Edit Event" />
       {/* <FaRegEdit onClick={onOpen} /> */}
       <FaRegEdit
         className="cursor-pointer hover:bg-green-500 mr-1"
