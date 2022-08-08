@@ -59,7 +59,7 @@ const Header = ({ onOpen }) => {
           <Input placeholder="Search for articles..." />
         </InputGroup>
 
-        <Flex align="center">
+        {/* <Flex align="center">
           <Icon color="gray.500" as={FaBell} cursor="pointer" />
           <Avatar
             ml="4"
@@ -68,7 +68,7 @@ const Header = ({ onOpen }) => {
             src="https://avatars.githubusercontent.com/u/30869823?v=4"
             cursor="pointer"
           />
-        </Flex>
+        </Flex> */}
       </Flex>
     </Box>
   );
