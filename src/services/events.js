@@ -4,31 +4,20 @@ import { ALL_ENDPOINTS } from "../api/endpoints";
 
 export const fetchAllEvents = ({ page, type }) => {
   return axiosInstance.get(
-    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS({ page, type })}`,
-    HEADERS.jsonData
+    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS({ page, type })}`
   );
 };
 
 export const deleteSingleEvent = (eventId) =>
-  axiosInstance.delete(
-    `${ALL_ENDPOINTS.BUILD_DELETE_EVENT(eventId)}`,
-    HEADERS.jsonData
-  );
+  axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_EVENT(eventId)}`);
 
 export const updateEventStatus = ({ eventId, isPublished }) =>
-  axiosInstance.put(
-    `${ALL_ENDPOINTS.BUILD_UPDATE_EVENT_STATUS(eventId)}`,
-    {
-      published: isPublished,
-    },
-    HEADERS.jsonData
-  );
+  axiosInstance.put(`${ALL_ENDPOINTS.BUILD_UPDATE_EVENT_STATUS(eventId)}`, {
+    published: isPublished,
+  });
 
 export const fetchSingleEvent = (eventId) =>
-  axiosInstance.get(
-    `${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`,
-    HEADERS.jsonData
-  );
+  axiosInstance.get(`${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`);
 
 export const updateSingleEvent = ({ eventId, json_data, images }) => {
   const formData = new FormData();
@@ -42,12 +31,9 @@ export const updateSingleEvent = ({ eventId, json_data, images }) => {
   return axiosInstance.put(
     `${ALL_ENDPOINTS.BUILD_GET_SINGLE_EVENT(eventId)}`,
     formData,
-    HEADERS.jsonData
+    HEADERS.formData
   );
 };
 
 export const deleteEventImage = (imageId) =>
-  axiosInstance.delete(
-    `${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE(imageId)}`,
-    HEADERS.jsonData
-  );
+  axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE(imageId)}`);
