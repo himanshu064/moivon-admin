@@ -18,6 +18,7 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
 import DatePicker from "react-datepicker";
+import { v4 as uuid } from "uuid";
 import styles from "./index.module.css";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -36,12 +37,13 @@ import {
   isEmpty,
   isLocalImage,
 } from "../../../utils/helpers";
-import { MAX_IMAGE_SIZE_IN_MB } from "../../../constants";
+import { MAX_ALLOWED_IMAGES, MAX_IMAGE_SIZE_IN_MB } from "../../../constants";
 import UploadImageView from "../../../components/UploadImageView";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import { useSearchParams } from "react-router-dom";
 import { START_PAGE, TAB_TYPES } from "../ListEvent";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
+import { prepareImageSrc } from "../../../api";
 
 const validationSchema = yup.object({
   title: yup.string().required("Required"),
@@ -56,6 +58,12 @@ const EditEventModal = ({ event }) => {
   const [images, setImages] = useState([]);
   const fileUploadRef = useRef();
   const editEventFormRef = useRef();
+  const toastId = useRef();
+  const removeExistingToasts = () => {
+    if (toastId.current) {
+      toast.remove(toastId.current);
+    }
+  };
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
@@ -66,9 +74,22 @@ const EditEventModal = ({ event }) => {
       fileUploadRef.current.value = "";
     }
   };
+  const eventImagesLength = event?.images?.length || 0;
+
+  const updateEventImages = () => {
+    let eventImages = [];
+    if (event?.images?.length) {
+      eventImages = event?.images?.map((img) => ({
+        _id: img._id,
+        preview: prepareImageSrc(img.image),
+      }));
+    }
+    setImages(eventImages);
+  };
 
   useEffect(() => {
     if (isOpen) {
+      updateEventImages();
       const config = { shouldTouch: true, shouldDirty: true };
       setValue("title", event.title, config);
       setValue("dates", new Date(event.dates), config);
@@ -78,16 +99,12 @@ const EditEventModal = ({ event }) => {
       setValue("venue", event.venue, config);
       setValue("eventOrgDetail", event.eventOrgDetail, config);
     } else {
-      setImages([]);
       resetImageInput();
+      removeExistingToasts();
     }
-  }, [isOpen]);
-
-  console.log(images, "images goes here!");
+  }, [isOpen, eventImagesLength]);
 
   const resolver = yupResolver(validationSchema);
-
-  const toastId = useRef(null);
 
   const mutation = useMutation(
     (newQuery) =>
@@ -98,7 +115,7 @@ const EditEventModal = ({ event }) => {
       }),
     {
       onSuccess: () => {
-        toast.remove(toastId.current);
+        removeExistingToasts();
         const successId = toast.success("Event updated successfully!");
         reset();
         setImages([]);
@@ -115,15 +132,29 @@ const EditEventModal = ({ event }) => {
 
   const onImageChange = (event) => {
     const { files } = event.target;
+    const allFiles = Array.from(files);
+
+    if (allFiles.length === 0) return;
+
+    removeExistingToasts();
+    resetImageInput();
+
+    if (images.length === MAX_ALLOWED_IMAGES) {
+      toastId.current = toast.error(
+        `Maximum of ${MAX_ALLOWED_IMAGES} images are allowed!`
+      );
+      return;
+    }
 
     const uploadableFiles = [];
     let isSomeFilesSkipped = false;
     let errorMessage = "";
 
-    Array.from(files).forEach((file) => {
+    allFiles.forEach((file) => {
       const isAllowed = checkMaxFileSize(file.size, MAX_IMAGE_SIZE_IN_MB);
       if (isAllowed) {
         uploadableFiles.push({
+          _id: `local_${uuid()}`,
           raw: file,
           preview: URL.createObjectURL(file),
         });
@@ -140,15 +171,17 @@ const EditEventModal = ({ event }) => {
 
     // show the error message if the error flag is set
     if (errorMessage) {
-      toast.error(errorMessage);
+      toastId.current = toast.error(errorMessage);
     }
 
     // set the images back to state
-    setImages(uploadableFiles);
+    setImages((prevFiles) => [...prevFiles, ...uploadableFiles]);
   };
 
   const onUpdateEvent = (data) => {
+    removeExistingToasts();
     toastId.current = toast.loading("Creating event...");
+    data.published = event.published;
     mutation.mutate({
       images: images.map((image) => image.raw),
       data,
@@ -173,13 +206,11 @@ const EditEventModal = ({ event }) => {
     setValue,
   } = useForm({ resolver, mode: "onChange", defaultValues });
 
-  console.log({ isValid, isDirty }, "isValid");
-
   const { mutate: deleteImageMutation } = useMutation(
     (imageId) => deleteEventImage(imageId),
     {
       onSuccess: () => {
-        toast.remove(toastId.current);
+        removeExistingToasts();
         const successId = toast.success("Image deleted successfully!");
         setTimeout(() => toast.remove(successId), 3000);
         queryClient.refetchQueries(
@@ -194,12 +225,14 @@ const EditEventModal = ({ event }) => {
     if (isLocalImage(preview) === true) {
       // image is just a part of local state, so remove from local state
       console.log("Delete local");
-      const [_, index] = _id.split("_");
       setImages((prevImages) => {
-        return prevImages.filter((__, idx) => idx !== parseInt(index));
+        // return prevImages.filter((__, idx) => idx !== parseInt(index));
+        return prevImages.filter(
+          (existingImages) => existingImages._id !== _id
+        );
       });
       resetImageInput();
-      toast.success("Image removed successfully!");
+      toastId.current = toast.success("Image removed successfully!");
     } else if (isLocalImage(preview) === false) {
       // image is from server, hit deleteImage mutation to remove from server
       deleteImageMutation(_id);
@@ -208,13 +241,13 @@ const EditEventModal = ({ event }) => {
 
   return (
     <>
-      <RouteTitle title="Edit Event" />
       {/* <FaRegEdit onClick={onOpen} /> */}
       <FaRegEdit
         className="cursor-pointer hover:bg-green-500 mr-1"
         onClick={onOpen}
       />
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
+        <RouteTitle title="Edit Event" />
         <ModalOverlay />
         <ModalContent maxW="900px">
           <ModalHeader>Edit Event</ModalHeader>
@@ -328,11 +361,14 @@ const EditEventModal = ({ event }) => {
                               ref={fileUploadRef}
                             />
                           </FormControl>
+                          <p className="text-xs mt-2 text-green-600">
+                            UPLOAD UP TO {MAX_ALLOWED_IMAGES} IMAGES/ VIDEOS (
+                            {MAX_IMAGE_SIZE_IN_MB} MB MAX)
+                          </p>
                         </Box>
                         <Box marginBottom="4">
                           <UploadImageView
-                            localImages={images}
-                            serverImages={event?.images}
+                            allImages={images}
                             onDelete={onDeleteImage}
                           />
                         </Box>

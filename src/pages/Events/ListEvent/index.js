@@ -36,6 +36,11 @@ const getTabIndexFromTabType = (type) =>
 
 const ListEvent = () => {
   const toastId = useRef("");
+  const removeExistingToasts = () => {
+    if (toastId.current) {
+      toast.remove(toastId.current);
+    }
+  };
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
   const { type = TAB_TYPES.all, page = START_PAGE } = queryParams;
@@ -53,15 +58,15 @@ const ListEvent = () => {
   );
 
   const commonErrorHandler = (error) => {
-    toast.remove(toastId.current);
+    removeExistingToasts();
     const err = error?.response?.data?.error;
     if (Array.isArray(err)) {
       const [originalError] = Object.values(err?.[0]);
-      toast.error(originalError, NOTIFICATION_DURATION);
+      toastId.current = toast.error(originalError, NOTIFICATION_DURATION);
     } else if (typeof err === "string") {
-      toast.error(err, NOTIFICATION_DURATION);
+      toastId.current = toast.error(err, NOTIFICATION_DURATION);
     } else {
-      toast.error("Something went wrong!");
+      toastId.current = toast.error("Something went wrong!");
     }
   };
 
@@ -69,12 +74,16 @@ const ListEvent = () => {
     (eventId) => deleteSingleEvent(eventId),
     {
       onSuccess: () => {
-        toast.remove(toastId.current);
-        toast.success("Deleted successfully!", NOTIFICATION_DURATION);
+        removeExistingToasts();
+        toastId.current = toast.success(
+          "Deleted successfully!",
+          NOTIFICATION_DURATION
+        );
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
           () => fetchAllEvents({ type, page })
         );
+        removeExistingToasts();
       },
       onError: commonErrorHandler,
     }
@@ -88,8 +97,8 @@ const ListEvent = () => {
       }),
     {
       onSuccess: () => {
-        toast.remove(toastId.current);
-        toast.success(
+        removeExistingToasts();
+        toastId.current = toast.success(
           "Event status updated successfully!",
           NOTIFICATION_DURATION
         );
@@ -97,12 +106,14 @@ const ListEvent = () => {
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
           () => fetchAllEvents({ type, page })
         );
+        removeExistingToasts();
       },
       onError: commonErrorHandler,
     }
   );
 
   const onStatusChange = (id, status) => {
+    removeExistingToasts();
     const isPublished = status === EVENT_STATUS.PUBLISH;
     toastId.current = toast.loading("Updating...");
     changeStatusMutation({
@@ -116,6 +127,7 @@ const ListEvent = () => {
   console.log({ eventsData, isLoading, isError, error });
 
   const onDeleteEvent = (eventId) => {
+    removeExistingToasts();
     toastId.current = toast.loading("Deleting...");
     onDeleteMutation(eventId);
   };

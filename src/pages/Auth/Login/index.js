@@ -36,6 +36,12 @@ const validationSchema = yup.object({
 
 const Login = () => {
   const toastId = useRef(null);
+  const removeExistingToasts = () => {
+    if (toastId.current) {
+      toast.remove(toastId.current);
+    }
+  };
+
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
@@ -55,24 +61,21 @@ const Login = () => {
       // set token in localstorage
       localStorage.setItem("auth", JSON.stringify(loginResponse.data));
 
-      toast.remove(toastId.current);
-      const successId = toast.success("Login success!", NOTIFICATION_DURATION);
+      removeExistingToasts();
+      toast.success("Login success!", NOTIFICATION_DURATION);
       reset();
-      setTimeout(() => {
-        toast.remove(successId);
-        navigate(APP_PATH.home);
-      }, 500);
+      navigate(APP_PATH.allEvents);
     },
     onError: (error) => {
-      toast.remove(toastId.current);
+      removeExistingToasts();
       const err = error?.response?.data?.error;
       if (Array.isArray(err)) {
         const [originalError] = Object.values(err?.[0]);
-        toast.error(originalError, NOTIFICATION_DURATION);
+        toastId.current = toast.error(originalError, NOTIFICATION_DURATION);
       } else if (typeof err === "string") {
-        toast.error(err, NOTIFICATION_DURATION);
+        toastId.current = toast.error(err, NOTIFICATION_DURATION);
       } else {
-        toast.error("Something went wrong!");
+        toastId.current = toast.error("Something went wrong!");
       }
     },
   });

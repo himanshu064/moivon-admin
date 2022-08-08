@@ -15,7 +15,7 @@ import {
   Highlight,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { prepareImageSrc } from "../../../api";
@@ -71,7 +71,7 @@ const EventTable = ({
                   </AvatarGroup>
                 </Td>
                 <Td>{data?.title}</Td>
-                <Td>{format(new Date(data.dates), "dd LLL yyyy, hh:MM a")}</Td>
+                <Td>{format(parseISO(data.dates), "dd MMM yyyy, hh:mm a")}</Td>
                 <Td>{data?.genre}</Td>
                 <Td>{formatCurrency(data?.price)}</Td>
                 <Td>

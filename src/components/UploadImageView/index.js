@@ -1,23 +1,22 @@
 import { Box, Avatar } from "@chakra-ui/react";
 import React from "react";
 import { MdDelete } from "react-icons/md";
-import { prepareImageSrc } from "../../api";
 import classes from "./index.module.css";
 
-const UploadImageView = ({ localImages, serverImages, images, onDelete }) => {
-  const allImages = [
-    ...localImages.map((image, index) => ({
-      _id: `local_${index}`,
-      preview: image.preview,
-    })),
-    ...(serverImages?.length > 0
-      ? serverImages?.map((img) => ({
-          _id: img._id,
-          preview: prepareImageSrc(img.image),
-        }))
-      : []),
-  ];
-  console.log(images, "images");
+const UploadImageView = ({ allImages = [], images, onDelete }) => {
+  // const allImages = [
+  //   ...localImages.map((image, index) => ({
+  //     _id: `local_${index}`,
+  //     preview: image.preview,
+  //   })),
+  //   ...(serverImages?.length > 0
+  //     ? serverImages?.map((img) => ({
+  //         _id: img._id,
+  //         preview: prepareImageSrc(img.image),
+  //       }))
+  //     : []),
+  // ];
+
   return (
     <div>
       {allImages.map((image, index) => (
