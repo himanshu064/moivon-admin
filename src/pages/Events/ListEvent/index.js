@@ -129,7 +129,6 @@ const ListEvent = () => {
 
   if (isLoading) return <Loader />;
   if (isError) return <h1>Error = {error.toString()}</h1>;
-  console.log({ eventsData, isLoading, isError, error });
 
   const onDeleteEvent = (eventId) => {
     removeExistingToasts();
@@ -139,7 +138,6 @@ const ListEvent = () => {
 
   const onPageChange = (current, pageSize) => {
     // change the route
-    console.log(queryParams, "queryParams");
     navigate({
       pathname: window.location.pathname,
       search: `?${createSearchParams({

@@ -8,6 +8,9 @@ export const ALL_QUERIES = {
   QUERY_ALL_EVENTS: ({ type = "all", page = 1 }) => ["events", type, page],
   QUERY_SINGLE_EVENT: (eventId) => ["event", eventId],
   QUERY_ALL_GENRES: () => ["genres"],
+
+  // hero image
+  QUERY_ALL_HERO_IMAGES: ({ page = 1 }) => ["heroSlider", page],
 };
 
 export const ALL_ENDPOINTS = {
@@ -37,6 +40,17 @@ export const ALL_ENDPOINTS = {
   BUILD_UPDATE_EVENT_STATUS: (id) => `/events/status/${id}`,
   // genres
   BUILD_GET_ALL_GENRES: () => `/genres`,
+
+  // slider
+  BUILD_CREATE_HERO_SLIDER: () => `/heroimage`,
+  BUILD_GET_ALL_HERO_SLIDER: ({ page, size }) => {
+    const data = {
+      page,
+      size,
+    };
+    const qs = `?${objectToQueryParams(data)}`;
+    return "/heroimage" + qs;
+  },
 
   // auth
   BUILD_LOGIN: () => `/login`,

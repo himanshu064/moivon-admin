@@ -222,6 +222,11 @@ const NAV_ITEMS = [
     subItems: [
       {
         id: uuid(),
+        title: "Create Slider",
+        link: "/slider/create",
+      },
+      {
+        id: uuid(),
         title: "List Slider",
         link: "/slider/list",
       },
