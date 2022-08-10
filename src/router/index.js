@@ -18,6 +18,8 @@ import ListEvent from "../pages/Events/ListEvent";
 import { APP_PATH } from "../api/endpoints";
 import Error404 from "../pages/404";
 import ViewEvent from "../pages/Events/ViewEvent";
+import CreateSlider from "../pages/HeroSlider/CreateSlider";
+import SliderList from "../pages/HeroSlider/SliderList";
 
 function NavigationRoutes() {
   return (
@@ -85,6 +87,22 @@ function NavigationRoutes() {
                 <Dashboard />
               </AdminLayout>
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/slider/create"
+          element={
+            <AdminLayout>
+              <CreateSlider />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/slider/list"
+          element={
+            <AdminLayout>
+              <SliderList />
+            </AdminLayout>
           }
         />
         <Route path={APP_PATH.catchAll} element={<Error404 />} />
