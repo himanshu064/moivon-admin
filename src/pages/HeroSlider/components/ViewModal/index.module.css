@@ -1,0 +1,24 @@
+/* slider css */
+
+.wrapper{
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+.wrapper p{
+    position: absolute;
+    top: 30px;
+    right: 15%;
+    width: 177px;
+    text-align: left;
+    background: var(--theme-white);
+    font-size: 14px;
+    padding: 5px;
+    color: var(--theme-black);
+    font-family: var(--sans-regular) !important;
+}
+
+.wrapper img{
+    height: 370px;
+    object-fit: cover;
+}

@@ -218,6 +218,17 @@ const NAV_ITEMS = [
   },
   {
     id: uuid(),
+    title: "Hero Slider",
+    subItems: [
+      {
+        id: uuid(),
+        title: "List Slider",
+        link: "/slider/list",
+      },
+    ],
+  },
+  {
+    id: uuid(),
     title: "Logout",
     icon: MdLogout,
     action: () => {

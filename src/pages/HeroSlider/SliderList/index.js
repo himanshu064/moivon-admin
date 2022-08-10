@@ -18,8 +18,12 @@ import {
 } from "@chakra-ui/react";
 import { FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import ViewModal from "../components/ViewModal";
+import EditModal from "../components/EditModal";
+import ConfirmDialog from "../../../components/ConfirmDialog";
+import { RiDeleteBinLine } from "react-icons/ri";
 
-function SliderList() {
+function SliderList({ onDelete }) {
   return (
     <>
       <RouteTitle title="List Event" />
@@ -73,9 +77,14 @@ function SliderList() {
                       <Td>Approved</Td>
                       <Td>
                         <div className="flex items-center actions-btn">
-                          <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
-                          <FaRegEye />
-                          <FaRegEye />
+                          <ViewModal />
+                          <EditModal />
+                          <ConfirmDialog
+                            type="Event"
+                            onChildrenClick={() => onDelete()}
+                          >
+                            <RiDeleteBinLine className="cursor-pointer hover:bg-red-500" />
+                          </ConfirmDialog>
                         </div>
                       </Td>
                     </Tr>
