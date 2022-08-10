@@ -14,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalFooter,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
@@ -41,7 +42,7 @@ import { MAX_ALLOWED_IMAGES, MAX_IMAGE_SIZE_IN_MB } from "../../../constants";
 import UploadImageView from "../../../components/UploadImageView";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import { useSearchParams } from "react-router-dom";
-import { START_PAGE, TAB_TYPES } from "../ListEvent";
+import { PER_PAGE, START_PAGE, TAB_TYPES } from "../ListEvent";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import { prepareImageSrc } from "../../../api";
 
@@ -67,7 +68,11 @@ const EditEventModal = ({ event }) => {
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
-  const { type = TAB_TYPES.all, page = START_PAGE } = queryParams;
+  const {
+    type = TAB_TYPES.all,
+    page = START_PAGE,
+    size = PER_PAGE,
+  } = queryParams;
 
   const resetImageInput = () => {
     if (fileUploadRef.current) {
@@ -98,6 +103,8 @@ const EditEventModal = ({ event }) => {
       setValue("description", event.description, config);
       setValue("venue", event.venue, config);
       setValue("eventOrgDetail", event.eventOrgDetail, config);
+      setValue("mostPopular", event.mostPopular, config);
+      setValue("upComing", event.upComing, config);
     } else {
       resetImageInput();
       removeExistingToasts();
@@ -122,7 +129,7 @@ const EditEventModal = ({ event }) => {
         // refetch queries
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page })
+          () => fetchAllEvents({ type, page, size })
         );
         setTimeout(() => toast.remove(successId), 3000);
         onClose();
@@ -389,6 +396,17 @@ const EditEventModal = ({ event }) => {
                             />
                           </FormControl>
                         </Box>
+                      </Stack>
+                      <Stack spacing={5} direction="row">
+                        <Checkbox
+                          colorScheme="blue"
+                          {...register("mostPopular")}
+                        >
+                          Most Popular Event
+                        </Checkbox>
+                        <Checkbox colorScheme="green" {...register("upComing")}>
+                          Upcoming Event
+                        </Checkbox>
                       </Stack>
                     </form>
                   </Box>

@@ -1,10 +1,11 @@
 import { axiosInstance } from "../api";
 import { HEADERS } from "../constants";
 import { ALL_ENDPOINTS } from "../api/endpoints";
+import { PER_PAGE } from "../pages/Events/ListEvent";
 
-export const fetchAllEvents = ({ page, type }) => {
+export const fetchAllEvents = ({ page, type, size = PER_PAGE }) => {
   return axiosInstance.get(
-    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS({ page, type })}`
+    `${ALL_ENDPOINTS.BUILD_GET_ALL_EVENTS({ page, type, size })}`
   );
 };
 
