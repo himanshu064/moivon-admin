@@ -7,7 +7,12 @@ import toast from "react-hot-toast";
 import { fetchAllEvents, updateSingleEvent } from "../../../services/events";
 import { ALL_QUERIES } from "../../../api/endpoints";
 
-const EventTypeRows = ({ event }) => {
+const EventTypeRows = ({
+  event,
+  WrappingComponent = Td,
+  mostPopularText = "",
+  upcomingText = "",
+}) => {
   const [isMostPopular, setIsMostPopular] = useState(() => event.mostPopular);
   const [isUpcoming, setIsUpcoming] = useState(() => event.upComing);
 
@@ -63,7 +68,7 @@ const EventTypeRows = ({ event }) => {
 
   return (
     <React.Fragment>
-      <Td className="text-center w-full">
+      <WrappingComponent className="text-center w-full">
         <Checkbox
           colorScheme="blue"
           isChecked={isMostPopular}
@@ -72,10 +77,14 @@ const EventTypeRows = ({ event }) => {
             onEventTypeChange(event, "mostPopular", e.target.checked);
           }}
         >
-          {event?.mostPopular ? "Yes" : "No"}
+          {!mostPopularText
+            ? event?.mostPopular
+              ? "Yes"
+              : "No"
+            : mostPopularText}
         </Checkbox>
-      </Td>
-      <Td>
+      </WrappingComponent>
+      <WrappingComponent>
         <Checkbox
           colorScheme="green"
           isChecked={isUpcoming}
@@ -84,9 +93,9 @@ const EventTypeRows = ({ event }) => {
             onEventTypeChange(event, "upComing", e.target.checked);
           }}
         >
-          {event?.upComing ? "Yes" : "No"}
+          {!upcomingText ? (event?.upComing ? "Yes" : "No") : upcomingText}
         </Checkbox>
-      </Td>
+      </WrappingComponent>
     </React.Fragment>
   );
 };

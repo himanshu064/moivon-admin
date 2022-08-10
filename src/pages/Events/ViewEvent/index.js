@@ -17,6 +17,11 @@ import { ALL_QUERIES } from "../../../api/endpoints";
 import { formatCurrency } from "../../../utils/helpers";
 import { prepareImageSrc } from "../../../api";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
+import EventTypeRows from "../ListEvent/EventTypeRows";
+
+const EventTypeWrapper = ({ children }) => {
+  return <span className="mr-2">{children}</span>;
+};
 
 const ViewEvent = () => {
   const { id: eventId } = useParams();
@@ -216,6 +221,14 @@ const ViewEvent = () => {
                       </Swiper>
                     )}
                   </Box>
+                  {singleEventData?.data?.data && (
+                    <EventTypeRows
+                      event={singleEventData?.data?.data}
+                      WrappingComponent={EventTypeWrapper}
+                      mostPopularText="Most Popular Event"
+                      upcomingText="Upcoming Event"
+                    />
+                  )}
                 </Stack>
               </Box>
             </Stack>
