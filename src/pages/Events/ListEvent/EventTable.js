@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Box,
   TableContainer,
@@ -14,7 +14,9 @@ import {
   Text,
   Highlight,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { format, parseISO } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -24,6 +26,10 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import EditEventModal from "../EditEventModal";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
+import { fetchAllEvents, updateSingleEvent } from "../../../services/events";
+import { PER_PAGE, START_PAGE, TAB_TYPES } from ".";
+import { ALL_QUERIES } from "../../../api/endpoints";
+import EventTypeRows from "./EventTypeRows";
 
 const EventTable = ({
   events = [],
@@ -53,6 +59,8 @@ const EventTable = ({
               <Th>Venue</Th>
               <Th>Oranganisation</Th>
               <Th>Status</Th>
+              <Th>Most Popular</Th>
+              <Th>Upcoming</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -108,6 +116,7 @@ const EventTable = ({
                     </div>
                   </ChangeEventStatusPopup>
                 </Td>
+                <EventTypeRows event={data} />
                 <Td>
                   <div className="flex items-center actions-btn">
                     <Link to={`${window.location.pathname}/${data._id}`}>

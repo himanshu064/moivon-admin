@@ -11,12 +11,20 @@ export const ALL_QUERIES = {
 };
 
 export const ALL_ENDPOINTS = {
-  BUILD_GET_ALL_EVENTS: ({ page, type }) => {
+  BUILD_GET_ALL_EVENTS: ({ page, type, size }) => {
     const data = {
       page,
+      size,
     };
-    if (type !== TAB_TYPES.all) {
-      data["published"] = type === "approved";
+
+    if (type === TAB_TYPES.pending) {
+      data.published = false;
+    } else if (type === TAB_TYPES.approved) {
+      data.published = true;
+    } else if (type === TAB_TYPES.popular) {
+      data.mostPopular = true;
+    } else if (type === TAB_TYPES.upcoming) {
+      data.upComing = true;
     }
 
     const qs = `?${objectToQueryParams(data)}`;
