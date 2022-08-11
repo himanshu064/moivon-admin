@@ -187,7 +187,7 @@ const EditEventModal = ({ event }) => {
 
   const onUpdateEvent = (data) => {
     removeExistingToasts();
-    toastId.current = toast.loading("Creating event...");
+    toastId.current = toast.loading("Updating event...");
     data.published = event.published;
     mutation.mutate({
       images: images.map((image) => image.raw),

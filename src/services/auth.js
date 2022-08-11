@@ -12,3 +12,13 @@ export const register = (data) => {
 export const forgotPassword = (data) => {
   return axiosInstance.post(ALL_ENDPOINTS.BUILD_FORGOT_PASSWORD(), data);
 };
+
+export const refreshAccessToken = (refreshToken) => {
+  if (refreshToken) {
+    return axiosInstance.post(ALL_ENDPOINTS.BUILD_REFRESH_TOKEN(), {
+      refreshToken,
+    });
+  }
+
+  throw new Error("No token found!");
+};

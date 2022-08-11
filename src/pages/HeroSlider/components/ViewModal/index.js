@@ -17,31 +17,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
+import { prepareImageSrc } from "../../../../api";
 
-const sliderData = [
-  {
-    key: "1",
-    image: "/img/bg.jpg",
-    text: "MOIVON’S EVENTS 2023/ “INSPIRATION ARTS & LIFESTYLE”",
-  },
-  {
-    key: "2",
-    image: "/img/bg.jpg",
-    text: "MOIVON’S EVENTS 2023/ “INSPIRATION ARTS & LIFESTYLE”",
-  },
-  {
-    key: "3",
-    image: "/img/bg.jpg",
-    text: "MOIVON’S EVENTS 2023/ “INSPIRATION ARTS & LIFESTYLE”",
-  },
-  {
-    key: "4",
-    image: "/img/bg.jpg",
-    text: "MOIVON’S EVENTS 2023/ “INSPIRATION ARTS & LIFESTYLE”",
-  },
-];
-
-function ViewModal() {
+function ViewModal({ slider }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -65,13 +43,17 @@ function ViewModal() {
               onSlideChange={() => console.log("slide change")}
               onSwiper={(swiper) => console.log(swiper)}
             >
-              {sliderData?.map((data) => (
-                <SwiperSlide>
+              {slider?.images?.map((img, idx) => (
+                <SwiperSlide key={`view_slider_${idx}`}>
                   <div className={styles.wrapper}>
                     <div className={styles.image}>
-                      <img src={data?.image} alt="slider" width="100%" />
+                      <img
+                        src={prepareImageSrc(img.image)}
+                        alt="slider"
+                        width="100%"
+                      />
                     </div>
-                    <Text>{data?.text}</Text>
+                    <Text>{slider?.description}</Text>
                   </div>
                 </SwiperSlide>
               ))}

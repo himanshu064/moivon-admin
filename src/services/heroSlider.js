@@ -24,3 +24,27 @@ export const fetchAllHeroSliders = ({ page, size = HERO_SLIDER_PER_PAGE }) => {
     `${ALL_ENDPOINTS.BUILD_GET_ALL_HERO_SLIDER({ page, size })}`
   );
 };
+
+export const deleteHeroSlider = (sliderId) =>
+  axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_HERO_SLIDER(sliderId)}`);
+
+export const deleteHeroSliderImage = (imageId) =>
+  axiosInstance.delete(
+    `${ALL_ENDPOINTS.BUILD_DELETE_HERO_SLIDER_IMAGE(imageId)}`
+  );
+
+export const updateHeroSlider = ({ sliderId, json_data, images }) => {
+  const formData = new FormData();
+  // append multiple images
+  images.forEach((image) => formData.append("image", image));
+
+  Object.entries(json_data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  return axiosInstance.put(
+    `${ALL_ENDPOINTS.BUILD_UPDATE_HERO_SLIDER(sliderId)}`,
+    formData,
+    HEADERS.formData
+  );
+};

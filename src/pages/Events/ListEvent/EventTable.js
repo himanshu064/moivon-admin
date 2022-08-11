@@ -31,13 +31,7 @@ import { PER_PAGE, START_PAGE, TAB_TYPES } from ".";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import EventTypeRows from "./EventTypeRows";
 
-const EventTable = ({
-  events = [],
-  onView,
-  onEdit,
-  onStatusChange,
-  onDelete,
-}) => {
+const EventTable = ({ events = [], onStatusChange, onDelete }) => {
   return (
     <Box w={{ base: "100%" }} bg={"white"}>
       <TableContainer
@@ -120,10 +114,7 @@ const EventTable = ({
                 <Td>
                   <div className="flex items-center actions-btn">
                     <Link to={`${window.location.pathname}/${data._id}`}>
-                      <FaRegEye
-                        className="cursor-pointer hover:bg-blue-800 mr-1"
-                        onClick={onView}
-                      />
+                      <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
                     </Link>
                     <EditEventModal event={data} />
                     <ConfirmDialog

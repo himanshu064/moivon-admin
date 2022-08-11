@@ -181,8 +181,6 @@ const ListEvent = () => {
                   <React.Fragment>
                     <EventTable
                       events={eventsData?.data?.data}
-                      onView={() => {}}
-                      onEdit={() => {}}
                       onDelete={onDeleteEvent}
                       onStatusChange={onStatusChange}
                     />

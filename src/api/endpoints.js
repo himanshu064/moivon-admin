@@ -51,13 +51,17 @@ export const ALL_ENDPOINTS = {
     const qs = `?${objectToQueryParams(data)}`;
     return "/heroimage" + qs;
   },
-
+  BUILD_DELETE_HERO_SLIDER: (id) => `/heroimage/${id}`,
+  BUILD_DELETE_HERO_SLIDER_IMAGE: (imageId) =>
+    `/heroimage/deleteimage/${imageId}`,
+  BUILD_UPDATE_HERO_SLIDER: (id) => `/heroimage/${id}`,
   // auth
   BUILD_LOGIN: () => `/login`,
   BUILD_REGISTER: () => `/signup`,
   BUILD_CHANGE_PASSWORD: () => `/changepassword`,
   BUILD_FORGOT_PASSWORD: () => `/forgetpassword`,
   BUILD_CONFIRM_PASSWORD: () => `/newpassword`,
+  BUILD_REFRESH_TOKEN: () => `/refreshtoken`,
 };
 
 export const APP_PATH = {
