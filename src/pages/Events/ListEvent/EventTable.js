@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Box,
   TableContainer,
@@ -14,9 +14,7 @@ import {
   Text,
   Highlight,
 } from "@chakra-ui/react";
-import { Link, useSearchParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -26,12 +24,19 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import EditEventModal from "../EditEventModal";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
-import { fetchAllEvents, updateSingleEvent } from "../../../services/events";
-import { PER_PAGE, START_PAGE, TAB_TYPES } from ".";
-import { ALL_QUERIES } from "../../../api/endpoints";
 import EventTypeRows from "./EventTypeRows";
 
-const EventTable = ({ events = [], onStatusChange, onDelete }) => {
+const EventTable = ({
+  events = [],
+  onStatusChange,
+  onDelete,
+  selectedEvents,
+  setSelectedEvents,
+}) => {
+  const allSelected = events.every((event) =>
+    selectedEvents.includes(event._id)
+  );
+
   return (
     <Box w={{ base: "100%" }} bg={"white"}>
       <TableContainer
@@ -40,9 +45,20 @@ const EventTable = ({ events = [], onStatusChange, onDelete }) => {
         <Table size="sm" variant="simple" className="list-event">
           <Thead>
             <Tr>
-              {/* <Th>
-                <Checkbox className="custom-checkbox"></Checkbox>
-              </Th> */}
+              <Th>
+                <Checkbox
+                  className="custom-checkbox"
+                  isChecked={allSelected}
+                  onChange={(e) => {
+                    const { checked } = e.target;
+                    if (checked) {
+                      setSelectedEvents(events.map((event) => event._id));
+                    } else {
+                      setSelectedEvents([]);
+                    }
+                  }}
+                ></Checkbox>
+              </Th>
               <Th>Event</Th>
               <Th>Title</Th>
               <Th>Date</Th>
@@ -61,9 +77,27 @@ const EventTable = ({ events = [], onStatusChange, onDelete }) => {
           <Tbody>
             {events.map((data) => (
               <Tr key={data._id}>
-                {/* <Td>
-                  <Checkbox className="custom-checkbox"></Checkbox>
-                </Td> */}
+                <Td>
+                  <Checkbox
+                    isChecked={Boolean(
+                      selectedEvents.find((event) => event === data._id)
+                    )}
+                    onChange={(e) => {
+                      const { checked } = e.target;
+
+                      if (checked) {
+                        setSelectedEvents((prev) => prev.concat(data._id));
+                      } else {
+                        setSelectedEvents((prev) =>
+                          prev.filter(
+                            (prevSelected) => prevSelected !== data._id
+                          )
+                        );
+                      }
+                    }}
+                    className="custom-checkbox"
+                  ></Checkbox>
+                </Td>
                 <Td>
                   <AvatarGroup size="md" max={2}>
                     {data.images.map((img, idx) => {

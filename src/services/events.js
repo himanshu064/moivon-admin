@@ -12,6 +12,9 @@ export const fetchAllEvents = ({ page, type, size = PER_PAGE }) => {
 export const deleteSingleEvent = (eventId) =>
   axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_EVENT(eventId)}`);
 
+export const deleteMultipleEvent = (eventId) =>
+  axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_MULTIPLEDELETE_EVENT(eventId)}`);
+
 export const updateEventStatus = ({ eventId, isPublished }) =>
   axiosInstance.put(`${ALL_ENDPOINTS.BUILD_UPDATE_EVENT_STATUS(eventId)}`, {
     published: isPublished,

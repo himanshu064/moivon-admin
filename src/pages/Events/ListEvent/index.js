@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Select, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import Pagination from "rc-pagination";
 import PageHeader from "../../../components/PageHeader";
@@ -9,6 +9,7 @@ import {
   deleteSingleEvent,
   fetchAllEvents,
   updateEventStatus,
+  deleteMultipleEvent,
 } from "../../../services/events";
 import { EVENT_STATUS, NOTIFICATION_DURATION } from "../../../constants";
 import {
@@ -19,6 +20,7 @@ import {
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
+import ConfirmDeleteMultiple from "../../../components/ConfirmDeleteMultiple";
 
 export const TAB_TYPES = {
   all: "all",
@@ -35,7 +37,7 @@ const getTabTypesFromIndex = (index) => Object.keys(TAB_TYPES)[index];
 const getTabIndexFromTabType = (type) =>
   Object.keys(TAB_TYPES).findIndex((tabType) => tabType === type) || 0;
 
-const ListEvent = () => {
+const ListEvent = ({ onDelete }) => {
   const toastId = useRef("");
   const removeExistingToasts = () => {
     if (toastId.current) {
@@ -52,6 +54,7 @@ const ListEvent = () => {
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [selectedEvents, setSelectedEvents] = useState([]);
 
   const {
     data: eventsData,
@@ -77,6 +80,25 @@ const ListEvent = () => {
 
   const { mutate: onDeleteMutation } = useMutation(
     (eventId) => deleteSingleEvent(eventId),
+    {
+      onSuccess: () => {
+        removeExistingToasts();
+        toastId.current = toast.success(
+          "Deleted successfully!",
+          NOTIFICATION_DURATION
+        );
+        queryClient.refetchQueries(
+          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
+          () => fetchAllEvents({ type, page })
+        );
+        removeExistingToasts();
+      },
+      onError: commonErrorHandler,
+    }
+  );
+
+  const { mutate: onMultipleDeleteMutation } = useMutation(
+    (eventId) => deleteMultipleEvent(eventId),
     {
       onSuccess: () => {
         removeExistingToasts();
@@ -136,6 +158,12 @@ const ListEvent = () => {
     onDeleteMutation(eventId);
   };
 
+  const onDeleteMultiple = (eventId) => {
+    removeExistingToasts();
+    toastId.current = toast.loading("Deleting...");
+    onMultipleDeleteMutation(eventId);
+  };
+
   const onPageChange = (current, pageSize) => {
     // change the route
     navigate({
@@ -155,6 +183,17 @@ const ListEvent = () => {
         <Stack flexDir="column">
           <PageHeader title="List Event" />
           <div>
+            <div className="deleteModal my-5">
+              <ConfirmDeleteMultiple type="Event">
+                <button
+                  type="button"
+                  className="cursor-pointer bg-red-600 hover:bg-red-500 text-white py-3 px-5"
+                  onClick={onDeleteMultiple}
+                >
+                  Delete All
+                </button>
+              </ConfirmDeleteMultiple>
+            </div>
             <Tabs
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>
@@ -183,6 +222,8 @@ const ListEvent = () => {
                       events={eventsData?.data?.data}
                       onDelete={onDeleteEvent}
                       onStatusChange={onStatusChange}
+                      selectedEvents={selectedEvents}
+                      setSelectedEvents={(events) => setSelectedEvents(events)}
                     />
                     <div className="text-right">
                       <Pagination
