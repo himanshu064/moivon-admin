@@ -36,7 +36,7 @@ export const ALL_ENDPOINTS = {
   BUILD_GET_SINGLE_EVENT: (eventId) => `/events/${eventId}`,
   BUILD_POST_NEW_EVENT: () => `/events`,
   BUILD_DELETE_EVENT: (id) => `/events/${id}`,
-  BUILD_MULTIPLYDELETE_EVENT: (id) => `/events/${id}`,
+  BUILD_MULTIPLE_DELETE_EVENT: () => `/events/deleteevents`,
   BUILD_DELETE_EVENT_IMAGE: (imageId) => `/events/deleteimage/${imageId}`,
   BUILD_UPDATE_EVENT_STATUS: (id) => `/events/status/${id}`,
   // genres

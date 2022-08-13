@@ -98,12 +98,12 @@ const ListEvent = ({ onDelete }) => {
   );
 
   const { mutate: onMultipleDeleteMutation } = useMutation(
-    (eventId) => deleteMultipleEvent(eventId),
+    () => deleteMultipleEvent(selectedEvents),
     {
       onSuccess: () => {
         removeExistingToasts();
         toastId.current = toast.success(
-          "Deleted successfully!",
+          "Multiple events deleted successfully!",
           NOTIFICATION_DURATION
         );
         queryClient.refetchQueries(
@@ -158,10 +158,10 @@ const ListEvent = ({ onDelete }) => {
     onDeleteMutation(eventId);
   };
 
-  const onDeleteMultiple = (eventId) => {
+  const onDeleteMultiple = () => {
     removeExistingToasts();
-    toastId.current = toast.loading("Deleting...");
-    onMultipleDeleteMutation(eventId);
+    toastId.current = toast.loading("Deleting multiple...");
+    onMultipleDeleteMutation();
   };
 
   const onPageChange = (current, pageSize) => {
@@ -183,17 +183,21 @@ const ListEvent = ({ onDelete }) => {
         <Stack flexDir="column">
           <PageHeader title="List Event" />
           <div>
-            <div className="deleteModal my-5">
-              <ConfirmDeleteMultiple type="Event">
-                <button
-                  type="button"
-                  className="cursor-pointer bg-red-600 hover:bg-red-500 text-white py-3 px-5"
-                  onClick={onDeleteMultiple}
+            {selectedEvents.length > 1 && (
+              <div className="deleteModal my-5">
+                <ConfirmDeleteMultiple
+                  type="Multiple Events"
+                  onChildrenClick={onDeleteMultiple}
                 >
-                  Delete All
-                </button>
-              </ConfirmDeleteMultiple>
-            </div>
+                  <button
+                    type="button"
+                    className="cursor-pointer bg-red-600 hover:bg-red-500 text-white py-3 px-5"
+                  >
+                    Delete Multiple
+                  </button>
+                </ConfirmDeleteMultiple>
+              </div>
+            )}
             <Tabs
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>

@@ -28,11 +28,12 @@ const ConfirmDeleteMultiple = ({ children, type = "", onChildrenClick }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Multiple {type}
+              Delete {type}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You want to delete multiple records.
+              Are you sure you want to delete multiple records. This cannot be
+              undone
             </AlertDialogBody>
 
             <AlertDialogFooter>
