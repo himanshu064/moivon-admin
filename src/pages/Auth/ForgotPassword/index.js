@@ -22,6 +22,7 @@ import { forgotPassword } from "../../../services/auth";
 import { APP_PATH } from "../../../api/endpoints";
 
 import styles from "../Login/index.module.css";
+import { preparePublicFolder } from "../../../api";
 
 const CFaUserAlt = chakra(FaUserAlt);
 
@@ -92,7 +93,11 @@ const ForgotPassword = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
+          <img
+            src={preparePublicFolder("/img/moivon-black.png")}
+            className="mb-3"
+            alt="moivon"
+          />
           <Heading className="text-primary">Forgot Password</Heading>
         </Stack>
 

@@ -26,6 +26,7 @@ import {
   createSearchParams,
   useNavigate,
   useSearchParams,
+  useLocation,
 } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import {
@@ -42,6 +43,7 @@ export const HERO_SLIDER_START_PAGE = 1;
 export const HERO_SLIDER_PER_PAGE = 10;
 
 function SliderList() {
+  const location = useLocation();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
@@ -101,7 +103,7 @@ function SliderList() {
 
   const onPageChange = (current, pageSize) => {
     navigate({
-      pathname: window.location.pathname,
+      pathname: location.pathname,
       search: `?${createSearchParams({
         ...queryParams,
         page: current,

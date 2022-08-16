@@ -16,6 +16,7 @@ import {
   useSearchParams,
   useNavigate,
   createSearchParams,
+  useLocation,
 } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -53,6 +54,7 @@ const ListEvent = ({ onDelete }) => {
   } = queryParams;
 
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const [selectedEvents, setSelectedEvents] = useState([]);
 
@@ -167,7 +169,7 @@ const ListEvent = ({ onDelete }) => {
   const onPageChange = (current, pageSize) => {
     // change the route
     navigate({
-      pathname: window.location.pathname,
+      pathname: location.pathname,
       search: `?${createSearchParams({
         ...queryParams,
         page: current,
@@ -202,7 +204,7 @@ const ListEvent = ({ onDelete }) => {
               index={getTabIndexFromTabType(type)}
               onChange={(index) =>
                 navigate({
-                  pathname: window.location.pathname,
+                  pathname: location.pathname,
                   search: `?${createSearchParams({
                     ...queryParams,
                     type: getTabTypesFromIndex(index),

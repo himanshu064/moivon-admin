@@ -6,6 +6,9 @@ import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
 export const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 const API_BASE_URL = `${BASE_URL}`;
 
+export const preparePublicFolder = (url) =>
+  `${process.env.REACT_APP_PUBLIC_URL}${url}`;
+
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: HEADERS.jsonData,

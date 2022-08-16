@@ -18,6 +18,7 @@ import NavItem from "../NavItem";
 import Header from "../Header";
 import { NavLink } from "react-router-dom";
 import { deleteLocalStorage } from "../../utils/localStorage";
+import { preparePublicFolder } from "../../api";
 
 const activeStyle = {
   color: "white",
@@ -109,7 +110,7 @@ const SidebarOther = (props) => {
       {...props}
     >
       <Flex px="4" py="5" align="center">
-        <img src="/img/moivon.png" alt="logo" />
+        <img src={preparePublicFolder("/img/moivon.png")} alt="logo" />
         <Text
           fontSize="2xl"
           ml="2"
@@ -238,7 +239,7 @@ const NAV_ITEMS = [
     icon: MdLogout,
     action: () => {
       deleteLocalStorage("auth");
-      window.location.href = "/login";
+      window.location.href = process.env.REACT_APP_PUBLIC_URL + "/";
     },
   },
 ];

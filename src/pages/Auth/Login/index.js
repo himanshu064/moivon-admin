@@ -25,6 +25,7 @@ import { NOTIFICATION_DURATION } from "../../../constants";
 import { APP_PATH } from "../../../api/endpoints";
 import { login } from "../../../services/auth";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
+import { preparePublicFolder } from "../../../api";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -104,7 +105,11 @@ const Login = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <img src="/img/moivon-black.png" className="mb-3" alt="moivon" />
+            <img
+              src={preparePublicFolder("/img/moivon-black.png")}
+              className="mb-3"
+              alt="moivon"
+            />
             <Heading className="text-primary">Login</Heading>
           </Stack>
 

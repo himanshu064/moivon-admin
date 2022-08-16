@@ -25,6 +25,7 @@ import EditEventModal from "../EditEventModal";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
 import EventTypeRows from "./EventTypeRows";
+import { useLocation } from "react-router-dom";
 
 const EventTable = ({
   events = [],
@@ -36,6 +37,8 @@ const EventTable = ({
   const allSelected = events.every((event) =>
     selectedEvents.includes(event._id)
   );
+
+  const location = useLocation();
 
   return (
     <Box w={{ base: "100%" }} bg={"white"}>
@@ -147,7 +150,7 @@ const EventTable = ({
                 <EventTypeRows event={data} />
                 <Td>
                   <div className="flex items-center actions-btn">
-                    <Link to={`${window.location.pathname}/${data._id}`}>
+                    <Link to={`${location.pathname}/${data._id}`}>
                       <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
                     </Link>
                     <EditEventModal event={data} />
