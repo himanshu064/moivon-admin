@@ -22,6 +22,7 @@ import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import ConfirmDeleteMultiple from "../../../components/ConfirmDeleteMultiple";
+import { capitalizeFirstLetter } from "../../../utils/helpers";
 
 export const TAB_TYPES = {
   all: "all",
@@ -183,10 +184,10 @@ const ListEvent = ({ onDelete }) => {
 
   return (
     <>
-      <RouteTitle title="List Event" />
+      <RouteTitle title={`${capitalizeFirstLetter(type)} Event`} />
       <Box>
         <Stack flexDir="column">
-          <PageHeader title="List Event" />
+          <PageHeader title={`${capitalizeFirstLetter(type)} Event`} />
           <div>
             {selectedEvents.length > 1 && (
               <div className="deleteModal my-5">
