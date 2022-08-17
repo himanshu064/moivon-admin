@@ -41,5 +41,7 @@ export const updateSingleEvent = ({ eventId, json_data, images }) => {
   );
 };
 
-export const deleteEventImage = (imageId) =>
-  axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE(imageId)}`);
+export const deleteEventImage = ({ imageId, eventId }) =>
+  axiosInstance.delete(
+    `${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE({ imageId, eventId })}`
+  );

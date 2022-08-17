@@ -214,7 +214,7 @@ const EditEventModal = ({ event }) => {
   } = useForm({ resolver, mode: "onChange", defaultValues });
 
   const { mutate: deleteImageMutation } = useMutation(
-    (imageId) => deleteEventImage(imageId),
+    (imageId) => deleteEventImage({ imageId, eventId: event._id }),
     {
       onSuccess: () => {
         removeExistingToasts();
