@@ -199,7 +199,7 @@ function EditModal({ slider }) {
   } = useForm({ mode: "onChange", defaultValues });
 
   const { mutate: deleteImageMutation } = useMutation(
-    (imageId) => deleteHeroSliderImage(imageId),
+    (imageId) => deleteHeroSliderImage({ imageId, eventId: slider._id }),
     {
       onSuccess: () => {
         removeExistingToasts();

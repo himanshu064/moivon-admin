@@ -28,9 +28,9 @@ export const fetchAllHeroSliders = ({ page, size = HERO_SLIDER_PER_PAGE }) => {
 export const deleteHeroSlider = (sliderId) =>
   axiosInstance.delete(`${ALL_ENDPOINTS.BUILD_DELETE_HERO_SLIDER(sliderId)}`);
 
-export const deleteHeroSliderImage = (imageId) =>
+export const deleteHeroSliderImage = ({ imageId, eventId }) =>
   axiosInstance.delete(
-    `${ALL_ENDPOINTS.BUILD_DELETE_HERO_SLIDER_IMAGE(imageId)}`
+    `${ALL_ENDPOINTS.BUILD_DELETE_HERO_SLIDER_IMAGE({ imageId, eventId })}`
   );
 
 export const updateHeroSlider = ({ sliderId, json_data, images }) => {

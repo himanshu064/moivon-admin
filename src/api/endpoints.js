@@ -54,8 +54,8 @@ export const ALL_ENDPOINTS = {
     return "/heroimage" + qs;
   },
   BUILD_DELETE_HERO_SLIDER: (id) => `/heroimage/${id}`,
-  BUILD_DELETE_HERO_SLIDER_IMAGE: (imageId) =>
-    `/heroimage/deleteimage/${imageId}`,
+  BUILD_DELETE_HERO_SLIDER_IMAGE: ({ imageId, eventId }) =>
+    `/heroimage/deleteimage?id=${imageId}&heroImageDetailId=${eventId}`,
   BUILD_UPDATE_HERO_SLIDER: (id) => `/heroimage/${id}`,
   // auth
   BUILD_LOGIN: () => `/login`,
