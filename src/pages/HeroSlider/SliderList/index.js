@@ -126,7 +126,7 @@ function SliderList() {
       <RouteTitle title="List Event" />
       <Box>
         <Stack flexDir="column">
-          <PageHeader title="List Slider" />
+          <PageHeader front="Hero Slider" title="List Slider" />
           <div>
             <Box w={{ base: "100%" }} bg={"white"}>
               {sliderData?.data?.data?.length > 0 ? (
@@ -137,8 +137,8 @@ function SliderList() {
                     <React.Fragment>
                       <Thead>
                         <Tr>
-                          <Th>Images</Th>
-                          <Th>Text</Th>
+                          <Th>Image</Th>
+                          <Th>Title</Th>
                           <Th>Actions</Th>
                         </Tr>
                       </Thead>
@@ -164,7 +164,7 @@ function SliderList() {
                                 <ViewModal slider={slider} />
                                 <EditModal slider={slider} />
                                 <ConfirmDialog
-                                  type="Slider Image"
+                                  type="Slider"
                                   onChildrenClick={() =>
                                     onDeleteSlider(slider._id)
                                   }

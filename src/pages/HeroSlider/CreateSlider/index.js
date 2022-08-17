@@ -125,7 +125,7 @@ const CreateSlider = () => {
     <>
       <Box>
         <Stack flexDir="column">
-          <PageHeader title="Create Slider Image" />
+          <PageHeader front="Hero Slider" title="Create Slider" />
           <div className="form-div py-10">
             <Box
               w={{ base: "100%" }}
@@ -141,13 +141,13 @@ const CreateSlider = () => {
                 <Stack direction={["column", "row"]} spacing="24px" mb={5}>
                   <Box w={{ md: "50%" }}>
                     <FormControl>
-                      <FormLabel>TEXT:</FormLabel>
+                      <FormLabel>TITLE:</FormLabel>
                       <Input {...register("description")} />
                     </FormControl>
                   </Box>
                   <Box w={{ md: "50%" }}>
                     <FormControl isRequired>
-                      <FormLabel>UPLOAD IMAGES:</FormLabel>
+                      <FormLabel>UPLOAD IMAGE:</FormLabel>
                       <Input
                         // multiple
                         type="file"

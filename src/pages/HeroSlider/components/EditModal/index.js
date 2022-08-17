@@ -272,7 +272,7 @@ function EditModal({ slider }) {
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl>
-                            <FormLabel>UPLOAD EVENT:</FormLabel>
+                            <FormLabel>UPLOAD IMAGE:</FormLabel>
                             <Input
                               type="file"
                               // multiple
@@ -282,10 +282,6 @@ function EditModal({ slider }) {
                               ref={fileUploadRef}
                             />
                           </FormControl>
-                          <p className="text-xs mt-2 text-green-600">
-                            UPLOAD UP TO {MAX_ALLOWED_IMAGES} IMAGES/ VIDEOS{" "}
-                            {MAX_IMAGE_SIZE_IN_MB} MB MAX
-                          </p>
                         </Box>
                         <Box marginBottom="4">
                           <UploadImageView
@@ -312,7 +308,7 @@ function EditModal({ slider }) {
               }}
               disabled={isSubmitting || !isValid || images.length === 0}
             >
-              Update Event
+              Update Slider
             </Button>
           </ModalFooter>
         </ModalContent>

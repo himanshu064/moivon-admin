@@ -89,6 +89,7 @@ const ListEvent = ({ onDelete }) => {
           "Deleted successfully!",
           NOTIFICATION_DURATION
         );
+        setSelectedEvents([]);
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
           () => fetchAllEvents({ type, page })
@@ -108,6 +109,7 @@ const ListEvent = ({ onDelete }) => {
           "Multiple events deleted successfully!",
           NOTIFICATION_DURATION
         );
+        setSelectedEvents([]);
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
           () => fetchAllEvents({ type, page })
@@ -168,6 +170,7 @@ const ListEvent = ({ onDelete }) => {
 
   const onPageChange = (current, pageSize) => {
     // change the route
+    setSelectedEvents([]);
     navigate({
       pathname: location.pathname,
       search: `?${createSearchParams({
@@ -202,7 +205,7 @@ const ListEvent = ({ onDelete }) => {
             )}
             <Tabs
               index={getTabIndexFromTabType(type)}
-              onChange={(index) =>
+              onChange={(index) => {
                 navigate({
                   pathname: location.pathname,
                   search: `?${createSearchParams({
@@ -211,8 +214,9 @@ const ListEvent = ({ onDelete }) => {
                     page: 1,
                     size,
                   })}`,
-                })
-              }
+                });
+                setSelectedEvents([]);
+              }}
             >
               <TabList className="customTabs">
                 {Object.keys(TAB_TYPES).map((tab, index) => (

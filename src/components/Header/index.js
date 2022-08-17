@@ -46,7 +46,7 @@ const Header = ({ onOpen }) => {
           icon={<FiMenu />}
           size="sm"
         />
-        <InputGroup
+        {/* <InputGroup
           w="96"
           display={{
             base: "none",
@@ -57,7 +57,7 @@ const Header = ({ onOpen }) => {
             <FiSearch />
           </InputLeftElement>
           <Input placeholder="Search for articles..." />
-        </InputGroup>
+        </InputGroup> */}
 
         {/* <Flex align="center">
           <Icon color="gray.500" as={FaBell} cursor="pointer" />
