@@ -110,7 +110,10 @@ const EventTable = ({
                   </AvatarGroup>
                 </Td>
                 <Td>{data?.title}</Td>
-                <Td>{format(parseISO(data.dates), "dd MMM yyyy, hh:mm a")}</Td>
+                <Td>
+                  {data?.dates &&
+                    format(parseISO(data.dates), "dd MMM yyyy, hh:mm a")}
+                </Td>
                 <Td>{data?.genre}</Td>
                 <Td>{formatCurrency(data?.price)}</Td>
                 <Td>
