@@ -235,6 +235,16 @@ const NAV_ITEMS = [
   },
   {
     id: uuid(),
+    title: "Popular Events",
+    link: "/events/popular",
+  },
+  {
+    id: uuid(),
+    title: "Upcoming Events",
+    link: "/events/upcoming",
+  },
+  {
+    id: uuid(),
     title: "Logout",
     icon: MdLogout,
     action: () => {

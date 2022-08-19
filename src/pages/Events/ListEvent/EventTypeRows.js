@@ -12,6 +12,7 @@ const EventTypeRows = ({
   WrappingComponent = Td,
   mostPopularText = "",
   upcomingText = "",
+  eventType = TAB_TYPES.all,
 }) => {
   const [isMostPopular, setIsMostPopular] = useState(() => event.mostPopular);
   const [isUpcoming, setIsUpcoming] = useState(() => event.upComing);
@@ -26,11 +27,7 @@ const EventTypeRows = ({
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
-  const {
-    type = TAB_TYPES.all,
-    page = START_PAGE,
-    size = PER_PAGE,
-  } = queryParams;
+  const { type = eventType, page = START_PAGE, size = PER_PAGE } = queryParams;
 
   const removeExistingToasts = () => {
     if (toastId.current) {

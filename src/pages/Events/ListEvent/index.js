@@ -28,8 +28,8 @@ export const TAB_TYPES = {
   all: "all",
   pending: "pending",
   approved: "approved",
-  popular: "popular",
-  upcoming: "upcoming",
+  // popular: "popular",
+  // upcoming: "upcoming",
 };
 
 export const START_PAGE = 1;
@@ -39,7 +39,7 @@ const getTabTypesFromIndex = (index) => Object.keys(TAB_TYPES)[index];
 const getTabIndexFromTabType = (type) =>
   Object.keys(TAB_TYPES).findIndex((tabType) => tabType === type) || 0;
 
-const ListEvent = ({ onDelete }) => {
+const ListEvent = () => {
   const toastId = useRef("");
   const removeExistingToasts = () => {
     if (toastId.current) {
@@ -235,6 +235,7 @@ const ListEvent = ({ onDelete }) => {
                       onStatusChange={onStatusChange}
                       selectedEvents={selectedEvents}
                       setSelectedEvents={(events) => setSelectedEvents(events)}
+                      eventType={type}
                     />
                     <div className="text-right">
                       <Pagination

@@ -1,8 +1,15 @@
 // BUILD_ prefix is for actual api endpoint
 // QUERY_ prefix is for react-query state management
 
-import { TAB_TYPES } from "../pages/Events/ListEvent";
 import { objectToQueryParams } from "../utils/helpers";
+
+const TAB_TYPES = {
+  all: "all",
+  pending: "pending",
+  approved: "approved",
+  popular: "popular",
+  upcoming: "upcoming",
+};
 
 export const ALL_QUERIES = {
   QUERY_ALL_EVENTS: ({ type = "all", page = 1 }) => ["events", type, page],
@@ -78,6 +85,8 @@ export const APP_PATH = {
   home: "/",
   eventsHome: "/events",
   allEvents: "/events/list",
+  popularEvents: "/events/popular",
+  upcomingEvents: "/events/upcoming",
   createEvent: "/events/new",
   singleEvent: "/events/list/:id",
   catchAll: "*",

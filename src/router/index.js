@@ -20,6 +20,8 @@ import Error404 from "../pages/404";
 import ViewEvent from "../pages/Events/ViewEvent";
 import CreateSlider from "../pages/HeroSlider/CreateSlider";
 import SliderList from "../pages/HeroSlider/SliderList";
+import UpcomingEvents from "../pages/Events/UpcomingEvents";
+import PopularEvents from "../pages/Events/PopularEvents";
 
 function NavigationRoutes() {
   return (
@@ -74,6 +76,26 @@ function NavigationRoutes() {
               <PrivateRoute>
                 <AdminLayout>
                   <ViewEvent />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={APP_PATH.popularEvents}
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <PopularEvents />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={APP_PATH.upcomingEvents}
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <UpcomingEvents />
                 </AdminLayout>
               </PrivateRoute>
             }

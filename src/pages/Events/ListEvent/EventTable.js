@@ -26,6 +26,7 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
 import EventTypeRows from "./EventTypeRows";
 import { useLocation } from "react-router-dom";
+import { TAB_TYPES } from ".";
 
 const EventTable = ({
   events = [],
@@ -33,6 +34,7 @@ const EventTable = ({
   onDelete,
   selectedEvents,
   setSelectedEvents,
+  eventType = TAB_TYPES.all,
 }) => {
   const allSelected = events.every((event) =>
     selectedEvents.includes(event._id)
@@ -155,7 +157,7 @@ const EventTable = ({
                     </div>
                   </ChangeEventStatusPopup>
                 </Td>
-                <EventTypeRows event={data} />
+                <EventTypeRows event={data} eventType={eventType} />
                 <Td>
                   <div className="flex items-center actions-btn">
                     <Link to={`${location.pathname}/${data._id}`}>
