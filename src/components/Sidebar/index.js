@@ -40,7 +40,7 @@ const ConditionalRenderNavbar = ({ navItem }) => {
         </NavItem>
         <Collapse in={integrations.isOpen}>
           {navItem.subItems.map((item) => (
-            <>
+            <React.Fragment key={item.id}>
               {item.link ? (
                 <NavLink
                   to={item.link}
@@ -60,7 +60,7 @@ const ConditionalRenderNavbar = ({ navItem }) => {
                   {item?.title}
                 </NavItem>
               )}
-            </>
+            </React.Fragment>
           ))}
         </Collapse>
       </Box>

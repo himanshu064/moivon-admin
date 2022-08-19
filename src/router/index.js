@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
@@ -10,8 +10,6 @@ import AuthLayout from "../layout/AuthLayout";
 import Login from "../pages/Auth/Login";
 // import ForgotPassword from "../pages/Auth/ForgotPassword";
 // import ResetPassword from "../pages/Auth/ResetPassword";
-
-import Dashboard from "../pages/Dashboard";
 
 import CreateEvent from "../pages/Events/CreateEvent";
 import ListEvent from "../pages/Events/ListEvent";
@@ -103,13 +101,7 @@ function NavigationRoutes() {
         </Route>
         <Route
           path={APP_PATH.home}
-          element={
-            <PrivateRoute>
-              <AdminLayout>
-                <Dashboard />
-              </AdminLayout>
-            </PrivateRoute>
-          }
+          element={<Navigate to="/events/list" replace />}
         />
         <Route
           path="/slider/create"
