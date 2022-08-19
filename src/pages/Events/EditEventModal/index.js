@@ -256,20 +256,20 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
     <>
       {/* <FaRegEdit onClick={onOpen} /> */}
       <FaRegEdit
-        className="cursor-pointer hover:bg-green-500 mr-1"
+        className='cursor-pointer hover:bg-green-500 mr-1'
         onClick={onOpen}
       />
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
-        <RouteTitle title="Edit Event" />
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside'>
+        <RouteTitle title='Edit Event' />
         <ModalOverlay />
-        <ModalContent maxW="900px">
+        <ModalContent maxW='900px'>
           <ModalHeader>Edit Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box px={{ md: "20px" }}>
-              <Stack flexDir="column">
-                <div className="form-div">
-                  <Box w={{ base: "100%" }} bg={"white"} borderRadius="10px">
+              <Stack flexDir='column'>
+                <div className='form-div'>
+                  <Box w={{ base: "100%" }} bg={"white"} borderRadius='10px'>
                     <form
                       className={styles.createForm}
                       ref={editEventFormRef}
@@ -277,7 +277,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                     >
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -295,14 +295,14 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl isRequired>
                             <FormLabel>START DATE:</FormLabel>
                             <Controller
-                              name="startDate"
+                              name='startDate'
                               control={control}
                               render={({ field }) => (
                                 <DatePicker
@@ -310,7 +310,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                                   selected={field.value}
                                   onChange={field.onChange}
                                   showTimeSelect
-                                  dateFormat="Pp"
+                                  dateFormat='Pp'
                                 />
                               )}
                             />
@@ -320,7 +320,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                           <FormControl isRequired>
                             <FormLabel>END DATE:</FormLabel>
                             <Controller
-                              name="endDate"
+                              name='endDate'
                               control={control}
                               render={({ field }) => (
                                 <DatePicker
@@ -328,7 +328,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                                   selected={field.value}
                                   onChange={field.onChange}
                                   showTimeSelect
-                                  dateFormat="Pp"
+                                  dateFormat='Pp'
                                 />
                               )}
                             />
@@ -338,7 +338,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                           <FormControl>
                             <FormLabel>GENRE:</FormLabel>
                             <Select
-                              placeholder="Select option"
+                              placeholder='Select option'
                               {...register("genre")}
                             >
                               {!allGenresLoading &&
@@ -353,7 +353,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -371,39 +371,39 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
-                        <Box w="100%">
+                        <Box w='100%'>
                           <FormControl isRequired>
                             <FormLabel>DESCRIPTION:</FormLabel>
-                            <Textarea {...register("description")} rows="5" />
+                            <Textarea {...register("description")} rows='5' />
                           </FormControl>
                         </Box>
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl>
                             <FormLabel>UPLOAD EVENT:</FormLabel>
                             <Input
-                              type="file"
+                              type='file'
                               multiple
                               style={{ paddingTop: "4px" }}
                               onChange={onImageChange}
-                              accept="image/*"
+                              accept='image/*'
                               ref={fileUploadRef}
                             />
                           </FormControl>
-                          <p className="text-xs mt-2 text-green-600">
+                          <p className='text-xs mt-2 text-green-600'>
                             UPLOAD UP TO {MAX_ALLOWED_IMAGES} IMAGES/ VIDEOS (
                             {MAX_IMAGE_SIZE_IN_MB} MB MAX)
                           </p>
                         </Box>
-                        <Box marginBottom="4">
+                        <Box marginBottom='4'>
                           <UploadImageView
                             allImages={images}
                             onDelete={onDeleteImage}
@@ -412,29 +412,29 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing="24px"
+                        spacing='24px'
                         mb={5}
                       >
-                        <Box w="100%">
+                        <Box w='100%'>
                           <FormControl isRequired>
                             <FormLabel>
                               DESCRIBE YOUR EVENT ORGANIZATION:
                             </FormLabel>
                             <Textarea
                               {...register("eventOrgDetail")}
-                              rows="5"
+                              rows='5'
                             />
                           </FormControl>
                         </Box>
                       </Stack>
-                      <Stack spacing={5} direction="row">
+                      <Stack spacing={5} direction='row'>
                         <Checkbox
-                          colorScheme="blue"
+                          colorScheme='blue'
                           {...register("mostPopular")}
                         >
                           Most Popular Event
                         </Checkbox>
-                        <Checkbox colorScheme="green" {...register("upComing")}>
+                        <Checkbox colorScheme='green' {...register("upComing")}>
                           Upcoming Event
                         </Checkbox>
                       </Stack>
@@ -446,14 +446,14 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
           </ModalBody>
           <ModalFooter>
             <Button
-              type="button"
+              type='button'
               onClick={() => {
                 editEventFormRef.current.dispatchEvent(
                   new Event("submit", { cancelable: true, bubbles: true })
                 );
               }}
-              size="lg"
-              className="bg-primary text-white"
+              size='lg'
+              className='bg-primary text-white'
               disabled={!isValid}
             >
               Update Event

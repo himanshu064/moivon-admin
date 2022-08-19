@@ -47,12 +47,12 @@ const EventTable = ({
       <TableContainer
         style={{ border: "1px solid #eceff5", marginTop: "10px" }}
       >
-        <Table size="sm" variant="simple" className="list-event">
+        <Table size='sm' variant='simple' className='list-event'>
           <Thead>
             <Tr>
               <Th>
                 <Checkbox
-                  className="custom-checkbox"
+                  className='custom-checkbox'
                   isChecked={allSelected}
                   onChange={(e) => {
                     const { checked } = e.target;
@@ -101,11 +101,11 @@ const EventTable = ({
                         );
                       }
                     }}
-                    className="custom-checkbox"
+                    className='custom-checkbox'
                   ></Checkbox>
                 </Td>
                 <Td>
-                  <AvatarGroup size="md" max={2}>
+                  <AvatarGroup size='md' max={2}>
                     {data.images.map((img, idx) => {
                       const src = prepareImageSrc(img.image);
                       return <Avatar key={`image_${idx}`} src={src} />;
@@ -122,7 +122,9 @@ const EventTable = ({
                     format(parseISO(data.endDate), "dd MMM yyyy, hh:mm a")}
                 </Td>
                 <Td>{data?.genre?.genre}</Td>
-                <Td>{formatCurrency(data?.price)}</Td>
+                <Td>
+                  {data?.price !== 0 ? formatCurrency(data?.price) : "FREE"}
+                </Td>
                 <Td>
                   <Text> {data.location}</Text>
                 </Td>
@@ -141,7 +143,7 @@ const EventTable = ({
                       onStatusChange(data?._id, status)
                     }
                   >
-                    <div className="flex items-center gap-x-1 cursor-pointer">
+                    <div className='flex items-center gap-x-1 cursor-pointer'>
                       <Highlight
                         query={data.published ? "Approved" : "Pending"}
                         styles={{
@@ -159,16 +161,16 @@ const EventTable = ({
                 </Td>
                 <EventTypeRows event={data} eventType={eventType} />
                 <Td>
-                  <div className="flex items-center actions-btn">
+                  <div className='flex items-center actions-btn'>
                     <Link to={`${location.pathname}/${data._id}`}>
-                      <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
+                      <FaRegEye className='cursor-pointer hover:bg-blue-800 mr-1' />
                     </Link>
                     <EditEventModal event={data} eventType={eventType} />
                     <ConfirmDialog
-                      type="Event"
+                      type='Event'
                       onChildrenClick={() => onDelete(data._id)}
                     >
-                      <RiDeleteBinLine className="cursor-pointer hover:bg-red-500" />
+                      <RiDeleteBinLine className='cursor-pointer hover:bg-red-500' />
                     </ConfirmDialog>
                   </div>
                 </Td>
