@@ -14,7 +14,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { fetchSingleEvent } from "../../../services/events";
 import Loader from "../../../components/Loader";
 import { ALL_QUERIES } from "../../../api/endpoints";
-import { formatCurrency } from "../../../utils/helpers";
+import { formatCurrency, getMapsLocation } from "../../../utils/helpers";
 import { prepareImageSrc } from "../../../api";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import EventTypeRows from "../ListEvent/EventTypeRows";
@@ -170,7 +170,19 @@ const ViewEvent = () => {
                       <IoLocationOutline />
                       <div className="div">
                         <h4>Venue</h4>
-                        <p>{singleEventData?.data?.data?.venue}</p>
+                        <a
+                          href={
+                            singleEventData?.data?.data?.venue
+                              ? getMapsLocation(
+                                  singleEventData?.data?.data?.venue
+                                )
+                              : "#"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p>{singleEventData?.data?.data?.venue}</p>
+                        </a>
                       </div>
                     </div>
                   </Box>
@@ -190,12 +202,25 @@ const ViewEvent = () => {
                           <h4>Location</h4>
                           <p>
                             <a
+                              href={
+                                singleEventData?.data?.data?.venue
+                                  ? getMapsLocation(
+                                      singleEventData?.data?.data?.venue
+                                    )
+                                  : "#"
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <p>{singleEventData?.data?.data?.location}</p>
+                            </a>
+                            {/* <a
                               rel="noopener noreferrer"
                               target="_blank"
                               href={singleEventData?.data?.data?.location}
                             >
                               {singleEventData?.data?.data?.location}
-                            </a>
+                            </a> */}
                           </p>
                         </div>
                       </div>

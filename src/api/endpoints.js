@@ -89,5 +89,7 @@ export const APP_PATH = {
   upcomingEvents: "/events/upcoming",
   createEvent: "/events/new",
   singleEvent: "/events/list/:id",
+  popularSingleEvent: "/events/popular/:id",
+  upcomingSingleEvent: "/events/upcoming/:id",
   catchAll: "*",
 };

@@ -163,7 +163,7 @@ const EventTable = ({
                     <Link to={`${location.pathname}/${data._id}`}>
                       <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
                     </Link>
-                    <EditEventModal event={data} />
+                    <EditEventModal event={data} eventType={eventType} />
                     <ConfirmDialog
                       type="Event"
                       onChildrenClick={() => onDelete(data._id)}

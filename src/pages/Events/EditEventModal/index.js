@@ -55,7 +55,7 @@ const validationSchema = yup.object({
   price: yup.number("Invalid price").required("Required"),
 });
 
-const EditEventModal = ({ event }) => {
+const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
   const queryClient = useQueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [images, setImages] = useState([]);
@@ -70,11 +70,7 @@ const EditEventModal = ({ event }) => {
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
-  const {
-    type = TAB_TYPES.all,
-    page = START_PAGE,
-    size = PER_PAGE,
-  } = queryParams;
+  const { type = eventType, page = START_PAGE, size = PER_PAGE } = queryParams;
 
   const resetImageInput = () => {
     if (fileUploadRef.current) {

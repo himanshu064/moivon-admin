@@ -98,6 +98,36 @@ function NavigationRoutes() {
               </PrivateRoute>
             }
           />
+          <Route
+            path={APP_PATH.popularSingleEvent}
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <ViewEvent />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={APP_PATH.upcomingSingleEvent}
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <ViewEvent />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={APP_PATH.upcomingEvents}
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <UpcomingEvents />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
         </Route>
         <Route
           path={APP_PATH.home}

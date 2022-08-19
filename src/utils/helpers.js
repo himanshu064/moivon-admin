@@ -25,3 +25,21 @@ export function capitalizeFirstLetter(string) {
   if (!string) return null;
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export const getMapsLocation = (location) => {
+  if (!location) return null;
+  if (typeof location !== "string") return null;
+
+  if (isValidURL(location)) {
+    return location;
+  }
+
+  return `https://www.google.com/maps/place/${encodeURIComponent(location)}`;
+};
+
+export function isValidURL(string) {
+  var res = string.match(
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+  );
+  return res !== null;
+}
