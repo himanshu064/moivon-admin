@@ -47,21 +47,38 @@ const EventTypeRows = ({
     {
       onSuccess: () => {
         removeExistingToasts();
-        const successId = toast.success("Event type updated!");
+        toastId.current = toast.success("Event type updated!");
         // refetch queries
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
           () => fetchAllEvents({ type, page, size })
         );
-        setTimeout(() => toast.remove(successId), 3000);
       },
     }
   );
 
   const onEventTypeChange = (_event, key, value) => {
+    removeExistingToasts();
     // key can be upComing or mostPopular, value can be true or false
+    if (key === "mostPopular") {
+      // check total count!
+      const data = queryClient.getQueryData(
+        ALL_QUERIES.QUERY_ALL_EVENTS({ type, page })
+      );
+      if (data?.data?.totalMostPopular >= 3 && value) {
+        toastId.current = toast.error(
+          "Cannot add more than 3 events to most favorite!"
+        );
+        return;
+      }
+    }
+    const setterFn = key === "mostPopular" ? setIsMostPopular : setIsUpcoming;
+    setterFn(value);
     mutation.mutate({
       ..._event,
+      genre: _event.genre?._id,
+      startDate: _event.startDate,
+      endDate: _event.endDate,
       [key]: value,
     });
   };
@@ -73,7 +90,7 @@ const EventTypeRows = ({
           colorScheme="blue"
           isChecked={isMostPopular}
           onChange={(e) => {
-            setIsMostPopular(e.target.checked);
+            // setIsMostPopular(e.target.checked);
             onEventTypeChange(event, "mostPopular", e.target.checked);
           }}
         >
@@ -89,7 +106,7 @@ const EventTypeRows = ({
           colorScheme="green"
           isChecked={isUpcoming}
           onChange={(e) => {
-            setIsUpcoming(e.target.checked);
+            // setIsUpcoming(e.target.checked);
             onEventTypeChange(event, "upComing", e.target.checked);
           }}
         >

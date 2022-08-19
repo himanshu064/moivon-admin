@@ -1,7 +1,11 @@
 import axios from "axios";
 import { HEADERS } from "../constants";
 import { refreshAccessToken } from "../services/auth";
-import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
+import {
+  deleteLocalStorage,
+  getLocalStorage,
+  setLocalStorage,
+} from "../utils/localStorage";
 
 export const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 const API_BASE_URL = `${BASE_URL}`;
@@ -40,6 +44,10 @@ axiosInstance.interceptors.response.use(
         auth.token = data.newToken;
         setLocalStorage("auth", auth);
         return axiosInstance(originalRequest);
+      } else if (error.response.status === 401) {
+        // logout user
+        deleteLocalStorage("auth");
+        window.location.reload();
       }
       return Promise.reject(error);
     } catch (err) {

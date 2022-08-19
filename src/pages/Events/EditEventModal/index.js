@@ -27,7 +27,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteEventImage,
   fetchAllEvents,
@@ -45,11 +45,13 @@ import { useSearchParams } from "react-router-dom";
 import { PER_PAGE, START_PAGE, TAB_TYPES } from "../ListEvent";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import { prepareImageSrc } from "../../../api";
+import { fetchAllGenres } from "../../../services/genre";
 
 const validationSchema = yup.object({
   title: yup.string().required("Required"),
   description: yup.string().required("Required"),
-  dates: yup.date("Invalid Date").required("Required"),
+  startDate: yup.date("Invalid Date").required("Required"),
+  endDate: yup.date("Invalid Date").required("Required"),
   price: yup.number("Invalid price").required("Required"),
 });
 
@@ -97,7 +99,9 @@ const EditEventModal = ({ event }) => {
       updateEventImages();
       const config = { shouldTouch: true, shouldDirty: true };
       setValue("title", event.title, config);
-      setValue("dates", new Date(event.dates), config);
+      setValue("startDate", new Date(event.startDate), config);
+      setValue("endDate", new Date(event.endDate), config);
+      setValue("genre", event?.genre?._id, config);
       setValue("price", event.price, config);
       setValue("location", event.location, config);
       setValue("description", event.description, config);
@@ -112,6 +116,11 @@ const EditEventModal = ({ event }) => {
   }, [isOpen, eventImagesLength]);
 
   const resolver = yupResolver(validationSchema);
+
+  const { data: allGenres, isLoading: allGenresLoading } = useQuery(
+    ALL_QUERIES.QUERY_ALL_GENRES(),
+    fetchAllGenres
+  );
 
   const mutation = useMutation(
     (newQuery) =>
@@ -194,10 +203,11 @@ const EditEventModal = ({ event }) => {
       data,
     });
   };
-
   const defaultValues = {
     title: event.title,
-    dates: new Date(event.dates),
+    startDate: new Date(event.startDate),
+    endDate: new Date(event.endDate),
+    genre: event.genre?._id,
     price: event.price,
     location: event.location,
     description: event.description,
@@ -294,9 +304,27 @@ const EditEventModal = ({ event }) => {
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl isRequired>
-                            <FormLabel>DATE:</FormLabel>
+                            <FormLabel>START DATE:</FormLabel>
                             <Controller
-                              name="dates"
+                              name="startDate"
+                              control={control}
+                              render={({ field }) => (
+                                <DatePicker
+                                  className={styles.datePicker}
+                                  selected={field.value}
+                                  onChange={field.onChange}
+                                  showTimeSelect
+                                  dateFormat="Pp"
+                                />
+                              )}
+                            />
+                          </FormControl>
+                        </Box>
+                        <Box w={{ md: "50%" }}>
+                          <FormControl isRequired>
+                            <FormLabel>END DATE:</FormLabel>
+                            <Controller
+                              name="endDate"
                               control={control}
                               render={({ field }) => (
                                 <DatePicker
@@ -313,10 +341,16 @@ const EditEventModal = ({ event }) => {
                         <Box w={{ md: "50%" }}>
                           <FormControl>
                             <FormLabel>GENRE:</FormLabel>
-                            <Select placeholder="Select option">
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
+                            <Select
+                              placeholder="Select option"
+                              {...register("genre")}
+                            >
+                              {!allGenresLoading &&
+                                allGenres?.data?.data?.map((genre) => (
+                                  <option key={genre._id} value={genre._id}>
+                                    {genre.genre}
+                                  </option>
+                                ))}
                             </Select>
                           </FormControl>
                         </Box>

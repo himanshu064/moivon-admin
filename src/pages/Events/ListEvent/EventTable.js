@@ -64,7 +64,8 @@ const EventTable = ({
               </Th>
               <Th>Event</Th>
               <Th>Title</Th>
-              <Th>Date</Th>
+              <Th>Start Date</Th>
+              <Th>End Date</Th>
               <Th>Genre</Th>
               <Th>Price</Th>
               <Th>Location</Th>
@@ -111,10 +112,14 @@ const EventTable = ({
                 </Td>
                 <Td>{data?.title}</Td>
                 <Td>
-                  {data?.dates &&
-                    format(parseISO(data.dates), "dd MMM yyyy, hh:mm a")}
+                  {data?.startDate &&
+                    format(parseISO(data.startDate), "dd MMM yyyy, hh:mm a")}
                 </Td>
-                <Td>{data?.genre}</Td>
+                <Td>
+                  {data?.endDate &&
+                    format(parseISO(data.endDate), "dd MMM yyyy, hh:mm a")}
+                </Td>
+                <Td>{data?.genre?.genre}</Td>
                 <Td>{formatCurrency(data?.price)}</Td>
                 <Td>
                   <Text> {data.location}</Text>

@@ -73,7 +73,11 @@ const ViewEvent = () => {
                     <h2 className="text-primary">
                       {singleEventData?.data?.data?.title}
                     </h2>
-                    {/* <span className={styles.type}>Classic</span> */}
+                    {singleEventData?.data?.data?.genre && (
+                      <span className={styles.type}>
+                        {singleEventData?.data?.data?.genre?.genre}
+                      </span>
+                    )}
                     <div className="flex items-center gap-x-1 cursor-pointer">
                       <Highlight
                         query={
@@ -130,10 +134,20 @@ const ViewEvent = () => {
                       <BsCalendarWeek />
                       <div className="div">
                         <h4>Date</h4>
-                        {format(
-                          new Date(singleEventData?.data?.data?.dates),
-                          "LLLL, dd LLL yyyy, hh:MM a"
-                        )}
+                        <p>
+                          {format(
+                            new Date(singleEventData?.data?.data?.startDate),
+                            "LLLL, dd LLL yyyy, hh:MM a"
+                          )}{" "}
+                          -
+                        </p>
+
+                        <p>
+                          {format(
+                            new Date(singleEventData?.data?.data?.endDate),
+                            "LLLL, dd LLL yyyy, hh:MM a"
+                          )}
+                        </p>
                       </div>
                     </div>
                   </Box>
