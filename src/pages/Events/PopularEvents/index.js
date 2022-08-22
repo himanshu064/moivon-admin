@@ -195,6 +195,7 @@ const PopularEvents = () => {
                     selectedEvents={selectedEvents}
                     setSelectedEvents={(events) => setSelectedEvents(events)}
                     eventType={type}
+                    currentPage={page}
                   />
                   <div className="text-right">
                     <Pagination
