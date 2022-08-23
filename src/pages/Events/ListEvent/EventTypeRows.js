@@ -27,7 +27,13 @@ const EventTypeRows = ({
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
-  const { type = eventType, page = START_PAGE, size = PER_PAGE } = queryParams;
+  const {
+    type = eventType,
+    page = START_PAGE,
+    size = PER_PAGE,
+    sortBy,
+    orderBy,
+  } = queryParams;
 
   const removeExistingToasts = () => {
     if (toastId.current) {
@@ -47,8 +53,14 @@ const EventTypeRows = ({
         toastId.current = toast.success("Event type updated!");
         // refetch queries
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page, size })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () =>
+            fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
         );
       },
     }
@@ -60,11 +72,16 @@ const EventTypeRows = ({
     if (key === "mostPopular") {
       // check total count!
       const data = queryClient.getQueryData(
-        ALL_QUERIES.QUERY_ALL_EVENTS({ type, page })
+        ALL_QUERIES.QUERY_ALL_EVENTS({
+          type,
+          page,
+          sort: sortBy,
+          order: orderBy,
+        })
       );
       if (data?.data?.totalMostPopular >= 3 && value) {
         toastId.current = toast.error(
-          "Cannot add more than 3 events to most favorite!"
+          "Cannot add more than 3 events to most popular!"
         );
         return;
       }

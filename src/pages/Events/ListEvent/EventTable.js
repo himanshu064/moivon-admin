@@ -14,7 +14,7 @@ import {
   Text,
   Highlight,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { createSearchParams, Link, useSearchParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
 import { FaRegEye } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -29,7 +29,8 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import ChangeEventStatusPopup from "../../../components/ChangeEventStatusPopup";
 import EventTypeRows from "./EventTypeRows";
 import { useLocation } from "react-router-dom";
-import { PER_PAGE, TAB_TYPES } from ".";
+import { EVENT_TABLES, TAB_TYPES } from ".";
+import SortColumn from "./SortColumn";
 
 const EventTable = ({
   events = [],
@@ -38,13 +39,29 @@ const EventTable = ({
   selectedEvents,
   setSelectedEvents,
   eventType = TAB_TYPES.all,
-  currentPage = 1,
+  onSortColumn,
+  tableType,
 }) => {
   const allSelected = events.every((event) =>
     selectedEvents.includes(event._id)
   );
 
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const queryParams = Object.fromEntries([...searchParams]) || {};
+  const { sortBy = "", orderBy = "" } = queryParams;
+
+  const getSortOrder = (key) => {
+    if (sortBy !== key) {
+      return "";
+    }
+
+    if (sortBy === key && orderBy === "asc") {
+      return "asc";
+    } else if (sortBy === key && orderBy === "desc") {
+      return "desc";
+    }
+  };
 
   return (
     <Box w={{ base: "100%" }} bg={"white"}>
@@ -68,16 +85,46 @@ const EventTable = ({
                   }}
                 ></Checkbox>
               </Th>
-              <Th>No.</Th>
+              {tableType && <Th>Sequence No.</Th>}
               <Th>Event</Th>
-              <Th>Title</Th>
-              <Th>Start Date</Th>
+              <SortColumn
+                name="Title"
+                sortBy="title"
+                orderBy={getSortOrder("title")}
+                onSort={onSortColumn}
+              />
+              {/* <Th>Event</Th> */}
+              <SortColumn
+                name="Start Date"
+                sortBy="startDate"
+                orderBy={getSortOrder("startDate")}
+                onSort={onSortColumn}
+              />
+              {/* <Th>Start Date</Th> */}
               <Th>End Date</Th>
-              <Th>Genre</Th>
-              <Th>Price</Th>
+              <SortColumn
+                name="Genre"
+                sortBy="genre"
+                orderBy={getSortOrder("genre")}
+                onSort={onSortColumn}
+              />
+              {/* <Th>Genre</Th> */}
+              <SortColumn
+                name="Price"
+                sortBy="price"
+                orderBy={getSortOrder("price")}
+                onSort={onSortColumn}
+              />
+              {/* <Th>Price</Th> */}
               <Th>Location</Th>
               <Th>Description</Th>
-              <Th>Venue</Th>
+              <SortColumn
+                name="Venue"
+                sortBy="venue"
+                orderBy={getSortOrder("venue")}
+                onSort={onSortColumn}
+              />
+              {/* <Th>Venue</Th> */}
               <Th>Oranganisation</Th>
               <Th>Status</Th>
               <Th>Most Popular</Th>
@@ -109,13 +156,19 @@ const EventTable = ({
                     className="custom-checkbox"
                   ></Checkbox>
                 </Td>
-                <Td>
+                {/* <Td>
                   {getPaginatedRecordNumber({
                     page: currentPage,
                     index: idx,
                     per_page: PER_PAGE,
                   })}
-                </Td>
+                </Td> */}
+                {tableType && tableType === EVENT_TABLES.popular && (
+                  <Td>{data.mostPopularSeq || "-"}</Td>
+                )}
+                {tableType && tableType === EVENT_TABLES.upcoming && (
+                  <Td>{data.upComingSeq || "-"}</Td>
+                )}
                 <Td>
                   <AvatarGroup size="md" max={2}>
                     {data.images.map((img, idx) => {
@@ -177,7 +230,11 @@ const EventTable = ({
                     <Link to={`${location.pathname}/${data._id}`}>
                       <FaRegEye className="cursor-pointer hover:bg-blue-800 mr-1" />
                     </Link>
-                    <EditEventModal event={data} eventType={eventType} />
+                    <EditEventModal
+                      event={data}
+                      eventType={eventType}
+                      tableType={tableType}
+                    />
                     <ConfirmDialog
                       type="Event"
                       onChildrenClick={() => onDelete(data._id)}

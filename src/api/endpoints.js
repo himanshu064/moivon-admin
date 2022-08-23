@@ -12,7 +12,10 @@ const TAB_TYPES = {
 };
 
 export const ALL_QUERIES = {
-  QUERY_ALL_EVENTS: ({ type = "all", page = 1 }) => ["events", type, page],
+  QUERY_ALL_EVENTS: ({ type = "all", page = 1, sort, order }) => [
+    "events",
+    { type, page, sort, order },
+  ],
   QUERY_SINGLE_EVENT: (eventId) => ["event", eventId],
   QUERY_ALL_GENRES: () => ["genres"],
 
@@ -21,11 +24,18 @@ export const ALL_QUERIES = {
 };
 
 export const ALL_ENDPOINTS = {
-  BUILD_GET_ALL_EVENTS: ({ page, type, size }) => {
+  BUILD_GET_ALL_EVENTS: ({ page, type, size, sort, order }) => {
     const data = {
       page,
       size,
     };
+
+    if (sort) {
+      data["sort"] = sort;
+    }
+    if (order) {
+      data["order"] = order;
+    }
 
     if (type === TAB_TYPES.pending) {
       data.published = false;

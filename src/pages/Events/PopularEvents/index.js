@@ -17,7 +17,7 @@ import {
   fetchAllEvents,
   updateEventStatus,
 } from "../../../services/events";
-import { PER_PAGE, START_PAGE } from "../ListEvent";
+import { EVENT_TABLES, PER_PAGE, START_PAGE } from "../ListEvent";
 import EventTable from "../ListEvent/EventTable";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import Loader from "../../../components/Loader";
@@ -195,7 +195,7 @@ const PopularEvents = () => {
                     selectedEvents={selectedEvents}
                     setSelectedEvents={(events) => setSelectedEvents(events)}
                     eventType={type}
-                    currentPage={page}
+                    tableType={EVENT_TABLES.popular}
                   />
                   <div className="text-right">
                     <Pagination

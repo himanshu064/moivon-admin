@@ -1,0 +1,10 @@
+.sortColumnContainer {
+  display: flex;
+  align-items: center;
+}
+.sortIconsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

@@ -39,6 +39,11 @@ const getTabTypesFromIndex = (index) => Object.keys(TAB_TYPES)[index];
 const getTabIndexFromTabType = (type) =>
   Object.keys(TAB_TYPES).findIndex((tabType) => tabType === type) || 0;
 
+export const EVENT_TABLES = {
+  upcoming: "upcoming",
+  popular: "popular",
+};
+
 const ListEvent = () => {
   const toastId = useRef("");
   const removeExistingToasts = () => {
@@ -52,6 +57,8 @@ const ListEvent = () => {
     type = TAB_TYPES.all,
     page = START_PAGE,
     size = PER_PAGE,
+    sortBy,
+    orderBy,
   } = queryParams;
 
   const navigate = useNavigate();
@@ -64,8 +71,9 @@ const ListEvent = () => {
     isLoading,
     isError,
     error,
-  } = useQuery(ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }), () =>
-    fetchAllEvents({ type, page, size })
+  } = useQuery(
+    ALL_QUERIES.QUERY_ALL_EVENTS({ type, page, sort: sortBy, order: orderBy }),
+    () => fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
   );
 
   const commonErrorHandler = (error) => {
@@ -92,8 +100,14 @@ const ListEvent = () => {
         );
         setSelectedEvents([]);
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () =>
+            fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
         );
         removeExistingToasts();
       },
@@ -112,10 +126,15 @@ const ListEvent = () => {
         );
         setSelectedEvents([]);
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () =>
+            fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
         );
-        removeExistingToasts();
       },
       onError: commonErrorHandler,
     }
@@ -135,8 +154,14 @@ const ListEvent = () => {
           NOTIFICATION_DURATION
         );
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () =>
+            fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
         );
         removeExistingToasts();
       },
@@ -153,9 +178,6 @@ const ListEvent = () => {
       isPublished,
     });
   };
-
-  if (isLoading) return <Loader />;
-  if (isError) return <h1>Error = {error.toString()}</h1>;
 
   const onDeleteEvent = (eventId) => {
     removeExistingToasts();
@@ -181,6 +203,31 @@ const ListEvent = () => {
       })}`,
     });
   };
+
+  const onSortColumn = (sortBy, orderBy) => {
+    navigate({
+      pathname: location.pathname,
+      search: `?${createSearchParams({
+        ...queryParams,
+        // [sortBy]: orderBy,
+        sortBy,
+        orderBy,
+      })}`,
+    });
+    console.log({ type, page, sort: sortBy, order: orderBy }, "do do do");
+    queryClient.refetchQueries(
+      ALL_QUERIES.QUERY_ALL_EVENTS({
+        type,
+        page,
+        sort: sortBy,
+        order: orderBy,
+      }),
+      () => fetchAllEvents({ type, page, sort: sortBy, order: orderBy })
+    );
+  };
+
+  if (isLoading) return <Loader />;
+  if (isError) return <h1>Error = {error.toString()}</h1>;
 
   return (
     <>
@@ -227,7 +274,7 @@ const ListEvent = () => {
                 ))}
               </TabList>
               <div className="tab-panels">
-                {eventsData?.data?.data?.length > 0 ? (
+                {!isLoading && eventsData?.data?.data?.length > 0 ? (
                   <React.Fragment>
                     <EventTable
                       events={eventsData?.data?.data}
@@ -236,7 +283,7 @@ const ListEvent = () => {
                       selectedEvents={selectedEvents}
                       setSelectedEvents={(events) => setSelectedEvents(events)}
                       eventType={type}
-                      currentPage={page}
+                      onSortColumn={onSortColumn}
                     />
                     <div className="text-right">
                       <Pagination

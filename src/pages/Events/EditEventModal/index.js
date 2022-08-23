@@ -42,10 +42,12 @@ import { MAX_ALLOWED_IMAGES, MAX_IMAGE_SIZE_IN_MB } from "../../../constants";
 import UploadImageView from "../../../components/UploadImageView";
 import { ALL_QUERIES } from "../../../api/endpoints";
 import { useSearchParams } from "react-router-dom";
-import { PER_PAGE, START_PAGE, TAB_TYPES } from "../ListEvent";
+import { EVENT_TABLES, PER_PAGE, START_PAGE, TAB_TYPES } from "../ListEvent";
 import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import { prepareImageSrc } from "../../../api";
 import { fetchAllGenres } from "../../../services/genre";
+
+const MAX_ALLOWED_MOST_POPULAR_EVENT_SEQUENCE = 3;
 
 const validationSchema = yup.object({
   title: yup.string().required("Required"),
@@ -53,9 +55,11 @@ const validationSchema = yup.object({
   startDate: yup.date("Invalid Date").required("Required"),
   endDate: yup.date("Invalid Date").required("Required"),
   price: yup.number("Invalid price").required("Required"),
+  // mostPopularSeq: yup.number("Invalid number").required("Required"),
+  // upComingSeq: yup.number("Invalid number").required("Required"),
 });
 
-const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
+const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
   const queryClient = useQueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [images, setImages] = useState([]);
@@ -70,7 +74,13 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
 
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries([...searchParams]) || {};
-  const { type = eventType, page = START_PAGE, size = PER_PAGE } = queryParams;
+  const {
+    type = eventType,
+    page = START_PAGE,
+    size = PER_PAGE,
+    sortBy,
+    orderBy,
+  } = queryParams;
 
   const resetImageInput = () => {
     if (fileUploadRef.current) {
@@ -105,6 +115,15 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
       setValue("eventOrgDetail", event.eventOrgDetail, config);
       setValue("mostPopular", event.mostPopular, config);
       setValue("upComing", event.upComing, config);
+      // setValue("mostPopularSeq", event.mostPopularSeq, config);
+      // setValue("upComingSeq", event.upComingSeq, config);
+      if (tableType === EVENT_TABLES.popular) {
+        setValue("mostPopularSeq", event.mostPopularSeq, config);
+      }
+
+      if (tableType === EVENT_TABLES.upcoming) {
+        setValue("upComingSeq", event.upComingSeq, config);
+      }
     } else {
       resetImageInput();
       removeExistingToasts();
@@ -133,8 +152,14 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
         setImages([]);
         // refetch queries
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page, size })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () =>
+            fetchAllEvents({ type, page, size, sort: sortBy, order: orderBy })
         );
         setTimeout(() => toast.remove(successId), 3000);
         onClose();
@@ -191,9 +216,27 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
   };
 
   const onUpdateEvent = (data) => {
+    let isMostPopularChecked = getValues("mostPopular");
+    if (event.mostPopular) {
+      isMostPopularChecked = false;
+    }
+    // cannot add more than 3 events as most favorite
+    const cachedData = queryClient.getQueryData(
+      ALL_QUERIES.QUERY_ALL_EVENTS({ type, page, sort: sortBy, order: orderBy })
+    );
+    if (cachedData?.data?.totalMostPopular >= 3 && isMostPopularChecked) {
+      toastId.current = toast.error(
+        "Cannot add more than 3 events to most favorite!"
+      );
+      return;
+    }
+
+    // cannot
+
     removeExistingToasts();
     toastId.current = toast.loading("Updating event...");
     data.published = event.published;
+
     mutation.mutate({
       images: images.map((image) => image.raw),
       data,
@@ -217,6 +260,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
     formState: { isSubmitting, isDirty, isValid },
     reset,
     setValue,
+    getValues,
   } = useForm({ resolver, mode: "onChange", defaultValues });
 
   const { mutate: deleteImageMutation } = useMutation(
@@ -227,8 +271,13 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
         const successId = toast.success("Image deleted successfully!");
         setTimeout(() => toast.remove(successId), 3000);
         queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }),
-          () => fetchAllEvents({ type, page })
+          ALL_QUERIES.QUERY_ALL_EVENTS({
+            type,
+            page,
+            sort: sortBy,
+            order: orderBy,
+          }),
+          () => fetchAllEvents({ type, page, sort: sortBy, order: orderBy })
         );
       },
     }
@@ -237,7 +286,6 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
   const onDeleteImage = ({ _id, preview }) => {
     if (isLocalImage(preview) === true) {
       // image is just a part of local state, so remove from local state
-      console.log("Delete local");
       setImages((prevImages) => {
         // return prevImages.filter((__, idx) => idx !== parseInt(index));
         return prevImages.filter(
@@ -256,20 +304,20 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
     <>
       {/* <FaRegEdit onClick={onOpen} /> */}
       <FaRegEdit
-        className='cursor-pointer hover:bg-green-500 mr-1'
+        className="cursor-pointer hover:bg-green-500 mr-1"
         onClick={onOpen}
       />
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior='inside'>
-        <RouteTitle title='Edit Event' />
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
+        <RouteTitle title="Edit Event" />
         <ModalOverlay />
-        <ModalContent maxW='900px'>
+        <ModalContent maxW="900px">
           <ModalHeader>Edit Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box px={{ md: "20px" }}>
-              <Stack flexDir='column'>
-                <div className='form-div'>
-                  <Box w={{ base: "100%" }} bg={"white"} borderRadius='10px'>
+              <Stack flexDir="column">
+                <div className="form-div">
+                  <Box w={{ base: "100%" }} bg={"white"} borderRadius="10px">
                     <form
                       className={styles.createForm}
                       ref={editEventFormRef}
@@ -277,7 +325,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                     >
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -295,14 +343,14 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl isRequired>
                             <FormLabel>START DATE:</FormLabel>
                             <Controller
-                              name='startDate'
+                              name="startDate"
                               control={control}
                               render={({ field }) => (
                                 <DatePicker
@@ -310,7 +358,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                                   selected={field.value}
                                   onChange={field.onChange}
                                   showTimeSelect
-                                  dateFormat='Pp'
+                                  dateFormat="Pp"
                                 />
                               )}
                             />
@@ -320,7 +368,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                           <FormControl isRequired>
                             <FormLabel>END DATE:</FormLabel>
                             <Controller
-                              name='endDate'
+                              name="endDate"
                               control={control}
                               render={({ field }) => (
                                 <DatePicker
@@ -328,7 +376,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                                   selected={field.value}
                                   onChange={field.onChange}
                                   showTimeSelect
-                                  dateFormat='Pp'
+                                  dateFormat="Pp"
                                 />
                               )}
                             />
@@ -338,7 +386,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                           <FormControl>
                             <FormLabel>GENRE:</FormLabel>
                             <Select
-                              placeholder='Select option'
+                              placeholder="Select option"
                               {...register("genre")}
                             >
                               {!allGenresLoading &&
@@ -353,7 +401,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
@@ -371,39 +419,39 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
-                        <Box w='100%'>
+                        <Box w="100%">
                           <FormControl isRequired>
                             <FormLabel>DESCRIPTION:</FormLabel>
-                            <Textarea {...register("description")} rows='5' />
+                            <Textarea {...register("description")} rows="5" />
                           </FormControl>
                         </Box>
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
                         <Box w={{ md: "50%" }}>
                           <FormControl>
                             <FormLabel>UPLOAD EVENT:</FormLabel>
                             <Input
-                              type='file'
+                              type="file"
                               multiple
                               style={{ paddingTop: "4px" }}
                               onChange={onImageChange}
-                              accept='image/*'
+                              accept="image/*"
                               ref={fileUploadRef}
                             />
                           </FormControl>
-                          <p className='text-xs mt-2 text-green-600'>
+                          <p className="text-xs mt-2 text-green-600">
                             UPLOAD UP TO {MAX_ALLOWED_IMAGES} IMAGES/ VIDEOS (
                             {MAX_IMAGE_SIZE_IN_MB} MB MAX)
                           </p>
                         </Box>
-                        <Box marginBottom='4'>
+                        <Box marginBottom="4">
                           <UploadImageView
                             allImages={images}
                             onDelete={onDeleteImage}
@@ -412,29 +460,65 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
                       </Stack>
                       <Stack
                         direction={["column", "row"]}
-                        spacing='24px'
+                        spacing="24px"
                         mb={5}
                       >
-                        <Box w='100%'>
+                        <Box w="100%">
                           <FormControl isRequired>
                             <FormLabel>
                               DESCRIBE YOUR EVENT ORGANIZATION:
                             </FormLabel>
                             <Textarea
                               {...register("eventOrgDetail")}
-                              rows='5'
+                              rows="5"
                             />
                           </FormControl>
                         </Box>
                       </Stack>
-                      <Stack spacing={5} direction='row'>
+                      {tableType && (
+                        <Stack spacing={5} direction="row">
+                          {tableType === EVENT_TABLES.popular && (
+                            <Box w={{ md: "50%" }}>
+                              <FormControl>
+                                <FormLabel>
+                                  Most Popular Event Sequence:
+                                </FormLabel>
+                                <Select {...register("mostPopularSeq")}>
+                                  <option value="">Select sequence</option>
+                                  {[
+                                    ...Array(
+                                      MAX_ALLOWED_MOST_POPULAR_EVENT_SEQUENCE
+                                    ),
+                                  ].map((_, index) => (
+                                    <option key={index + 1} value={index + 1}>
+                                      {index + 1}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                            </Box>
+                          )}
+                          {tableType === EVENT_TABLES.upcoming && (
+                            <Box w={{ md: "50%" }}>
+                              <FormControl>
+                                <FormLabel>Upcoming Event Sequence:</FormLabel>
+                                <Input
+                                  type="number"
+                                  {...register("upComingSeq")}
+                                />
+                              </FormControl>
+                            </Box>
+                          )}
+                        </Stack>
+                      )}
+                      <Stack spacing={5} direction="row" marginTop={4}>
                         <Checkbox
-                          colorScheme='blue'
+                          colorScheme="blue"
                           {...register("mostPopular")}
                         >
                           Most Popular Event
                         </Checkbox>
-                        <Checkbox colorScheme='green' {...register("upComing")}>
+                        <Checkbox colorScheme="green" {...register("upComing")}>
                           Upcoming Event
                         </Checkbox>
                       </Stack>
@@ -446,14 +530,14 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all }) => {
           </ModalBody>
           <ModalFooter>
             <Button
-              type='button'
+              type="button"
               onClick={() => {
                 editEventFormRef.current.dispatchEvent(
                   new Event("submit", { cancelable: true, bubbles: true })
                 );
               }}
-              size='lg'
-              className='bg-primary text-white'
+              size="lg"
+              className="bg-primary text-white"
               disabled={!isValid}
             >
               Update Event
