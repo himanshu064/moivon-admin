@@ -117,7 +117,7 @@ const EventTable = ({
               />
               {/* <Th>Price</Th> */}
               <Th>Location</Th>
-              <Th>Description</Th>
+              <Th>Event Description</Th>
               <SortColumn
                 name="Venue"
                 sortBy="venue"
@@ -126,6 +126,9 @@ const EventTable = ({
               />
               {/* <Th>Venue</Th> */}
               <Th>Oranganisation</Th>
+              <Th>Oranganisation URL</Th>
+              <Th>Oranganisation Description</Th>
+              <Th>Event URL</Th>
               <Th>Status</Th>
               <Th>Most Popular</Th>
               <Th>Upcoming</Th>
@@ -200,7 +203,16 @@ const EventTable = ({
                   <Text> {data.venue}</Text>
                 </Td>
                 <Td>
+                  <Text>{data.organization}</Text>
+                </Td>
+                <Td>
+                  <Text>{data.organizationUrl}</Text>
+                </Td>
+                <Td>
                   <Text> {data?.eventOrgDetail}</Text>
+                </Td>
+                <Td>
+                  <Text> {data?.eventUrl}</Text>
                 </Td>
                 <Td>
                   <ChangeEventStatusPopup

@@ -112,6 +112,9 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
       setValue("location", event.location, config);
       setValue("description", event.description, config);
       setValue("venue", event.venue, config);
+      setValue("organization", event.organization, config);
+      setValue("organizationUrl", event.organizationUrl, config);
+      setValue("eventUrl", event.eventUrl, config);
       setValue("eventOrgDetail", event.eventOrgDetail, config);
       setValue("mostPopular", event.mostPopular, config);
       setValue("upComing", event.upComing, config);
@@ -250,6 +253,9 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
     price: event.price,
     location: event.location,
     description: event.description,
+    organization: event.organization,
+    organizationUrl: event.organizationUrl,
+    eventUrl: event.eventUrl,
     venue: event.venue,
     eventOrgDetail: event.eventOrgDetail,
   };
@@ -424,7 +430,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
                       >
                         <Box w="100%">
                           <FormControl isRequired>
-                            <FormLabel>DESCRIPTION:</FormLabel>
+                            <FormLabel>EVENT DESCRIPTION:</FormLabel>
                             <Textarea {...register("description")} rows="5" />
                           </FormControl>
                         </Box>
@@ -456,6 +462,30 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
                             allImages={images}
                             onDelete={onDeleteImage}
                           />
+                        </Box>
+                      </Stack>
+                      <Stack
+                        direction={["column", "row"]}
+                        spacing="24px"
+                        mb={5}
+                      >
+                        <Box w={{ md: "50%" }}>
+                          <FormControl isRequired>
+                            <FormLabel>Organization:</FormLabel>
+                            <Input {...register("organization")} />
+                          </FormControl>
+                        </Box>
+                        <Box w={{ md: "50%" }}>
+                          <FormControl isRequired>
+                            <FormLabel>Organization URL:</FormLabel>
+                            <Input {...register("organizationUrl")} />
+                          </FormControl>
+                        </Box>
+                        <Box w={{ md: "50%" }}>
+                          <FormControl isRequired>
+                            <FormLabel>Event URL:</FormLabel>
+                            <Input {...register("eventUrl")} />
+                          </FormControl>
                         </Box>
                       </Stack>
                       <Stack

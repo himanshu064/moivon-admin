@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, Select, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Stack, Tab, TabList, Tabs } from "@chakra-ui/react";
 import Pagination from "rc-pagination";
 import PageHeader from "../../../components/PageHeader";
 import Loader from "../../../components/Loader";
