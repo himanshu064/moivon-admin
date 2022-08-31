@@ -51,3 +51,12 @@ export function getPaginatedRecordNumber({
 }) {
   return per_page * page - per_page + index + 1;
 }
+
+export const prepareURL = (url = "") => {
+  if (!url) return;
+
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  return `https://${url}`;
+};
