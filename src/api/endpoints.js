@@ -84,6 +84,7 @@ export const ALL_ENDPOINTS = {
   BUILD_FORGOT_PASSWORD: () => `/forgetpassword`,
   BUILD_CONFIRM_PASSWORD: () => `/newpassword`,
   BUILD_REFRESH_TOKEN: () => `/refreshtoken`,
+  BUILD_ALL_NEWSLETTER: () => `/misc/newsletter`,
 };
 
 export const APP_PATH = {
@@ -101,5 +102,6 @@ export const APP_PATH = {
   singleEvent: "/events/list/:id",
   popularSingleEvent: "/events/popular/:id",
   upcomingSingleEvent: "/events/upcoming/:id",
+  newsletter: "/newsletter",
   catchAll: "*",
 };

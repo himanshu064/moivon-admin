@@ -154,3 +154,6 @@ td {
   background-color: var(--theme-black) !important;
   color: var(--theme-white) !important;
 }
+.react-datepicker{
+ width: max-content;
+}

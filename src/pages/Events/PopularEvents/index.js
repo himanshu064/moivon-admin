@@ -61,7 +61,6 @@ const PopularEvents = () => {
   } = useQuery(ALL_QUERIES.QUERY_ALL_EVENTS({ type, page }), () =>
     fetchAllEvents({ type, page, size })
   );
-
   const { mutate: changeStatusMutation } = useMutation(
     ({ id, isPublished }) =>
       updateEventStatus({

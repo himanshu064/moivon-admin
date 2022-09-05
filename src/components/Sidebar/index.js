@@ -245,6 +245,11 @@ const NAV_ITEMS = [
   },
   {
     id: uuid(),
+    title: "News Letters",
+    link: "/newsletter",
+  },
+  {
+    id: uuid(),
     title: "Logout",
     icon: MdLogout,
     action: () => {

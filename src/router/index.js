@@ -20,7 +20,7 @@ import CreateSlider from "../pages/HeroSlider/CreateSlider";
 import SliderList from "../pages/HeroSlider/SliderList";
 import UpcomingEvents from "../pages/Events/UpcomingEvents";
 import PopularEvents from "../pages/Events/PopularEvents";
-
+import NewsLetter from "../pages/Events/NewsLetter";
 function NavigationRoutes() {
   return (
     <>
@@ -129,6 +129,16 @@ function NavigationRoutes() {
             }
           />
         </Route>
+        <Route
+          path={APP_PATH.newsletter}
+          element={
+            <PrivateRoute>
+              <AdminLayout>
+                <NewsLetter />
+              </AdminLayout>
+            </PrivateRoute>
+          }
+        />
         <Route
           path={APP_PATH.home}
           element={<Navigate to="/events/list" replace />}

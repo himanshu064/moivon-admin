@@ -180,7 +180,9 @@ const EventTable = ({
                     })}
                   </AvatarGroup>
                 </Td>
-                <Td>{data?.title}</Td>
+                <Td>
+                  <Text>{data?.title}</Text>
+                </Td>
                 <Td>
                   {data?.startDate &&
                     format(parseISO(data.startDate), "dd MMM yyyy, hh:mm a")}
