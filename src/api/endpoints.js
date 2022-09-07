@@ -21,8 +21,9 @@ export const ALL_QUERIES = {
 
   // hero image
   QUERY_ALL_HERO_IMAGES: ({ page = 1 }) => ["heroSlider", page],
+  // Mail
+  QUERY_ALL_MAILS: ({ page = 1 }) => ["NewsLetter", { page }],
 };
-
 export const ALL_ENDPOINTS = {
   BUILD_GET_ALL_EVENTS: ({ page, type, size, sort, order }) => {
     const data = {
@@ -84,7 +85,18 @@ export const ALL_ENDPOINTS = {
   BUILD_FORGOT_PASSWORD: () => `/forgetpassword`,
   BUILD_CONFIRM_PASSWORD: () => `/newpassword`,
   BUILD_REFRESH_TOKEN: () => `/refreshtoken`,
-  BUILD_ALL_NEWSLETTER: () => `/misc/newsletter`,
+  // newsletter
+  BUILD_ALL_NEWSLETTER: ({ page, size }) => {
+    const data = {
+      page,
+      size,
+    };
+    const qs = `?${objectToQueryParams(data)}`;
+    return `/misc/newsletter` + qs;
+  },
+  BUILD_DELETE_MAIL: (id) => `/misc/newsletter/${id}`,
+  BUILD_DELETE_MULTIPLE_MAIL: () => `/misc/deletenewsletter`,
+  BUILD_UPDATE_MAIL: (id) => `/misc/newsletter/${id}`,
 };
 
 export const APP_PATH = {

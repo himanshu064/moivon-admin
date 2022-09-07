@@ -51,6 +51,3 @@ export const deleteEventImage = ({ imageId, eventId }) =>
   axiosInstance.delete(
     `${ALL_ENDPOINTS.BUILD_DELETE_EVENT_IMAGE({ imageId, eventId })}`
   );
-export const fetchAllEmail = ({}) => {
-  return axiosInstance.get(`${ALL_ENDPOINTS.BUILD_ALL_NEWSLETTER()}`);
-};
