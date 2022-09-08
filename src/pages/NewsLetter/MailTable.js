@@ -12,8 +12,8 @@ import {
 } from "@chakra-ui/react";
 
 import { RiDeleteBinLine } from "react-icons/ri";
-import ConfirmDialog from "../../../components/ConfirmDialog";
-import EditMailModal from "../../EditMailModel";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import EditMailModal from "./EditMailModel";
 const MailTable = ({ mails = [], onDelete, selectedMail, setSelectedMail }) => {
   const allSelected = mails.every((mail) => selectedMail.includes(mail._id));
   return (
@@ -38,16 +38,15 @@ const MailTable = ({ mails = [], onDelete, selectedMail, setSelectedMail }) => {
                   }}
                 ></Checkbox>
               </Th>
-              <Th>Sequence No</Th>
               <Th>Email</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
             {mails.map((item, index) => {
-              const { _id, email } = item;
+              const { email, _id } = item;
               return (
-                <Tr key={_id}>
+                <Tr key={item._id}>
                   <Td>
                     <Checkbox
                       className="custom-checkbox"
@@ -67,7 +66,6 @@ const MailTable = ({ mails = [], onDelete, selectedMail, setSelectedMail }) => {
                       }}
                     ></Checkbox>
                   </Td>
-                  <Td>{index + 1}</Td>
                   <Td>{email}</Td>
                   <Td>
                     <div className="flex items-center actions-btn">

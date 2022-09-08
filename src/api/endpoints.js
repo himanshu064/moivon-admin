@@ -22,7 +22,7 @@ export const ALL_QUERIES = {
   // hero image
   QUERY_ALL_HERO_IMAGES: ({ page = 1 }) => ["heroSlider", page],
   // Mail
-  QUERY_ALL_MAILS: ({ page = 1 }) => ["NewsLetter", { page }],
+  QUERY_ALL_MAILS: ({ page = 1, size }) => ["NewsLetter", { page, size }],
 };
 export const ALL_ENDPOINTS = {
   BUILD_GET_ALL_EVENTS: ({ page, type, size, sort, order }) => {
@@ -94,7 +94,7 @@ export const ALL_ENDPOINTS = {
     const qs = `?${objectToQueryParams(data)}`;
     return `/misc/newsletter` + qs;
   },
-  BUILD_DELETE_MAIL: (id) => `/misc/newsletter/${id}`,
+  // BUILD_DELETE_MAIL: (id) => `/misc/newsletter/${id}`,
   BUILD_DELETE_MULTIPLE_MAIL: () => `/misc/deletenewsletter`,
   BUILD_UPDATE_MAIL: (id) => `/misc/newsletter/${id}`,
 };

@@ -20,7 +20,7 @@ import CreateSlider from "../pages/HeroSlider/CreateSlider";
 import SliderList from "../pages/HeroSlider/SliderList";
 import UpcomingEvents from "../pages/Events/UpcomingEvents";
 import PopularEvents from "../pages/Events/PopularEvents";
-import NewsLetter from "../pages/Events/NewsLetter";
+import NewsLetter from "../pages/NewsLetter";
 function NavigationRoutes() {
   return (
     <>

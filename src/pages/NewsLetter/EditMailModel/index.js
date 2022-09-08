@@ -12,18 +12,20 @@ import {
   Button,
   ModalContent,
   Input,
+  ModalCloseButton,
+  ModalHeader,
 } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
-import RouteTitle from "../../components/RouteTitle/routeTitle";
+import RouteTitle from "../../../components/RouteTitle/routeTitle";
 import styles from "./index.module.css";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { fetchAllEmails, updateMailEvent } from "../../services/mail";
+import { fetchAllEmails, updateMailEvent } from "../../../services/mail";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PER_PAGE, START_PAGE } from "../Events/ListEvent";
-import { ALL_QUERIES } from "../../api/endpoints";
+import { PER_PAGE, START_PAGE } from "../../Events/ListEvent";
+import { ALL_QUERIES } from "../../../api/endpoints";
 const validationSchema = yup.object({
   email: yup.string().required("Requited"),
 });
@@ -93,6 +95,8 @@ const EditMailModel = ({ mail, page = START_PAGE, size = PER_PAGE }) => {
         <RouteTitle title="Edit Mail" />
         <ModalOverlay />
         <ModalContent maxW="900px">
+          <ModalHeader>Edit Mail</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
             <Box px={{ md: "20px" }}>
               <Stack flexDir="column">

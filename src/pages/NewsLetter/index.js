@@ -1,26 +1,27 @@
 import React, { useState, useRef } from "react";
 import { Box, Stack } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import RouteTitle from "../../../components/RouteTitle/routeTitle";
+import RouteTitle from "../../components/RouteTitle/routeTitle";
 import MailTable from "./MailTable";
-import PageHeader from "../../../components/PageHeader";
-import ConfirmDeleteMultiple from "../../../components/ConfirmDeleteMultiple";
-import {
-  fetchAllEmails,
-  deleteSingleMail,
-  deleteMultpleMail,
-} from "../../../services/mail";
-import Loader from "../../../components/Loader";
+import PageHeader from "../../components/PageHeader";
+import ConfirmDeleteMultiple from "../../components/ConfirmDeleteMultiple";
+import { fetchAllEmails, deleteMultpleMail } from "../../services/mail";
+import Loader from "../../components/Loader";
 import { toast } from "react-hot-toast";
-import { NOTIFICATION_DURATION } from "../../../constants";
-import { useSearchParams } from "react-router-dom";
-import { PER_PAGE, START_PAGE } from "../ListEvent";
-import { ALL_QUERIES } from "../../../api/endpoints";
+import { NOTIFICATION_DURATION } from "../../constants";
+import {
+  useSearchParams,
+  createSearchParams,
+  useNavigate,
+} from "react-router-dom";
+import { PER_PAGE, START_PAGE } from "../Events/ListEvent";
+import { ALL_QUERIES } from "../../api/endpoints";
 import Pagination from "rc-pagination";
 const NewsLetter = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [selectedMail, setSelectedMail] = useState([]);
-  const queryClient = useQueryClient();
   const toastId = useRef("");
   const removeExistingToasts = () => {
     if (toastId.current) {
@@ -53,19 +54,17 @@ const NewsLetter = () => {
   );
   // to delete sigle mail
   const { mutate: onDeleteMailMutation } = useMutation(
-    (mailId) => deleteSingleMail(mailId),
+    (id) => deleteMultpleMail([id]),
     {
       onSuccess: () => {
         removeExistingToasts();
-        toastId.current = toast.success(
-          "Deleted successfully",
-          NOTIFICATION_DURATION
-        );
-        selectedMail([]);
+        const successId = toast.success("Deleted successfully");
+        setSelectedMail([]);
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_MAILS({ page, size }),
           () => fetchAllEmails({ page, size })
         );
+        setTimeout(() => toast.remove(successId), 3000);
         removeExistingToasts();
       },
       onError: commonErrorHandler,
@@ -77,34 +76,40 @@ const NewsLetter = () => {
     {
       onSuccess: () => {
         removeExistingToasts();
-        toastId.current = toast.success(
-          "Multiple mails deleted successfully!",
-          NOTIFICATION_DURATION
-        );
+        const successId = toast.success("Multiple mails deleted successfully!");
+        setSelectedMail([]);
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_MAILS({ page, size }),
           () => fetchAllEmails({ page, size })
         );
-        setSelectedMail([]);
-
+        setTimeout(() => toast.remove(successId), 3000);
         removeExistingToasts();
       },
       onError: commonErrorHandler,
     }
   );
 
-  const onDeleteMultiple = () => {
+  const onDeleteMultipleMail = () => {
     removeExistingToasts();
     toastId.current = toast.loading("Deleting multiple...");
     onMultipleDeleteMailMutation();
   };
 
-  const onDeleteMail = (mailId) => {
+  const onDeleteMail = (id) => {
     removeExistingToasts();
     toastId.current = toast.loading("Deleting...");
-    onDeleteMailMutation(mailId);
+    onDeleteMailMutation(id);
   };
-  const onPageChange = () => {};
+  const onPageChange = (current, pageSize) => {
+    setSelectedMail([]);
+    navigate({
+      search: `?${createSearchParams({
+        ...queryParams,
+        page: current,
+        size: pageSize,
+      })}`,
+    });
+  };
   if (isLoading) return <Loader />;
   if (isError) return <h1>Error ={error.toString()}</h1>;
   return (
@@ -118,7 +123,7 @@ const NewsLetter = () => {
               <div className="deleteModal my-5">
                 <ConfirmDeleteMultiple
                   type="Multiple Mail"
-                  onChildrenClick={onDeleteMultiple}
+                  onChildrenClick={onDeleteMultipleMail}
                 >
                   <button
                     type="button"
@@ -136,7 +141,7 @@ const NewsLetter = () => {
                     mails={mailData?.data?.data}
                     onDelete={onDeleteMail}
                     selectedMail={selectedMail}
-                    setSelectedMail={(mail) => setSelectedMail(mail)}
+                    setSelectedMail={(mails) => setSelectedMail(mails)}
                   />
                   <div className="text-right">
                     <Pagination
@@ -144,7 +149,7 @@ const NewsLetter = () => {
                       pageSie={size}
                       showLessItems
                       totalBoundaryShowSizeChanger={3}
-                      total={mailData?.data?.data?.length}
+                      total={mailData?.data?.totalNewsLetters}
                       onChange={onPageChange}
                       showTotal={(total, range) =>
                         `${range[0]}-${range[1]} of ${total} items`
