@@ -22,7 +22,7 @@ export const ALL_QUERIES = {
   // hero image
   QUERY_ALL_HERO_IMAGES: ({ page = 1 }) => ["heroSlider", page],
   // Mail
-  QUERY_ALL_MAILS: ({ page = 1, size }) => ["NewsLetter", { page, size }],
+  QUERY_ALL_MAILS: ({ page = 1 }) => ["NewsLetter", page],
 };
 export const ALL_ENDPOINTS = {
   BUILD_GET_ALL_EVENTS: ({ page, type, size, sort, order }) => {

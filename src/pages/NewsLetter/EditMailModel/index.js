@@ -26,10 +26,11 @@ import { fetchAllEmails, updateMailEvent } from "../../../services/mail";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PER_PAGE, START_PAGE } from "../../Events/ListEvent";
 import { ALL_QUERIES } from "../../../api/endpoints";
+import { useSearchParams } from "react-router-dom";
 const validationSchema = yup.object({
-  email: yup.string().required("Requited"),
+  email: yup.string().required("Required"),
 });
-const EditMailModel = ({ mail, page = START_PAGE, size = PER_PAGE }) => {
+const EditMailModel = ({ mail }) => {
   const queryClient = useQueryClient();
   const resolver = yupResolver(validationSchema);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +41,9 @@ const EditMailModel = ({ mail, page = START_PAGE, size = PER_PAGE }) => {
       toast.remove(toastId.current);
     }
   };
+  const [searchParams] = useSearchParams();
+  const queryParams = Object.fromEntries([...searchParams]) || {};
+  const { page = START_PAGE, size = PER_PAGE } = queryParams;
   useEffect(() => {
     if (isOpen) {
       const config = { shouldTouch: true, shouldDirty: true };
@@ -60,9 +64,9 @@ const EditMailModel = ({ mail, page = START_PAGE, size = PER_PAGE }) => {
         const successId = toast.success("Mail updated successfully!");
         reset();
         // refetch queries
-        queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_MAILS({ page, size }),
-          () => fetchAllEmails({ page, size })
+        console.log(page, size);
+        queryClient.refetchQueries(ALL_QUERIES.QUERY_ALL_MAILS({ page }), () =>
+          fetchAllEmails({ page, size })
         );
         setTimeout(() => toast.remove(successId), 3000);
         onClose();
@@ -70,10 +74,17 @@ const EditMailModel = ({ mail, page = START_PAGE, size = PER_PAGE }) => {
     }
   );
   const onUpdateMail = (data) => {
-    toastId.current = toast.loading("Updating mail....");
-    mutation.mutate({
-      data,
-    });
+    let re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(data.email)) {
+      toastId.current = toast.loading("Updating mail....");
+      mutation.mutate({
+        data,
+      });
+    } else {
+      const successId = toast.error("enter a vaild email");
+      setTimeout(() => toast.remove(successId), 3000);
+    }
   };
   const defaultValues = {
     email: mail.email,

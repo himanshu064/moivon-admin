@@ -154,6 +154,7 @@ const EditEventModal = ({ event, eventType = TAB_TYPES.all, tableType }) => {
         reset();
         setImages([]);
         // refetch queries
+        console.log(page, size);
         queryClient.refetchQueries(
           ALL_QUERIES.QUERY_ALL_EVENTS({
             type,

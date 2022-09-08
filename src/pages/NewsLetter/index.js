@@ -13,12 +13,14 @@ import {
   useSearchParams,
   createSearchParams,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import { PER_PAGE, START_PAGE } from "../Events/ListEvent";
 import { ALL_QUERIES } from "../../api/endpoints";
 import Pagination from "rc-pagination";
 const NewsLetter = () => {
   const queryClient = useQueryClient();
+  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [selectedMail, setSelectedMail] = useState([]);
@@ -43,13 +45,14 @@ const NewsLetter = () => {
   };
   const queryParams = Object.fromEntries([...searchParams]) || {};
   const { page = START_PAGE, size = PER_PAGE } = queryParams;
+
   //to get all email
   const {
     data: mailData,
     isLoading,
     isError,
     error,
-  } = useQuery(ALL_QUERIES.QUERY_ALL_MAILS({ page, size }), () =>
+  } = useQuery(ALL_QUERIES.QUERY_ALL_MAILS({ page }), () =>
     fetchAllEmails({ page, size })
   );
   // to delete sigle mail
@@ -60,9 +63,8 @@ const NewsLetter = () => {
         removeExistingToasts();
         const successId = toast.success("Deleted successfully");
         setSelectedMail([]);
-        queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_MAILS({ page, size }),
-          () => fetchAllEmails({ page, size })
+        queryClient.refetchQueries(ALL_QUERIES.QUERY_ALL_MAILS({ page }), () =>
+          fetchAllEmails({ page, size })
         );
         setTimeout(() => toast.remove(successId), 3000);
         removeExistingToasts();
@@ -78,9 +80,8 @@ const NewsLetter = () => {
         removeExistingToasts();
         const successId = toast.success("Multiple mails deleted successfully!");
         setSelectedMail([]);
-        queryClient.refetchQueries(
-          ALL_QUERIES.QUERY_ALL_MAILS({ page, size }),
-          () => fetchAllEmails({ page, size })
+        queryClient.refetchQueries(ALL_QUERIES.QUERY_ALL_MAILS({ page }), () =>
+          fetchAllEmails({ page, size })
         );
         setTimeout(() => toast.remove(successId), 3000);
         removeExistingToasts();
@@ -103,6 +104,7 @@ const NewsLetter = () => {
   const onPageChange = (current, pageSize) => {
     setSelectedMail([]);
     navigate({
+      pathname: location.pathname,
       search: `?${createSearchParams({
         ...queryParams,
         page: current,
