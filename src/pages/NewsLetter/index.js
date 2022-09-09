@@ -114,6 +114,17 @@ const NewsLetter = () => {
   };
   if (isLoading) return <Loader />;
   if (isError) return <h1>Error ={error.toString()}</h1>;
+  if (mailData?.data?.data.length < 1 && page > 1) {
+    let newpage = parseInt(page) - 1;
+    navigate({
+      pathname: location.pathname,
+      search: `?${createSearchParams({
+        ...queryParams,
+        page: newpage,
+        size: 10,
+      })}`,
+    });
+  }
   return (
     <>
       <RouteTitle title="News Letter" />
