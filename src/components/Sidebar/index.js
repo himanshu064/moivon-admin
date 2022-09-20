@@ -254,7 +254,7 @@ const NAV_ITEMS = [
     icon: MdLogout,
     action: () => {
       deleteLocalStorage("auth");
-      window.location.href = process.env.REACT_APP_PUBLIC_URL + "/";
+      window.location.href = process.env.REACT_APP_PUBLIC_URL;
     },
   },
 ];
