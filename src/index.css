@@ -157,3 +157,9 @@ td {
 .react-datepicker{
  width: max-content;
 }
+
+.preFormattedTextArea pre {
+  white-space: pre-wrap;
+  font-family: inherit !important;
+  font-size: inherit !important;
+}

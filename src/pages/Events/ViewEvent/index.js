@@ -74,40 +74,42 @@ const ViewEvent = () => {
                   )}
 
                   <div className={`${styles.topHeading}`}>
-                    <h2 className="text-primary">
+                    <h2 className="text-primary" title={singleEventData?.data?.data?.title}>
                       {singleEventData?.data?.data?.title}
                     </h2>
+                  </div>
+                  <div className="flex items-center justify-end gap-x-1 cursor-pointer">
                     {singleEventData?.data?.data?.genre && (
                       <span className={styles.type}>
                         {singleEventData?.data?.data?.genre?.genre}
                       </span>
                     )}
-                    <div className="flex items-center gap-x-1 cursor-pointer">
-                      <Highlight
-                        query={
-                          singleEventData?.data?.data?.published
-                            ? "Approved"
-                            : "Pending"
-                        }
-                        styles={{
-                          px: "1.5",
-                          py: "1.5",
-                          bg: singleEventData?.data?.data?.published
-                            ? "green.200"
-                            : "orange.200",
-                          fontWeight: 500,
-                        }}
-                      >
-                        {singleEventData?.data?.data?.published
+                    <Highlight
+                      query={
+                        singleEventData?.data?.data?.published
                           ? "Approved"
-                          : "Pending"}
-                      </Highlight>
-                    </div>
+                          : "Pending"
+                      }
+                      styles={{
+                        px: "1.5",
+                        py: "1.5",
+                        bg: singleEventData?.data?.data?.published
+                          ? "green.200"
+                          : "orange.200",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {singleEventData?.data?.data?.published
+                        ? "Approved"
+                        : "Pending"}
+                    </Highlight>
                   </div>
                   <h3 className="mt-3 mb-4 text-primary font-semibold text-lg">
                     About Event
                   </h3>
-                  <p>{singleEventData?.data?.data?.description}</p>
+                  <p className="preFormattedTextArea">
+                    <pre>{singleEventData?.data?.data?.description}</pre>
+                  </p>
                 </div>
                 <Stack direction="row" spacing={10} mt="8">
                   <Box
