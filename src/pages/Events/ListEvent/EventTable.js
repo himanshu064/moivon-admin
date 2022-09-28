@@ -101,7 +101,13 @@ const EventTable = ({
                 onSort={onSortColumn}
               />
               {/* <Th>Start Date</Th> */}
-              <Th>End Date</Th>
+              {/* <Th>End Date</Th> */}
+              <SortColumn
+                name="End Date"
+                sortBy="endDate"
+                orderBy={getSortOrder("endDate")}
+                onSort={onSortColumn}
+              />
               <SortColumn
                 name="Genre"
                 sortBy="genre"
