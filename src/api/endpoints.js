@@ -49,7 +49,7 @@ export const ALL_ENDPOINTS = {
     }
 
     const qs = `?${objectToQueryParams(data)}`;
-    return "/events" + qs;
+    return "/events/admin" + qs;
   },
   BUILD_GET_SINGLE_EVENT: (eventId) => `/events/${eventId}`,
   BUILD_POST_NEW_EVENT: () => `/events`,
